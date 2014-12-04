@@ -1,0 +1,51 @@
+DEFINITION MODULE RuleListModule;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM ListData IMPORT DataItemPntr;
+FROM TACTListModule IMPORT TACTList, TACTListBaseData;
+
+(*
+EXPORT QUALIFIED
+  (* const *) RuleFileExtension,
+  (* types *) RuleFileInfoType,
+  (* vars  *) RuleFileInfo, TheOfficialRuleList,
+  (* procs *) StartUpRuleFile, CloseDownRuleFile, InitializeRuleList,
+              AddNewRuleToFile;
+*)
+
+CONST
+   RuleFileExtension = '.QUE';
+
+TYPE
+     RuleFileInfoType = RECORD
+       FileName:   ARRAY[0..40] OF CHAR;
+       RuleName:   ARRAY[0..30] OF CHAR;
+     END;
+
+VAR
+     RuleFileInfo:            RuleFileInfoType;
+     OfficialRuleListData:    TACTListBaseData;
+
+PROCEDURE GetSortRuleName( RuleName : ARRAY OF CHAR; VAR SortRuleName : ARRAY OF CHAR);
+
+PROCEDURE StartUpRuleFile(VAR FileExists: BOOLEAN): BOOLEAN;
+PROCEDURE CloseDownRuleFile;
+
+PROCEDURE InitializeRuleList(): TACTList;
+
+PROCEDURE AddNewRuleToFile(Name:  ARRAY OF CHAR;
+                       VAR RuleText: ARRAY OF CHAR); (* read only *)
+
+END RuleListModule.

@@ -1,0 +1,62 @@
+DEFINITION MODULE RuleWindow;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* const*)  NumbCriteria, NotRefNameRes,
+  (* type *)  RuleWindowDataType,CriteriaType,
+  (* vars *)  RuleWindowData,
+  (* proc *)  InitRuleWindMenu, DoRefSelectionWindow,
+              DoRuleWindMenu, GeneralUnitNameVerify;
+*)
+
+CONST
+  NumbCriteria = 4;
+  CriteriaLen = 51;
+
+      (*RES OLD MSG 252
+      The selected item was too large to be inserted in your Autoselection Rule.
+      *)
+  CriteriaTooBig = (*RES REM INS*) 252 ;
+
+TYPE
+     CriteriaType = ARRAY[0..NumbCriteria-1] OF ARRAY[0..CriteriaLen-1] OF CHAR;
+     RuleWindowDataType = RECORD
+      IgnoreErrs:  BOOLEAN;
+      DoSelect:    BOOLEAN;
+      Criteria:    CriteriaType;
+      ConfBefore:  CARDINAL;
+      ConfAfter:   CARDINAL;
+      UnitName:    ARRAY[0..50] OF CHAR;
+      UnitID:      INTEGER;
+   END;
+
+VAR
+   RuleWindowData:   RuleWindowDataType;
+
+PROCEDURE InitRuleWindMenu;
+
+PROCEDURE DoRuleWindMenu(VAR ch:               CHAR;
+                         VAR FunctKey:         BOOLEAN;
+                         VAR IgnoreErrors:     BOOLEAN);
+
+PROCEDURE FoldToFitCriteria(VAR input:     ARRAY OF CHAR; (* read-only *)
+                            VAR output:    CriteriaType): BOOLEAN; (* True=fit*)
+
+PROCEDURE SubstituteInCriteria(VAR criteria:     CriteriaType;
+                                   line,pos,len: CARDINAL;
+                                   text:         ARRAY OF CHAR): BOOLEAN;
+
+END RuleWindow.

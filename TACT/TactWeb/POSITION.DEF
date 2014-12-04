@@ -1,0 +1,82 @@
+DEFINITION MODULE PositionManagement;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM ListData IMPORT
+  (* types *) ItemType;
+FROM VirtMem IMPORT VirtAddr;
+FROM TACTListModule IMPORT
+  (* types *) TACTList;
+
+(*
+EXPORT QUALIFIED
+  (* types *) PositionItem,
+  (* procs *) MakePosList, GetPosData, FirstDisplayItem,
+              LastDisplayItem, CopyDisplayItem, NextDisplayItem,
+              PrevDisplayItem, GetParentMainItem, NextMainItem, PrevMainItem,
+              FindDisplayItem, DiscardDisplayItem, InitialDisplayItem;
+*)
+TYPE
+   PositionItem;
+
+PROCEDURE GetPosData(Pointer:   PositionItem;
+                 VAR Type:      ItemType;
+                 VAR TokenVA:   VirtAddr; (* VA for DataItem *)
+                 VAR TypeVA:    VirtAddr; (* VA for DataItem *)
+                 VAR CatVA:     VirtAddr  (* VA for DataItem *) );
+
+PROCEDURE FirstDisplayItem(List:    TACTList;
+                       VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE LastDisplayItem(List:    TACTList;
+                      VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE CopyDisplayItem(List:     TACTList;
+                         PntrIn:    PositionItem;
+                     VAR PntrOut:   PositionItem);
+
+PROCEDURE DiscardDisplayItem(List:  TACTList;
+                         VAR Pntr:  PositionItem);
+
+PROCEDURE InitialDisplayItem(VAR Pntr:  PositionItem);
+
+PROCEDURE NextDisplayItem(List:    TACTList;
+                       VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE PrevDisplayItem(List:    TACTList;
+                       VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE GetParentMainItem( List : TACTList; VAR Pointer : PositionItem) ;
+
+PROCEDURE NextMainItem(List:    TACTList;
+                   VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE PrevMainItem(List:    TACTList;
+                   VAR Pointer: PositionItem): BOOLEAN;
+
+PROCEDURE FindDisplayItem(ListIn:    TACTList;
+                          PointerIn: PositionItem;
+                          ListOut:   TACTList;
+                      VAR PointerOut:PositionItem): BOOLEAN;
+
+PROCEDURE PrepareDisplayForItem(Pntr:   PositionItem;
+                                NoLvls: CARDINAL;
+                                RefIn:  ARRAY OF CHAR;
+                                RefLn:  CARDINAL;
+                            VAR tStr:   ARRAY OF CHAR);
+
+PROCEDURE PrepareTypeItemForDisplay(Pntr:  PositionItem;
+                                VAR tStr:  ARRAY OF CHAR);
+
+END PositionManagement.

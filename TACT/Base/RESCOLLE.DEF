@@ -1,0 +1,54 @@
+DEFINITION MODULE ResCollection;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM SYSTEM IMPORT BYTE;
+FROM ResBase IMPORT FilePos;
+
+(*
+EXPORT QUALIFIED
+   (* cons *) MaxCollectionSize, PrefixLen,
+   (* type *) ResDataPointer, ResCollectionType,
+   (* proc *) InitializeCollection, GetCollection,
+              NextColItem, PrevColItem, ReleaseCollection;
+*)
+
+CONST
+   MaxCollectionSize = 32000;
+   PrefixLen = 4; (* # of Bytes in MaxSize and CurPos in ResCollectionType *)
+
+TYPE
+   ResDataPointer = POINTER TO ARRAY[0..MaxCollectionSize-1] OF CHAR;
+   ResCollectionType = POINTER TO ResCollectionData;
+   ResCollectionData = RECORD
+                       MaxSize:  CARDINAL;
+                       CurPos:   CARDINAL;
+                       Data:     ResDataPointer;
+                       END;
+
+PROCEDURE InitializeCollection(VAR ResC: ResCollectionType);
+
+PROCEDURE GetCollection(VAR ResC: ResCollectionType;
+                            Loc:  FilePos): BOOLEAN;
+
+PROCEDURE NextColItem(VAR ResC: ResCollectionType;
+                      VAR ItemData: ARRAY OF BYTE;
+                      VAR Size: CARDINAL): BOOLEAN;
+
+PROCEDURE PrevColItem(VAR ResC: ResCollectionType;
+                      VAR ItemData: ARRAY OF BYTE;
+                      VAR Size: CARDINAL): BOOLEAN;
+
+PROCEDURE ReleaseCollection(VAR ResC: ResCollectionType);
+END ResCollection.

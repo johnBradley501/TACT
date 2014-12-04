@@ -1,0 +1,297 @@
+Copyright 1990 John Bradley, University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+                          >>> COLLGEN <<<
+
+                      >>> COLLGEN Setup Phase <<<
+
+================================================
+Message to display when user asks COLLGEN to stop by pushing F10.
+================================================
+(*RES OLD MSG 301
+COLLGEN has stopped, due to your request.
+*)
+
+================================================
+The famous COLLGEN front panel.
+
+Fields are (notice that 12 and 13 are first!)
+12: TACT system version number (from MSG 203 in BASE.RSI)
+13: TACT system version date (from MSG 203 as well)
+
+%0 name of input TDB database
+%1 name of space for temporary files (directory and/or device)
+%2 low end span context keep this field short
+%3 high end span context keep this field short
+%4 number of reps to keep (keep short
+%5 generate collocation destination switch: to disk
+%6   "           "          "         "   : to printer
+%7   "           "          "         "   : do not generate
+%8 file name for COL file.
+%9 generate rule file switch: Yes
+%10    "      "    "     "  : No
+%11 rule file name
+================================================
+(*RES OLD MNU 31
+             General Collocation Generator for the TACT system
+
+                     COLLGEN Version %12__ %13____________________
+
+   Input Database:         %0_______________________________________________
+   Temporary File Area:    %1_______________________________________
+   Span Context:           %2_ to %3_ words
+   Number of repetitions to keep: %4_ or more
+
+   Generate Collocations:  To Disk: %|5 To Printer: %|6 No: %|7
+   Output File Name:       %8_______________________________________________
+
+   Generate Rule File:     Yes: %|9  No: %|10
+   Rule File Name:         %11______________________________________________
+
+
+
+
+______________________________________________________________________________
+F1:    Help                        F9:   RUN, generate collocations
+                                   F10:  QUIT without generating collocations
+
+*)
+
+================================================
+Message for invalid file name found.  %0 is given name
+================================================
+(*RES OLD MSG 295
+"%0" cannot be used as the name of a file.
+*)
+
+================================================
+CHE resource for situation where file by given name for output already exists. 
+Key options:
+
+key #
+-----
+1    user wants to give new name
+2    user wants to append to existing file
+3    user wants to replace contents of existing file
+================================================
+(*RES OLD CHE 19
+Output File Name "%0" already exists, please choose
+from Options: N)ew name, A)ppend to file, O)ver write file:
+= N A O
+*)
+
+================================================
+Given name %0 cannot be used as a file name.
+================================================
+(*RES OLD MSG 295
+"%0" cannot be used as the name of a file.
+*)
+
+================================================
+CHE resource for situation where RUL file by given name for output already
+exists.  Key options:
+
+key #
+-----
+1    user wants to give new name
+2    user wants to replace contents of existing file
+================================================
+(*RES OLD CHE 20
+Rule File Name "%0" already exists, please choose
+from Options: N)ew name, or O)ver write file:
+= N O
+*)
+
+================================================
+invalid parameter given to COLLGEN when invoked on DOS command line. Bad
+parameter is %0
+================================================
+(*RES OLD MSG 297
+Parameter "%0" cannot be specified for COLLGEN.
+*)
+
+================================================
+given DOS parameter requires a value such as a file name.  offending paremter
+is given in %0
+================================================
+(*RES OLD MSG 298
+Parameter "%0" requires a parameter for COLLGEN.
+*)
+
+================================================
+Too many input files listed in DOS command line
+================================================
+(*RES OLD MSG 299
+Too many input files were given as parameters to COLLGEN
+*)
+
+================================================
+COLLGEN run has been requested, but user has not yet specified an input TDB
+file.
+================================================
+(*RES OLD MSG 296
+The TDB file name must be given.
+*)
+
+================================================
+User has asked for output COL file, but hasn't yet given name of file to use.
+================================================
+(*RES OLD MSG 302
+The COLLATE file name must be given.
+*)
+
+================================================
+user has given a low-end span of 0 or 1.
+================================================
+(*RES OLD MSG 303
+The Span Context must have a value of 2 or greater.
+*)
+
+================================================
+user has asked for reps to keep of 0
+================================================
+(*RES OLD MSG 306
+The "Number of repetitions to keep" must have a value of 1 or greater.
+*)
+
+================================================
+user has asked for rule file to be created, but has not given rule file name.
+================================================
+(*RES OLD MSG 304
+The RULE file name must be given.
+*)
+
+================================================
+user has asked for run phase of COLLGEN, but has not asked for either type of
+COLLGEN output -- COL or RUL file.
+================================================
+(*RES OLD MSG 320
+At least one output type (RULE or COLLOCATE) must be requested.
+*)
+
+                       >>> COLLGEN Run time <<<
+
+================================================
+Display at bottom of screen during run time of COLLGEN.
+
+Field 0 is phase name
+field 2 is percentage completed
+================================================
+(*RES OLD MNU 32
+                  Status: %0__________________________________
+    Percentage Completed: %1_ % [estimated]
+
+*)
+
+================================================
+COLLGEN run time phase name: reading of TDB file for use in file 0 of MNU 32
+above.
+================================================
+(*RES OLD MSG 307
+Reading the TDB file.
+*)
+
+================================================
+COLLGEN run time phase name: sorting of results from phase one, for use in file
+0 of MNU 32 above.
+================================================
+(*RES OLD MSG 308
+Sort phase.
+*)
+
+================================================
+COLLGEN run time phase name: outputting of results, for use in file 0 of MNU 32
+above.
+================================================
+(*RES OLD MSG 309
+Output phase.
+*)
+
+================================================
+COLLGEN finished and didn't find any phases that suit the given criteria:
+
+%1 low end span value
+%2 high end span value
+%3 # of reps
+#4 database read.
+================================================
+(*RES OLD MSG 300
+No collations found in the span range %0 to %1 word(s) with
+a repetition of %2 or more occurrances in the database %3.
+*)
+
+================================================
+before run phase COLLGEN checks disk space, and finds that there may not be
+enough temporary space to run (almost always, slightly less space than the
+estimate is actually needed).  It can try, anyhow, if the user wants.  %0 is
+drive it's trying to use.  %1 is the space free on that drive, in Kbytes.  %2
+is the estimated amount it needs. Key choices (1): "Yes" to continue, (2) "No"
+for don't bother.
+================================================
+(*RES OLD CHE 23
+Possibly insufficient amount of disk storage on drive %0, amount free: %1 K,maximum
+needed: %2 K (estimated) just for sorting.  Press "Y" to continue or "N" tostop?
+= Y N
+*)
+
+================================================
+The rest are messages produced if the sort phase of COLLGEN fails.
+First, workspace too small in the computers memory (not hard disk!).
+================================================
+(*RES OLD MSG 311
+Sort routine failure: Workarea too small (insufficient memory available.)
+*)
+
+================================================
+This is a bug report -- probably shouldn't be a resource.
+================================================
+(*RES OLD MSG 312
+Sort routine failure: Illegal itemlength.
+*)
+
+================================================
+Too many records to sort -- unlikely!
+================================================
+(*RES OLD MSG 313
+Sort routine: More than 2,147,483,647 records (words in TDB file).
+*)
+
+================================================
+disk full before end of sorting
+================================================
+(*RES OLD MSG 314
+Sort routine: Write error during sorting (disk full).
+*)
+
+================================================
+disk read error during sorting
+================================================
+(*RES OLD MSG 315
+Sort routine: Read error during sorting.
+*)
+
+================================================
+no room in directory for new temporary file
+================================================
+(*RES OLD MSG 316
+Sort routine: Impossible to create (sort temporary) file -- directory full.
+*)
+
+================================================
+bug report -- probably should not be a resource.  %0: error code for sort
+routine.
+================================================
+(*RES OLD MSG 317
+Sort routine failure: Unknown return code (%0) from sort.
+*)
+

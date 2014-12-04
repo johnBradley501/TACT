@@ -1,0 +1,26 @@
+R 65,T 5
+So far we've talked only about the RESMAN program.  We'veprovided you with two other utility programs.
+
+@Section(RESREAD)
+Program RESREAD will read a resource file and produce out a newRSI file containing a set of instructions to RESMAN that could beused to reconstruct the resource file.  It is, sort of, thereverse of RESMAN: to a first approximation, at least, RESMANreads an RSI file and modifies the RES file; whereas RESREADreads the RES file and produces a new RSI file from it.
+
+BEGIN BULLETS
+RESREAD takes 2 parameters: (1) the resource file name, (2) thename of the file to put the result it.  If no extension is giventhe extension to the first file is assumed to be 'RES', to thesecond is "RSI".
+
+After it starts it will ask you for the type of Resource you wantto export.  Choose one of the types, e.g. "MSG" or "MNU".  Towrite out all resources in the files (not often recommended) typea "." here.
+
+Next, it will ask you the starting number of the resource youwant to write out -- remember that the first resource of eachtype as the number "0", not "1'.  If you want all resources of aparticular type to be written out, type a "." here.
+
+Next, if you typed a number to the last question it will ask youthe ending number of the last resource you want.  If you want allresources from the starting number you've already given to theend type ".".
+
+RESMAN will write out all the resources you've asked for to theoutput ".RSI" file, and then will, again, ask you for anotherresource type. To finish RESREAD instead, type "." here.
+END BULLETS
+
+Like RESMAN, RESREAD needs to be able to find RES.DAT and eitherXLATTABL.DAT or FILE.XDT so that it will know how to translateresource text in the TACT internal character set within TACT.RESinto the external format in the RSI file that you can work with.
+
+@Section(RESCOMP)
+As RESMAN updates resources it puts the new resource definitionat the end of the RES file, and leaves the old definition in themiddle of the RES file -- now inaccessible, and, effectivelytherefore, wasted space.
+
+The RESCOMP program takes the name of the resource file tocompress, and, effectively, eliminates all resource definitionsthat are no longer useable.  As a result, the new RES file willbe smaller than the old, and no space will be unused.
+
+After a successful compression, the new compressed file will,generally, have the same name as the old, with extension .RES --the old uncompressed form is left as a backup; but its name ischanged to use the extension ".RBK".

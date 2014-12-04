@@ -1,0 +1,64 @@
+DEFINITION MODULE MainLists;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM TACTListModule IMPORT TACTList, TACTListItem;
+FROM PositionManagement IMPORT
+  (* types *) PositionItem;
+FROM VirtMem IMPORT
+  (* const *) FirstTempPool ;
+
+(*
+EXPORT QUALIFIED
+  (* type *) PosListStatusType,
+  (* const*) PoolNoForTempList, PoolNoForCollDispSpace, PoolNoForMKSInfoList,
+  (* vars *) ListFromRule, ListFromRulePos, SelectedList, ListByPosition,
+             PosListStatus, SelectedListPos, PositionListPos,
+             SelectedListEmpty, ListByType, TypeListPos, ListByTypeMade;
+*)
+
+CONST
+   PoolNoForBasePDBItems = 0;
+
+   PoolNoForTDBTACTLists = FirstTempPool ;  (* MAX(CARD) DIV 2 + 1 = 32768 *)
+   PoolNoForSelectLists  = PoolNoForTDBTACTLists + 1;		(* = 32769 *)
+   PoolNoForOldSelect    = PoolNoForSelectLists + 1;		(* = 32770 *)
+   PoolNoForListFromRule = PoolNoForOldSelect + 1;		(* = 32771 *)
+   PoolNoForOldRuleList  = PoolNoForListFromRule + 1;		(* = 32772 *)
+   PoolNoForSearchWorkingSpace = PoolNoForOldRuleList + 1;	(* = 32773 *)
+   PoolNoForFileNameLists = PoolNoForSearchWorkingSpace + 1;	(* = 32774 *)
+   PoolNoForDistDispSpace = PoolNoForFileNameLists + 1;		(* = 32775 *)
+   PoolNoForCollDispSpace = PoolNoForDistDispSpace + 1;		(* = 32776 *)
+   PoolNoForTempList      = PoolNoForCollDispSpace + 1;		(* = 32777 *)
+   PoolNoForMKSInfoList   = PoolNoForTempList + 1;              (* m.s. = 32778 *)
+TYPE
+   DiscardMainListType = (DiscardAll, KeepSelect);
+   PosListStatusType = (NoPos, PosOnly, PosMade);
+
+VAR
+    ListFromRule:     TACTList;
+    ListFromRulePos:  TACTListItem;
+    SelectedList:     TACTList;
+    ListByPosition:   TACTList;
+    ListByType:       TACTList;
+    PosListStatus:    PosListStatusType;
+    SelectedListPos:  PositionItem;
+    PositionListPos:  PositionItem;
+    TypeListPos:      PositionItem;
+    SelectedListEmpty:BOOLEAN;
+    ListByTypeMade:   BOOLEAN;
+
+PROCEDURE DiscardMainLists(Type: DiscardMainListType);
+
+END MainLists.

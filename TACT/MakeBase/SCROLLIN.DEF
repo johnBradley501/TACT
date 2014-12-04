@@ -1,0 +1,57 @@
+DEFINITION MODULE ScrollingMenu ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM SYSTEM  IMPORT ADDRESS;
+FROM Lists   IMPORT ListPointer;
+FROM TWB     IMPORT WinType;
+
+(*
+EXPORT QUALIFIED
+  (* type   *)   ShowMenuProc, GetMenuProc, ShowHeaderProc, NewDataProc,
+                 DeleteDataProc, IsEmptyProc,
+  (* proc   *)   DoScrollingMenu;
+*)
+
+TYPE
+    ShowMenuProc =   PROCEDURE (WinType,           (* window to show in   *)
+                                CARDINAL,CARDINAL, (* x and y offset      *)
+                                ADDRESS);          (* -> data to show     *)
+    GetMenuProc =    PROCEDURE (WinType,           (* window to work from *)
+                                CARDINAL,CARDINAL, (* x and y offset      *)
+                                ARRAY OF CHAR,     (* terminating chars   *)
+                                ARRAY OF CHAR,     (* term IBM spec keys  *)
+                            VAR ADDRESS,           (* -> data             *)
+                            VAR CARDINAL,          (* which menu item     *)
+                            VAR CHAR,              (* char that ended     *)
+                            VAR BOOLEAN);          (* spec key or not     *)
+    ShowHeaderProc = PROCEDURE (WinType,           (* window to work from *)
+                                CARDINAL,CARDINAL);(* x and y offset      *)
+    NewDataProc    = PROCEDURE (VAR ADDRESS);      (* -> initialized data *)
+    DeleteDataProc = PROCEDURE (VAR ADDRESS);      (* -> data to discard  *)
+    IsEmptyProc= PROCEDURE (ADDRESS): BOOLEAN;      (* -> data to check    *)
+
+PROCEDURE InitCodeScrollMenu ;  (* this is for OVERLAY mechanism *LP* *)
+
+PROCEDURE DoScrollingMenu(VAR LP:        ListPointer;
+                              ShowMenu:  ShowMenuProc;
+                              GetMenu:   GetMenuProc;
+                              ShowHeader:ShowHeaderProc;
+                              NewData:   NewDataProc;
+                              DeleteData:DeleteDataProc;
+                              IsEmpty:   IsEmptyProc;
+                              ResLabel:  CARDINAL);
+
+END  ScrollingMenu .

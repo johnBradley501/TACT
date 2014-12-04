@@ -1,0 +1,55 @@
+Box Dimen 6.5 in, 3 in
+  [
+   ResourcePntrs: box dimen 15%,50 pt
+                  at (0%,0%)/tl
+                  <text size 10 pt 
+                   "Message" "DataArray" "Menu" "..." >
+
+  FirstMessageData: box dimen 10%,60 pt
+                    at (35%,5%)/tl
+                    <text size 10 pt
+                    "0" '1' '2' '3' '...'>
+  FirstDtaData:     box dimen 10%,60 pt
+                    at (35%,45%)/tl
+                    <text size 10 pt
+                    "0" '1' '2' '3' '...'>
+
+  arrow {(15%, 8 pt) FirstMessageData.tl}
+  arrow {(15%, 19 pt) (20%, 19 pt) corv FirstDtaData.cl}
+
+  MsgZero:   box dimen 15%, 14 pt
+                    at (60%,5%)/tl
+                    <text size 10 pt "Message zero">
+  MsgOne:    box dimen 15%, 14 pt
+                    at (60%,15%)/tl
+                    <text size 10 pt "Message one">
+  MsgTwo:    box dimen 15%, 14 pt
+                    at (60%,25%)/tl
+                    <text size 10 pt "Message two">
+  MsgThree:  box dimen 15%, 14 pt
+                    at (60%,35%)/tl
+                    <text size 10 pt "Message three">
+  arrow {(xc FirstMessageData.tr,yc FirstMessageData.tr+7 pt) MsgZero.cl}
+  arrow {(xc FirstMessageData.tr,yc FirstMessageData.tr+18 pt) MsgOne.cl}
+  arrow {(xc FirstMessageData.tr,yc FirstMessageData.tr+29 pt) MsgTwo.cl}
+  arrow {(xc FirstMessageData.tr,yc FirstMessageData.tr+40 pt) MsgThree.cl}
+
+
+  DtaZero:   box dimen 15%, 14 pt
+                    at (60%,50%)/tl
+                    <text size 10 pt "DArray zero">
+  DtaOne:    box dimen 15%, 14 pt
+                    at (60%,60%)/tl
+                    <text size 10 pt "DArray one">
+  DtaTwo:    box dimen 15%, 14 pt
+                    at (60%,70%)/tl
+                    <text size 10 pt "DArray two">
+  DtaThree:  box dimen 15%, 14 pt
+                    at (60%,80%)/tl
+                    <text size 10 pt "DArray three">
+  arrow {(xc FirstDtaData.tr,yc FirstDtaData.tr+7 pt) DtaZero.cl}
+  arrow {(xc FirstDtaData.tr,yc FirstDtaData.tr+18 pt) DtaOne.cl}
+  arrow {(xc FirstDtaData.tr,yc FirstDtaData.tr+29 pt) DtaTwo.cl}
+  arrow {(xc FirstDtaData.tr,yc FirstDtaData.tr+40 pt) DtaThree.cl}
+  ]
+

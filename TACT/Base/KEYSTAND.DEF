@@ -1,0 +1,106 @@
+DEFINITION MODULE KeyStandards;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* const *) FieldMotionExtSize, FieldMotionASCSize, ListCharsExtSize,
+              ListCharsASCSize, ScrollingExtSize, ScrollingASCSize,
+  (* types *) PanelControlKeys, ListControlKeys, ActionBarControlKeys,
+  (* vars  *) FieldMotionExt, FieldMotionASC, ListCharsExt, ListCharsASC,
+              ScrollingExt, ScrollingASC,
+  (* procs *) GetPanelControlKey, GetListControlKey,
+              GetActionBarControlKeys;
+*)
+
+CONST
+   FieldMotionExtSize = 5;
+   FieldMotionASCSize = 3;
+   ListCharsExtSize   = 17;
+   ListCharsASCSize   = 3;
+   ScrollingExtSize   = 4;
+   ScrollingASCSize   = 2;
+
+TYPE
+   PanelControlKeys = (
+      NotPanelControlKey,
+      CursorRight,
+      CursorLeft,
+      EndOfField,
+      BeginningOfField,
+      EraseToEOF,
+      DeleteChar,
+      BackspaceDelete,
+      NextField,
+      PrevField,
+      FirstField,
+      LastField,
+      PanelEnd,
+      PanelCancel
+      );
+
+   ListControlKeys = (
+      NotListControlKey,
+      PrevItem,
+      NextItem,
+      PrevScreen, (* m.s. - new PgUp , was PrevGroup *)
+      NextScreen, (* m.s. - new PgDn , was NextGroup *)
+      FirstItem,
+      LastItem,
+      ListRight,
+      ListLeft,
+      JumpToEnd,
+      JumpToBeginning,
+      SelectToggle,
+      SelectAll,
+      DeSelectAll,
+      ListEnd,
+      ListCancel,
+      MoveToItem,
+      PrevGroup,  (* m.s. - new AltPgUp *)
+      NextGroup   (* m.s. - new AltPgDn *)
+      );
+
+   ActionBarControlKeys = (
+      NotActionBarControlKey,
+      MoveLeft,
+      MoveRight,
+      MoveUp,
+      MoveDown,
+      MoveToNext,
+      MoveToPrev,
+      MoveToFirst,
+      MoveToLast,
+      ChooseThis,
+      ABCancel
+      );
+
+VAR
+   FieldMotionExt:  ARRAY[0..FieldMotionExtSize-1] OF CHAR;
+   FieldMotionASC:  ARRAY[0..FieldMotionASCSize-1] OF CHAR;
+   ListCharsExt:    ARRAY[0..ListCharsExtSize-1] OF CHAR;
+   ListCharsASC:    ARRAY[0..ListCharsASCSize-1] OF CHAR;
+   ScrollingExt:    ARRAY[0..ScrollingExtSize-1] OF CHAR;
+   ScrollingASC:    ARRAY[0..ScrollingASCSize-1] OF CHAR;
+
+  PROCEDURE GetPanelControlKey(Ext:    BOOLEAN;
+                               ch:     CHAR): PanelControlKeys;
+
+  PROCEDURE GetListControlKey(Ext:    BOOLEAN;
+                              ch:     CHAR): ListControlKeys;
+
+  PROCEDURE GetActBarControlKey(Ext:    BOOLEAN;
+                                ch:     CHAR): ActionBarControlKeys;
+
+END KeyStandards.

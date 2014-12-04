@@ -1,0 +1,100 @@
+DEFINITION MODULE KeyBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*--------------------------------------------------------------------------*)
+(* By:    Lidio Presutti                                                    *)
+(* Date:  Feb. 1, 1988                                                      *)
+(* Purpose: replace type ahead from command line parameters in coordination *)
+(*   with the "TParameter" replacement module "Parameters" to properly      *)
+(*   emulate the Turbo Pascal procedures ParamStr and ParamCount.           *)
+(*                                                                          *)
+(* History: was "Keyboard" module from Logitech version 3.0                 *)
+(*   Apr 8/88 -- Added definition for GetKeyStroke  j.b.                    *)
+(*   July 89  -- Added mouse support.   *LP*                                *)
+(*                                                                          *)
+(*--------------------------------------------------------------------------*)
+
+IMPORT PCKey ;
+IMPORT ASCII ;
+
+(*
+EXPORT QUALIFIED
+             Read, KeyPressed, GetKeyStrokeType, GetKeyStroke,
+(* Types *)  ButtonType,
+(* Const *)  MouseUp, MouseDown, MouseLeft, MouseRight, MouseEsc, MouseEnter,
+(* Procs *)  IsMouseInstalled, ShowMouseCursor, HideMouseCursor, GetMouseAction,
+	     MoveMouse, ConfineMouseHoriz, ConfineMouseVert, SetMouseCursorStyle,
+	     ReadKey, FlushKeyBoard ;
+*)
+
+TYPE
+    GetKeyStrokeType = PROCEDURE(VAR CHAR,        (* character read *)
+                                 VAR BOOLEAN );   (* extended char  *)
+
+VAR
+    GetKeyStroke:   GetKeyStrokeType;
+
+PROCEDURE Read(VAR ch : CHAR);
+(*
+- Read a character from the keyboard.
+
+out:    ch    character read
+
+If necessary, Read waits for a character to be entered.
+Characters that have been entered are returned
+immediately, with no echoing, editing or buffering.
+
+- Ctrl-C terminates the current program
+- ASCII.cr is transformed into ASCII.EOL
+*)
+
+
+PROCEDURE KeyPressed (): BOOLEAN;
+(*
+- Test if a character is available from the keyboard.
+
+out:   returns TRUE if a character is available for reading.
+*)
+
+
+TYPE
+   ButtonType = (NoButtons, LeftButton, RightButton, BothButtons ) ;
+
+VAR
+   MouseInstalled   : BOOLEAN;
+   HorizSensitivity : INTEGER;
+
+CONST
+   MouseUp    =  PCKey.CursorUp ;
+   MouseDown  =  PCKey.CursorDn ;
+   MouseLeft  =  PCKey.CursorLeft ;
+   MouseRight =  PCKey.CursorRight ;
+   MouseEsc   =  ASCII.esc ;	(* Right Button *)
+   MouseEnter =  ASCII.rs ;	(* Left Button  *)
+
+PROCEDURE IsMouseInstalled() : BOOLEAN;
+PROCEDURE ShowMouseCursor;
+PROCEDURE HideMouseCursor;
+PROCEDURE GetMouseAction(VAR Button : ButtonType; VAR Hor, Vert : CARDINAL);
+PROCEDURE MoveMouse(Hor, Vert : CARDINAL);
+PROCEDURE ConfineMouseHoriz(MinCol, MaxCol: CARDINAL);
+PROCEDURE ConfineMouseVert(TopRow, BotRow : CARDINAL);
+PROCEDURE SetMouseCursorStyle( Style : CARDINAL);
+
+PROCEDURE ReadKey( VAR Ch : CHAR; VAR Ext : BOOLEAN ) ;
+PROCEDURE FlushKeyBoard;
+
+END KeyBase .
+

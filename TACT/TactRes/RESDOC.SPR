@@ -1,0 +1,35 @@
+FORMAT MANUAL.FMT
+@MACRO(ScreenInLine(file) = {
+	@blankspace(1 line)@comment{@begin(text,LeftIndent 0.0 inch)@eval(file):@end(text)}
+	@ReadEPS("@eval(file)")@set(w (urx-llx))@set(h (ury-lly))@~
+	@escape(s "/-save0- save def /showpage {} def @set(w1 @hunits(4.5 inch))
+	@eval(w1) @eval(w) div dup scale @set(h=(w1/w)*h,w=w1)
+	currentpoint translate @eval(-llx) @eval(-lly) translate
+	")@escape(f = "@eval[file]")@escape(s = "-save0- restore ",w @eval(w)u,h @eval(h)u)
+	@blankspace(1 line)})
+@macro{epsfig(file) = [eps "@eval(file).eps"]}
+@macro{rarrow [@escape(s "gsave currentpoint translate /BoxDraw 250 ff 0 0 moveto (\020) show grestore")@bx{P}]}
+@macro{circchar [@escape(s "gsave currentpoint translate /BoxDraw 250 ff 0 0 moveto (\007) show grestore")@bx{P}]}
+@macro{ocircchar [@escape(s "gsave currentpoint translate /BoxDraw 250 ff 0 0 moveto (\011) show grestore")@bx{P}]}
+@FWPageHeading(odd,left={TACT Resource Tools},
+right={@value[ChapterTitle]})
+@FWPageHeading(even,right={TACT Resource Tools},
+left={@value[ChapterTitle]})
+@FWPageFooting(center=[- @value(page) -])
+
+@Chapter(The Basic Idea)
+@begin(text,LeftIndent +1.0 inch)
+@include(resbase)
+@Chapter(Using RESMAN, and the format of the RSI files)
+@include(resmanu)
+@Chapter(Summary of MSG and CHE Resources)
+@include(resmess)
+@Chapter(Summary of MNU Resources)
+@include(resmenus)
+@Chapter(Summary of DTA Resources)
+@include(rescolle)
+@Chapter(Summary of HLP Resources)
+@include(reshelp)
+@Chapter(Other RES Maintenance programs)
+@include(resother)
+@end(text)

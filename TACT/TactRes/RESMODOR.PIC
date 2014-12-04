@@ -1,0 +1,93 @@
+Box Dimen 6.5 in, 4 in
+  [
+    ResBase:      area dimen 10%,14 pt
+                  at (25%,95%)
+                  < text size 11 pt "ResBase">
+
+    ResArray:     area dimen 10%,14 pt
+                  at (20%,75%)
+                  < text size 11 pt "ResArray">
+
+    ResColl:     area dimen 10%,14 pt
+                  at (40%,75%)
+                  < text size 11 pt "ResCollection">
+
+    line {ResBase.ct ResArray.cb}
+    line {ResBase.ct ResColl.cb}
+
+    ResRead:     box dimen 12%,14 pt
+                 at (7%,50%)
+                 < text size 11 pt "RESREAD" >
+    line {ResArray.ct ResRead.cb}
+    line {ResColl.ct ResRead.cb}
+
+
+    ResMess:    area dimen 10%,14 pt
+                  at (10%,30%)
+                  < text size 11 pt "ResMessages">
+    ResMenu:    area dimen 10%,14 pt
+                  at (25%,30%)
+                  < text size 11 pt "ResMenus">
+    ResDataa:   area dimen 10%,14 pt
+                  at (40%,30%)
+                  < text size 11 pt "ResDataArray">
+
+    line {ResArray.ct ResMess.cb}
+    line {ResArray.ct ResMenu.cb}
+    line {ResColl.ct ResMenu.cb}
+    line {ResArray.ct ResDataa.cb}
+    line {ResColl.ct ResDataa.cb}
+
+    Tact:        box dimen 12%,14 pt
+                 at (15%,10%)
+                 < text size 11 pt "TACT" >
+    MakBas:      box dimen 12%,14 pt
+                 at (35%,10%)
+                 < text size 11 pt "MAKBAS" >
+    line {ResMess.ct Tact.cb}
+    line {ResMenu.ct Tact.cb}
+    line {ResDataa.ct Tact.cb}
+    line {ResMess.ct Makbas.cb}
+    line {ResMenu.ct Makbas.cb}
+    line {ResDataa.ct Makbas.cb}
+
+    WResBase:     area dimen 10%,14 pt
+                  at (75%,95%)
+                  < text size 11 pt "WResBase" >
+
+    WResArray:    area dimen 10%,14 pt
+                  at (60%,75%)
+                  < text size 11 pt "WResArray" >
+    WResColl:     area dimen 10%,14 pt
+                  at (80%,75%)
+                  < text size 11 pt "WResCollection" >
+
+    line {WResBase.ct WResArray.cb}
+    line {WResBase.ct WResColl.cb}
+
+    ResComm:      area dimen 10%,14 pt
+                  at (55%,55%)
+                  < text size 11 pt "ResComments" >
+    ResManUt:     area dimen 10%,14 pt
+                  at (80%,50%)
+                  < text size 11 pt "ResManUtils" >
+    line {WResArray.ct ResManUt.cb}
+    line {WResColl.ct ResManUt.cb}
+
+    ResManWo:     area dimen 10%,14 pt
+                  at (60%,25%)
+                  < text size 11 pt "ResManWork" >
+    line {ResComm.ct ResManWo.cb}
+    line {ResColl.ct ResManWo.cb}
+    line {ResManUt.ct ResManWo.cb}
+    line {WResBase.ct ResManWo.cb}
+
+    ResMan:      box dimen 12%,14 pt
+                 at (75%,10%)
+                 < text size 11 pt "RESMAN" >
+    line {ResManWo.ct ResMan.cb}
+    line {ResManUt.ct ResMan.cb}
+    line {ResComm.ct ResMan.cb}
+
+  ]
+

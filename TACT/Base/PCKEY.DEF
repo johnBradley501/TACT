@@ -1,0 +1,165 @@
+DEFINITION MODULE PCKey ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*----------------------------------------------------------------------*)
+(* DESCRIPTION:                                                         *)
+(*    - The following is a complete list of keys (with the second scan  *)
+(*      code) for the IBM PC keyboard.                                  *)
+(*                                                                      *)
+(* DATE: May 15, 1987                                                   *)
+(* Last Update:                                                         *)
+(*   - Aug. 19, 1988, L.Presutti                                        *)
+(*     Added extra keys obtained from modified interupt vectors 09 & 16H*)
+(*                                                                      *)
+(* BY: Lidio Presutti                                                   *)
+(*     University of Toronto Computing Services                         *)
+(*     Humanities Application Support Programmer                        *)
+(*----------------------------------------------------------------------*)
+
+(*
+EXPORT QUALIFIED
+	ExtendedCharCode, Nul, Tab,
+	AltA, AltB, AltC, AltD, AltE, AltF, AltG, AltH, AltI, AltJ, AltK, AltL,
+	      AltM, AltN, AltO, AltP, AltQ, AltR, AltS, AltT, AltU, AltV, AltW,
+	      AltX, AltY, AltZ,
+	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10,
+	ShiftF1, ShiftF2, ShiftF3, ShiftF4, ShiftF5, ShiftF6, ShiftF7, ShiftF8,
+	         ShiftF9, ShiftF10,
+	CtrlF1, CtrlF2, CtrlF3, CtrlF4, CtrlF5, CtrlF6, CtrlF7, CtrlF8, CtrlF9, CtrlF10,
+	AltF1, AltF2, AltF3, AltF4, AltF5, AltF6, AltF7, AltF8, AltF9, AltF10,
+	Alt1, Alt2, Alt3, Alt4, Alt5, Alt6, Alt7, Alt8, Alt9, Alt0,
+	AltBackQuote, AltMinus, AltEqual, AltBackSlash, CntlTab,
+	ShiftTab, AltTab, AltBackspace, AltEsc, AltLeftBracket, AltRightBracket,
+	AltSemicolon, AltQuote, AltEnter, AltComma, AltPeriod, AltSlash,
+	CntlCursorLeft, CntlCursorRight, CntlEnd, CntlPgDn, CntlHome,
+	CntlPgUp, CntlCursorUp, CntlKeyPadMinus, CntlKeyPad5, CntlKeyPadPlus,
+	CntlCursorDn, CntlIns, CntlDel,
+	AltKeyPadAstirisk, AltKeyPadMinus, AltKeyPadPlus, AltHome,
+	AltCursorUp, AltPgDn, AltCursorLeft, AltKeyPad5, AltCursorRight,
+	AltEnd, AltCursorDn, AltIns, AltDel,
+	Home, CursorUp, PgDn, CursorLeft, KeyPad5, CursorRight, End, CursorDn,
+	Ins, Del ;
+*)
+
+CONST
+	ExtendedCharCode = 0C ;     Nul  =  3C ;
+        Tab  = 17C ;   (* really Shift-Tab *)
+
+	AltA = 036C ;  (* 00H 1EH *)	AltN = 061C ;  (* 00H 31H *)
+	AltB = 060C ;  (* 00H 30H *)	AltO = 030C ;  (* 00H 18H *)
+	AltC = 056C ;  (* 00H 2EH *)	AltP = 031C ;  (* 00H 19H *)
+	AltD = 040C ;  (* 00H 20H *)	AltQ = 020C ;  (* 00H 10H *)
+	AltE = 022C ;  (* 00H 12H *)	AltR = 023C ;  (* 00H 13H *)
+	AltF = 041C ;  (* 00H 21H *)	AltS = 037C ;  (* 00H 1FH *)
+	AltG = 042C ;  (* 00H 22H *)	AltT = 024C ;  (* 00H 14H *)
+	AltH = 043C ;  (* 00H 23H *)	AltU = 026C ;  (* 00H 16H *)
+	AltI = 027C ;  (* 00H 17H *)	AltV = 057C ;  (* 00H 2FH *)
+	AltJ = 044C ;  (* 00H 24H *)	AltW = 021C ;  (* 00H 11H *)
+	AltK = 045C ;  (* 00H 25H *)	AltX = 055C ;  (* 00H 2DH *)
+	AltL = 046C ;  (* 00H 26H *)	AltY = 025C ;  (* 00H 15H *)
+	AltM = 062C ;  (* 00H 32H *)	AltZ = 054C ;  (* 00H 2CH *)
+
+	F1 = 073C ;  (* 00H 3BH *)	ShiftF1 = 124C ;  (* 00H 54H *)
+	F2 = 074C ;  (* 00H 3CH *)	ShiftF2 = 125C ;  (* 00H 55H *)
+	F3 = 075C ;  (* 00H 3DH *)	ShiftF3 = 126C ;  (* 00H 56H *)
+	F4 = 076C ;  (* 00H 3EH *)	ShiftF4 = 127C ;  (* 00H 57H *)
+	F5 = 077C ;  (* 00H 3FH *)	ShiftF5 = 130C ;  (* 00H 58H *)
+	F6 = 100C ;  (* 00H 40H *)	ShiftF6 = 131C ;  (* 00H 59H *)
+	F7 = 101C ;  (* 00H 41H *)	ShiftF7 = 132C ;  (* 00H 5AH *)
+	F8 = 102C ;  (* 00H 42H *)	ShiftF8 = 133C ;  (* 00H 5BH *)
+	F9 = 103C ;  (* 00H 43H *)	ShiftF9 = 134C ;  (* 00H 5CH *)
+	F10 = 104C ; (* 00H 44H *)	ShiftF10 = 135C ; (* 00H 5DH *)
+
+	AltF1 = 150C ;  (* 00H 68H *)	CtrlF1 = 136C ;  (* 00H 5EH *)
+	AltF2 = 151C ;  (* 00H 69H *)	CtrlF2 = 137C ;  (* 00H 5FH *)
+	AltF3 = 152C ;  (* 00H 6AH *)	CtrlF3 = 140C ;  (* 00H 60H *)
+	AltF4 = 153C ;  (* 00H 6BH *)	CtrlF4 = 141C ;  (* 00H 61H *)
+	AltF5 = 154C ;  (* 00H 6CH *)	CtrlF5 = 142C ;  (* 00H 62H *)
+	AltF6 = 155C ;  (* 00H 6DH *)	CtrlF6 = 143C ;  (* 00H 63H *)
+	AltF7 = 156C ;  (* 00H 6EH *)	CtrlF7 = 144C ;  (* 00H 64H *)
+	AltF8 = 157C ;  (* 00H 6FH *)	CtrlF8 = 145C ;  (* 00H 65H *)
+	AltF9 = 160C ;  (* 00H 70H *)	CtrlF9 = 146C ;  (* 00H 66H *)
+	AltF10 = 161C ; (* 00H 71H *)	CtrlF10 = 147C ; (* 00H 67H *)
+
+	Alt1 = 170C ;  (* 00H 78H *)
+	Alt2 = 171C ;  (* 00H 79H *)
+	Alt3 = 172C ;  (* 00H 7AH *)
+	Alt4 = 173C ;  (* 00H 7BH *)
+	Alt5 = 174C ;  (* 00H 7CH *)
+	Alt6 = 175C ;  (* 00H 7DH *)
+	Alt7 = 176C ;  (* 00H 7EH *)
+	Alt8 = 177C ;  (* 00H 7FH *)
+	Alt9 = 200C ;  (* 00H 80H *)
+	Alt0 = 201C ;  (* 00H 81H *)
+
+	AltBackQuote = 051C ;	  (* 00H 29H *)
+	AltMinus = 202C ;	  (* 00H 82H *)
+	AltEqual = 203C ;	  (* 00H 83H *)
+	AltBackSlash = 053C ;	  (* 00H 2BH *)
+	CtrlTab = 224C ;	  (* 00H 94H *)
+	ShiftTab = 017C ;	  (* 00H 0FH *)
+	AltTab = 245C ;		  (* 00H A5H *)
+	AltBackspace = 016C ;	  (* 00H 0EH *)
+	AltEsc = 001C ;		  (* 00H 01H *)
+	AltLeftBracket = 032C ;	  (* 00H 1AH *)
+	AltRightBracket = 033C ;  (* 00H 1BH *)
+	AltSemicolon = 047C ;	  (* 00H 27H *)
+	AltQuote = 050C ;	  (* 00H 28H *)
+	AltEnter = 034C ;	  (* 00H 1CH *)
+	AltComma = 063C ;	  (* 00H 33H *)
+	AltPeriod = 064C ;	  (* 00H 34H *)
+	AltSlash = 065C ;	  (* 00H 35H *)
+
+	CtrlCursorLeft = 163C ;	 (* 00H 73H *)
+	CtrlCursorRight = 164C;	 (* 00H 74H *)
+	CtrlEnd = 165C ;	 (* 00H 75H *)
+	CtrlPgDn = 166C ;	 (* 00H 76H *)
+	CtrlHome = 167C ;	 (* 00H 77H *)
+	CtrlPgUp = 204C ;	 (* 00H 84H *)
+	CtrlCursorUp = 215C ;	 (* 00H 8DH *)
+	CtrlKeyPadMinus = 216C ; (* 00H 8EH *)
+	CtrlKeyPad5 = 217C ;	 (* 00H 8FH *)
+	CtrlKeyPadPlus = 220C ;	 (* 00H 90H *)
+	CtrlCursorDn = 221C ;	 (* 00H 91H *)
+	CtrlIns = 222C ;	 (* 00H 92H *)
+	CtrlDel = 223C ;	 (* 00H 93H *)
+
+	AltKeyPadAstirisk = 067C ;(* 00H 37H *)
+	AltKeyPadMinus = 112C ;   (* 00H 4AH *)
+	AltKeyPadPlus = 116C ;    (* 00H 4EH *)
+	AltHome = 227C ;	  (* 00H 97H *)
+	AltCursorUp = 230C ;	  (* 00H 98H *)
+	AltPgUp = 231C ;	  (* 00H 99H *)
+	AltCursorLeft = 233C ;	  (* 00H 9BH *)
+	AltKeyPad5 = 234C ;	  (* 00H 9CH *)
+	AltCursorRight = 235C ;   (* 00H 9DH *)
+	AltEnd = 237C ;		  (* 00H 9FH *)
+	AltCursorDn = 240C ;	  (* 00H A0H *)
+	AltPgDn = 241C ;	  (* 00H A1H *)
+	AltIns = 242C ;		  (* 00H A2H *)
+	AltDel = 243C ;		  (* 00H A3H *)
+
+	Home = 107C ;	    (* 00H 47H *)
+	CursorUp = 110C ;   (* 00H 48H *)
+	PgUp = 111C ;       (* 00H 49H *)
+	CursorLeft = 113C ; (* 00H 4BH *)
+	KeyPad5 = 114C ;    (* 00H 4CH *)
+	CursorRight = 115C ;(* 00H 4DH *)
+	End = 117C ;	    (* 00H 4FH *)
+	CursorDn = 120C ;   (* 00H 50H *)
+	PgDn = 121C ;	    (* 00H 51H *)
+	Ins = 122C ;	    (* 00H 52H *)
+	Del = 123C ;	    (* 00H 53H *)
+
+END PCKey .

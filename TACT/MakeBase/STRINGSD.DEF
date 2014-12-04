@@ -1,0 +1,52 @@
+DEFINITION MODULE StringsData ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM GlobalDefs IMPORT StrAny ;
+FROM VirtualMemory IMPORT VirtualAddrType ;
+
+(*
+EXPORT QUALIFIED
+  (* Types *) StringRec, StringRecPtr,
+  (* Vars  *) StrHeader,
+  (* Procs *) InitStrings, LocateStr, WriteStringsToDB ;
+*)
+
+  TYPE
+     StringRecPtr = POINTER TO StringRec ;
+     StringRec = RECORD
+			SRecNo	: CHAR ; (* Max string area = 256 * 1 K *)
+			SRecPos : CHAR ; (* index to array pointing to rec pos *)
+			TotWords: LONGCARD ;  (* associated with this string *)
+			CurWordNo : LONGCARD ;(* temp marker		     *)
+			IntStr	: StrAny ;
+		END ;
+
+  VAR
+     StrHeader       : VirtualAddrType ;
+
+  PROCEDURE InitStrings( VAR StrHeader : VirtualAddrType ) ;
+
+  PROCEDURE LocateStr(     KeyStr  : ARRAY OF CHAR ;
+                           Str     : ARRAY OF CHAR ;
+                           StrLen  : CARDINAL ;
+                           StrHeader : VirtualAddrType ;
+                       VAR VStrPtr : VirtualAddrType ) ;
+
+  PROCEDURE WriteStringsToDB(     StrHeader : VirtualAddrType ;
+                              VAR RecInfo : ARRAY OF CHAR ) ;
+     (* RecInfo is really only 4 bytes, StartRec, StartPos, EndRec, EndPos *)
+
+END StringsData .

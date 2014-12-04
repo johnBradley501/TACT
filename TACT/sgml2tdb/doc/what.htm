@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+    <TITLE>What is sgml2tdb?</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+<H3>What is sgml2tdb?<HR></H3>
+<P><I>sgml2tdb</I> is a program that processes a document marked up in SGML and produces a standard TACT 2.x TDB. Like the TDBs that are created by MakeBase, TDBs from <I>sgml2tdb</I> can be used by other TACT programs such as <I>UseBase</I> or <I>Collgen,</I> can be mounted on the WWW using <I>TACTweb,</I> or can be merged with other TDBs using <I>MergeBase.</I> The following figure illustrates how <I>sgml2tdb</I> fits into the TACT system: <BR>
+<BR>
+<IMG SRC="overvie.gif" ALIGN="BOTTOM" WIDTH="300" HEIGHT="183"> 
+
+<H4>SGML and TACT Data Structures Compared</H4>
+<P>My initial goal in developing <I>sgml2tdb</I> was to support the translation of text marked up in SGML into a standard TACT 2.x TDB. Of course, existing TACT programs are entirely unaware of SGML, so some of the "SGML character" of the markup gets left behind. If possible, I would like to to modify the design of the TDB, and of other TACT software, so that SGML can become a part of TACT. Instead of TACT being at the edges of an SGML world -- able to read SGML but not able to pass SGML to other tools, TACT would then be able to both read and speak SGML, and will be to fit into a mix of other tools that all speak SGML as a common paradigm.
+
+<P>Since my immediate goal is to produce a TACT 2.x TDB from SGML text, it is important for you to understand the most important similarities and differences between SGML and the TDB format.
+
+<H5>Separation of text and markup</H5>
+<P>In both SGML and the TDB format the text is clearly separated from the markup scheme. SGML conventions focus on how SGML markup should be structured but say, in fact, very little about the text which fits between the markup. Although one can imagine the utility of &quot;marking up&quot; the words themselves, in reality SGML markup schemes have no way of specifying markup that is truly attached to individual words -- even tags in, say the TEI scheme, which are meant to be applied to individual words, cannot be verified to be used this way by a SGML processor.  As it turns out, the existing TACT TDB format <I>also</I> deals with what it recognizes as &quot;the markup&quot; in a very different way from the words found in the text. By keeping the &quot;text&quot; and the &quot;markup&quot; so clearly distinct, both TACT and SGML find themselves already to be similar.
+
+<H5>Textual Characters</H5>
+<P>SGML has relatively little to say about the components of the text between the SGML markup -- the SGML designers assumed that if the textual structure was of interest, it would be marked in SGML also. TACT, like most (but not all) text retrieval systems recognizes the word as a low level structural unit, and the symbol (of which the letters are one type) as the most primative element. The intent of the original SGML designers seemed to be principally to identify (by means of specifications in the SGML declaration) the characters that identified the SGML markup by their codepoints, and to identify the other codepoints that were to be permitted in the textual structure. 
+
+<P>TACT, as a text retrieval system, needs to be able to attach further information to these codepoints -- which ones are the letters, how are they sorted, what are the diacritical characters, etc. etc. It handles this by working with an &quot;internal character set&quot; in which each character is given a name. The named characters in this internal character set include a range of accents, and the Roman and Greek alphabets. With some work by the TACT designers, other alphabets could be added -- but this has not, as of the time of writing, been done. When any text is brought in from the &quot;outside&quot;, it must be first translated into this internal character set, and configuration files (such as those with extension &quot;.xdt&quot;) are provided to translate a specific set of code points into this consistent internal standard.
+
+<P>Clearly, even though SGML has little or nothing to say about these issues, it is necessary to provide <I>sgml2tdb</I> with information to allow it to convert what it is reading into this TACT internal character set. This is done using a TACT <I>xdt</I> file. The information that allows <I>sgml2tdb</I> to recognize letters and other word characters and their ordering is provided in the <I>alp</I> file.  There is further discussion about <A HREF="charset.htm">character set issues and SGML</A>, and the <A HREF="running#alpfile">specification of alphabets and other word characters</A> in the <i>alp</i> file below.
+
+<H5>Formatting of Text</H5>
+<P>SGML and TACT are quite different in the way they deal with the formatting of text -- the laying it out for display purposes on the screen. Within the TDB text must be stored in a formatted form. When I designed <I>MakeBase</I>, essentially I assumed that the inputted text file would be preformatted -- TACT when displaying the text could simply present what it found -- blanks, new lines and all. The display text as it is stored in the TDB, is meant to be considered &quot;preformatted&quot;.
+
+<P>SGML was designed to entirely separate the <I>format</I> of the text from its <I>structure.</I> SGML markup should say nothing at all about formatting. The intent clearly is that part of the job of any software that ultimately has to display some text is to get display information elsewhere (such as from a separate <I>style sheet</I> document which tells the program how to display each element, but which is not actually a part of SGML), and use as a guide the structural markup information it actually finds in the text, plus the information in this style sheet document to determine how the text it must display should be formatted.
+
+<P>Clearly, even though SGML is really about formatting text, text destined for display by other TACT programs must be formatted by the time it gets into the TACT TDB file, and display information must be provided that <I>sgml2tdb</I> can use to prepare the text in this way. This information is one of the types of information provided in the <I>epm</I> file's <i>format</i> command.
+
+<H5>Tagging Paradigms</H5>
+
+<P>Unfortunately, the set of assumptions the SGML designers and the TACT designers made about tags, and the relationships between separate textual elements and the text differs significantly. Tags in the TACT TDB are represented in a manner similar to that used in COCOA markup. As in COCOA markup, one can tag many different structural entities. To do this, one decides upon a name for the markup entity, and then inserts tags with that name at appropriate spots in the text. Within the COCOA tag is not only the name of the entity you are referring to (say, paragraph), but some infomation that is associated with that entity (say, a paragraph number). Neither COCOA markup, or TACT impose any assocation between the tags, and furthermore, both assume that there is a &quot;value&quot; for any particular structural entity at all times in the text. If, for example, the text included tagging for &quot;speaking character&quot; in a play, at any point in the text -- even within, say, the prefatory sections before the spoken text of the play itself begins -- there must be a value for the &quot;speaking character&quot;. Of course, it is possible for the coder to provide a tag value such as &quot;--&quot; for those points in the text that indicate that, in reality, no character is speaking. 
+<PRE>
+&lt;p 474&gt;
+&lt;ch 38&gt;&lt;sp Narrator&gt;
+&lt;pr 1&gt;&lt;s 1&gt;Reader, I married him. &lt;s 2&gt;A quiet wedding we had:
+&lt;s 3&gt;he and I, the parson and clerk, were alone present.
+&lt;s 4&gt;When we got back from church, I went into the kitchen 
+of the manor-house, where Mary was cooking the dinner,
+and John cleaning the knives, and I said --
+&lt;sp Jane&gt;&lt;s 5&gt;Mary, I have been married to Mr Rochester
+this morning.
+</PRE>
+<P>In the above example, &quot;pr&quot; represents the tagging for paragraphs. Although &quot;s&quot; represents the tagging for sentences, and paragraphs <i>are</i>, in reality, made up of sentences or at least sentence fragments, this relationship is not explicitly given anywhere in COCOA markup. If there was text after the &quot;pr&quot; tag, and before the &quot;s&quot; tag this would be, in reality, structurally incorrect -- the very first thing inside a paragraph is always the beginning of a sentence. However, there is no requirement that that be so in COCOA markup, and no way for COCOA handling software to check for such a structural error. Indeed, if this error happened, the last value for &quot;s&quot; -- presumably the number assigned to the last sentence in the <i>previous</i> paragraph will still be in play. 
+
+<P>In SGML markup, all tagging is done in terms of textual elements, which must nest into one or more (usually one) hierarchies. Thus, a play may divide into acts, which divide in scenes, which divide into speeches. When marking up the text one doesn't think of marking &quot;speaking characters&quot; -- instead, if one wishes (and it is supported by the dtd for the text one is working with) one can associate an <I>attribute</I> to a speech element that identifies the character. In parts of the text where there is no spoken text, there will be no &quot;speech element&quot;, and, no possibility for a &quot;speaking character&quot; attribute for such an element. 
+<PRE>
+&lt;pb n='474'&gt;
+&lt;div1 type=chapter n='38'&gt;
+&lt;p&gt;&lt;s n=001&gt;Reader, I married him.&lt;/s&gt;
+&lt;s n=002&gt;A quiet wedding we had:&lt;/s&gt;
+&lt;s n=003&gt;he and I, the parson and clerk, were alone present.&lt;/s&gt;
+&lt;s n=004&gt;When we got back from church, I went
+into the kitchen of the manor-house, where Mary was cooking the dinner,
+and John cleaning the knives, and I said &amp;dash;&lt;/s&gt;
+&lt;/p&gt;
+&lt;q speaker=&quot;Jane&quot;&gt;
+&lt;s n=005&gt;Mary, I have been married to Mr Rochester
+this morning.&lt;/s&gt;
+&lt;/q&gt;
+</PRE>
+
+
+<P>Notice in the SGML markup the separation between the existance of a structural unit and some of the information about it is clear. In this scheme chapters are labelled as &quot;div1&quot; elements of the &quot;chapter&quot; type. The number of this chapter-like div element is given using the &quot;n&quot; attribute.
+
+<P>Both the independant, parallel markup model that TACT uses, and the hierarchial model SGML is based on represent ways people think about text structure. Since TACT 2.x represents markup as independant, parallel objects with values in the style of COCOA markup, the hierarchial model that SGML uses must be translated into the TACT system by <I>sgml2tdb</I>, and the program must be given information about how this translation should occur.
+
+<P><I>sgml2tdb</I> must be given enough information about how to translate the above SGML into a COCOA-like structure: 
+<UL>
+  <LI>The SGML pg element's &quot;n&quot; attribute becomes a TACT &quot;page&quot; tag value. 
+  <LI>When the SGML's div1 element's type attribute is &quot;chapter&quot;,
+the &quot;n&quot; attribute value becomes a value for the TACT &quot;chapter&quot;
+tag. 
+  <LI>The SGML q (quote) elements &quot;speaker&quot; attribute becomes
+a TACT &quot;speaker&quot; tag value. 
+  <LI>When the text is not in a &quot;q&quot; element, the TACT &quot;speaker&quot;
+tag value should be &quot;Narrator&quot;. 
+</UL>
+and so on.
+
+<P>This type of transformation information is also given (as is the text formatting information) in <I>epm</I> files. 
+
+<H3>How sgml2tdb converts SGML Text and Markup to a TACT tdb</H3>
+The following figure shows the parts of <I>sgml2tdb</I> and how they interact.
+<BR>
+<BR>
+<IMG SRC="parts.gif" ALIGN="BOTTOM" WIDTH="350" HEIGHT="194">
+<BR>
+<BR>
+<P>First, as acknowledged above, <I>sgml2tdb</I> contains the <I>sgmls</I> SGML parser. <I>sgmls</I>, and therefore <I>sgml2tdb </I>requires a <I>dtd </I>and perhaps other files such as entity files in order to be able to process the document file (called, in SGML terminology, the <i>document instance</i>), identify the text, textual elements and attributes and pass them on to other parts of <I>sgml2tdb</I> for further processing.
+
+<P>Each time text and elements are identified by <I>sgmls</I> other parts of <I>sgml2tdb</I> receive this information and transform it according to the specification given in the &quot;element program&quot;, or <I>epm</I> file. The <I>epm</I> file specifies three things: 
+<UL>
+  <LI>How the elements and attributes are to be transformed into TACT references.
+  <LI>How the text is to be formatted and structured. 
+  <LI>Optionally, how the words that are collected are to be altered to
+include Part of Speech or other kinds of information. 
+</UL>
+
+<P>Finally, the text and structural information is given to the rest of the program which first identifies the words in the text that are to be indexed and then performs the rest of the transformations necessary to turn the text into a standard TDB.
+
+<P>From this brief summary it should be obvious that the structural information comes from the sgml tags. These tags mark the beginning and end of elements, and it is, therefore only at these points that <I>sgml2tdb</I> can run an element program and affect the above three operations. It should also be clear that the element program file is the key to understanding how to use <I>sgml2tdb.</I>
+
+<HR>
+<P><CENTER>[<A HREF="main.htm">sgml2tdb home</A> | <A HREF="install.htm">Acquiring sgml2tdb</A>]</CENTER>
+</BODY>
+</HTML>

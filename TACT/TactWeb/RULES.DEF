@@ -1,0 +1,231 @@
+(* File Produced by LALR Version 4.3: August 9, 1991 *)
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+DEFINITION MODULE RULES ;
+
+(* EXPORT QUALIFIED
+         FirstSelect,SubsequentSelect,OpenBracket,CloseBracket,
+         FirstTermOfBinary,WithInRange,NotWithInRange,DoListNegate,
+         FinishUpPhrase,DoPhraseStart,ImmediateFollowed,
+         ImmediateFollowed2,FirstPhraseWord,CountBar,CountBar2,
+         HandleSelector,InitRuleSelect,AddRegExpToAgenda,
+         DoFreqAsBasicSelection,DoSimilAsBasicSelection,
+         FinishRegExpression,DoStartRegExp,DoSetFirstLetSeq,
+         DoCheckLetSeqSet,DoResetFirstLetSeq,DoAddCharSeq,
+         DoRegExpEscCode,DoAddAnyChar,DoAppendCCL,DoAppendNCCL,
+         DoStartCCL,DoAddCCLString,DoDoCCLRange,DoAddClosure,DoAddType,
+         DoWordListSelectWindow,DoUseCurrentSelectList,DoAddCatContents,
+         DoGetCatNameFromSelect1,DoAddCatName,DoGetCatNameFromSelect2,
+         StartRefinements,EndOfWhen,AddRegExpToAgenda2,MakeIntoPosList,
+         DoFreqSelectAsPipe,DoSimilSelectAsPipe,DoSpanSelectAsPipe,
+         FirstWhenRule,WhenOrRule,WhenAndRule,WhenNotRule,
+         WhenNumberIsDigSeq,WhenNumberIsFolSeq,DoRefNameDone,
+         DoRefNameSelectForWhen,GetWhenRefName,DoFirstWhenList,
+         DoSubsequentWhenList,DoWhenEqual1,DoWhenEqual2,DoWhenCompare,
+         DoWhenGT,DoWhenLT,DoWhenGE,DoWhenLE,DoLogicalOperStr1,
+         DoLogicalOperStr2,DoLGNumbConvert,DoRegExpStr,DoEqualStr,
+         DoEqualNumb,DoRefSelectWindow,SaveLowNumberFromRange,
+         LastWhenRule,FreqDone,FreqStart,StartFreqList,StartFreqList2,
+         AppendFreqList,FreqGT,FreqLT,FreqGE,FreqLE,FreqEQ,FreqRange,
+         SimilDone,SimilStart,SimilWord1,SimilWord2,SimilNumber,SpanDone
+         ,SpanStart;
+*)
+CONST
+(* 3 <SELECTION RULE ::=> <SELECTION TERM> *)
+     FirstSelect = 3;
+(* 4 <SELECTION RULE ::=> <SELECTION RULE> , <SELECTION TERM> *)
+     SubsequentSelect = 4;
+(* 5 <OPEN BRACKET ::=> ( *)
+     OpenBracket = 5;
+(* 6 <CLOSE BRACKET ::=> ) *)
+     CloseBracket = 6;
+(* 7 <SELECTION TERM ::=> <BASIC SELECTION> *)
+     FirstTermOfBinary = 7;
+(* 8 <SELECTION TERM ::=> <SELECTION TERM> & <BASIC SELECTION> *)
+     WithInRange = 8;
+(* 9 <SELECTION TERM ::=> <SELECTION TERM> ~ <BASIC SELECTION> *)
+     NotWithInRange = 9;
+(* 10 <SELECTION TERM ::=> <SELECTION TERM> - <BASIC SELECTION> *)
+     DoListNegate = 10;
+(* 11 <BASIC SELECTION ::=> <PHRASE START> <STARTING OPT BARS> <PHRASE GROUP> *)
+     FinishUpPhrase = 11;
+(* 12 <PHRASE START ::=> *)
+     DoPhraseStart = 12;
+(* 15 <NEXT CHUNK ::=> <BARS> <BASE SELECTION> *)
+     ImmediateFollowed = 15;
+(* 17 <NEXT CHUNK ::=> <BARS> <SELECTOR> <BASE SELECTION> *)
+     ImmediateFollowed2 = 17;
+(* 18 <FIRST PHRASE WORD ::=> <BASE SELECTION> *)
+     FirstPhraseWord = 18;
+(* 22 <BARS ::=> | *)
+     CountBar = 22;
+(* 23 <BARS ::=> <BARS> | *)
+     CountBar2 = 23;
+(* 24 <SELECTOR ::=> "> *)
+     HandleSelector = 24;
+(* 27 <INIT RULE SELECT ::=> *)
+     InitRuleSelect = 27;
+(* 28 <RULE SELECT ::=> <REG EXP> *)
+     AddRegExpToAgenda = 28;
+(* 31 <RULE SELECT ::=> <FREQ SELECTION> *)
+     DoFreqAsBasicSelection = 31;
+(* 32 <RULE SELECT ::=> <SIMIL SELECTION> *)
+     DoSimilAsBasicSelection = 32;
+(* 33 <REG EXP ::=> <COMPLETE REG EXP> *)
+     FinishRegExpression = 33;
+(* 36 <INIT REG EXP ::=> *)
+     DoStartRegExp = 36;
+(* 39 <LETTER SPECS ::=> <LETTER COLL> *)
+     DoSetFirstLetSeq = 39;
+(* 40 <LETTER SPECS ::=> <LETTER SPECS> <LETTER COLL> *)
+     DoCheckLetSeqSet = 40;
+(* 41 <LETTER COLL ::=> <CODED LETTER> *)
+     DoResetFirstLetSeq = 41;
+(* 42 <LETTER COLL ::=> <LETTER SEQ> *)
+     DoAddCharSeq = 42;
+(* 43 <LETTER COLL ::=> <REG EXP ESC CODE> *)
+     DoRegExpEscCode = 43;
+(* 44 <CODED LETTER ::=> . *)
+     DoAddAnyChar = 44;
+(* 45 <CODED LETTER ::=> <INIT CCL> <LETTER RANGE> ] *)
+     DoAppendCCL = 45;
+(* 46 <CODED LETTER ::=> <INIT CCL> ~ <LETTER RANGE> ] *)
+     DoAppendNCCL = 46;
+(* 47 <INIT CCL ::=> [ *)
+     DoStartCCL = 47;
+(* 48 <LETTER RANGE ::=> <LETTER SEQ> *)
+     DoAddCCLString = 48;
+(* 49 <LETTER RANGE ::=> <LETTER RANGE> : <LETTER SEQ> *)
+     DoDoCCLRange = 49;
+(* 50 <CLOSURE SYMBOL ::=> * *)
+     DoAddClosure = 50;
+(* 51 <WORD REQUEST ::=> "" <LETTER SEQ> *)
+     DoAddType = 51;
+(* 52 <WORD REQUEST ::=> "" ? *)
+     DoWordListSelectWindow = 52;
+(* 53 <CAT REQUEST ::=> @ *)
+     DoUseCurrentSelectList = 53;
+(* 54 <CAT REQUEST ::=> @ <LETTER SEQ> *)
+     DoAddCatContents = 54;
+(* 55 <CAT REQUEST ::=> @ ? *)
+     DoGetCatNameFromSelect1 = 55;
+(* 56 <CAT REQUEST ::=> @ @ <LETTER SEQ> *)
+     DoAddCatName = 56;
+(* 57 <CAT REQUEST ::=> @ @ ? *)
+     DoGetCatNameFromSelect2 = 57;
+(* 60 <REFINEMENT START ::=> ; *)
+     StartRefinements = 60;
+(* 63 <REFINEMENT SPEC ::=> <WHEN HEADER> <WHEN EXPRESSION> *)
+     EndOfWhen = 63;
+(* 64 <REFINEMENT SPEC ::=> <REG EXP HEADER> <REG EXP> *)
+     AddRegExpToAgenda2 = 64;
+(* 65 <REFINEMENT SPEC ::=> <POS HEADER> *)
+     MakeIntoPosList = 65;
+(* 66 <REFINEMENT SPEC ::=> <FREQ SELECTION> *)
+     DoFreqSelectAsPipe = 66;
+(* 67 <REFINEMENT SPEC ::=> <SIMIL SELECTION> *)
+     DoSimilSelectAsPipe = 67;
+(* 68 <REFINEMENT SPEC ::=> <SPAN SELECTION> *)
+     DoSpanSelectAsPipe = 68;
+(* 69 <WHEN EXPRESSION ::=> <L TERM> *)
+     FirstWhenRule = 69;
+(* 70 <WHEN EXPRESSION ::=> <WHEN EXPRESSION> | <L TERM> *)
+     WhenOrRule = 70;
+(* 72 <L TERM ::=> <SIGNED L TERM> & <L TERM> *)
+     WhenAndRule = 72;
+(* 74 <SIGNED L TERM ::=> ~  <LOGICAL PRIMARY> *)
+     WhenNotRule = 74;
+(* 77 <WHEN NUMBER ::=> <DIGIT SEQ> *)
+     WhenNumberIsDigSeq = 77;
+(* 78 <WHEN NUMBER ::=> <FOLIO DIGIT SEQ> *)
+     WhenNumberIsFolSeq = 78;
+(* 79 <LOGICAL ITEM ::=> <EXPRESSION 1> <VALUE LIST> *)
+     DoRefNameDone = 79;
+(* 82 <EXP 1 NAME ::=> ? *)
+     DoRefNameSelectForWhen = 82;
+(* 88 <REF NAME ::=> <LETTER SEQ> *)
+     GetWhenRefName = 88;
+(* 89 <VALUE LIST ::=> <VALUE ITEM> *)
+     DoFirstWhenList = 89;
+(* 90 <VALUE LIST ::=> <VALUE LIST> , <VALUE ITEM> *)
+     DoSubsequentWhenList = 90;
+(* 91 <VALUE ITEM ::=> = <EXPRESSION 2A ITEM> *)
+     DoWhenEqual1 = 91;
+(* 92 <VALUE ITEM ::=> <EXPRESSION 2A ITEM> *)
+     DoWhenEqual2 = 92;
+(* 93 <VALUE ITEM ::=> <RELATIONAL OPER ITEM> *)
+     DoWhenCompare = 93;
+(* 94 <RELATIONAL OPER ITEM ::=> > <EXPRESSION 2 ITEM> *)
+     DoWhenGT = 94;
+(* 95 <RELATIONAL OPER ITEM ::=> "< <EXPRESSION 2 ITEM> *)
+     DoWhenLT = 95;
+(* 96 <RELATIONAL OPER ITEM ::=> > = <EXPRESSION 2 ITEM> *)
+     DoWhenGE = 96;
+(* 97 <RELATIONAL OPER ITEM ::=> "< = <EXPRESSION 2 ITEM> *)
+     DoWhenLE = 97;
+(* 99 <EXPRESSION 2 ITEM ::=> <STRING> *)
+     DoLogicalOperStr1 = 99;
+(* 100 <EXPRESSION 2 ITEM ::=> <LETTER SEQ> *)
+     DoLogicalOperStr2 = 100;
+(* 101 <EXPRESSION 2 ITEM ::=> <WHEN NUMBER> *)
+     DoLGNumbConvert = 101;
+(* 102 <EXPRESSION 2A ITEM ::=> <REG EXP> *)
+     DoRegExpStr = 102;
+(* 103 <EXPRESSION 2A ITEM ::=> <STRING> *)
+     DoEqualStr = 103;
+(* 104 <EXPRESSION 2A ITEM ::=> <WHEN NUMBER> *)
+     DoEqualNumb = 104;
+(* 106 <EXPRESSION 2A ITEM ::=> ? *)
+     DoRefSelectWindow = 106;
+(* 108 <LOW NUMB ::=> <WHEN NUMBER> *)
+     SaveLowNumberFromRange = 108;
+(* 109 <HIGH NUMB ::=> <WHEN NUMBER> *)
+     LastWhenRule = 109;
+(* 110 <FREQ SELECTION ::=> <FREQ START> <FREQ PARMS> *)
+     FreqDone = 110;
+(* 111 <FREQ START ::=> <FREQ HEADER> *)
+     FreqStart = 111;
+(* 113 <FREQ PARMS ::=> <FREQ ITEM> *)
+     StartFreqList = 113;
+(* 114 <FREQ LIST ::=> <FREQ ITEM> *)
+     StartFreqList2 = 114;
+(* 115 <FREQ LIST ::=> <FREQ LIST> , <FREQ ITEM> *)
+     AppendFreqList = 115;
+(* 119 <FREQ REL ITEM ::=> > <DIGIT SEQ> *)
+     FreqGT = 119;
+(* 120 <FREQ REL ITEM ::=> "< <DIGIT SEQ> *)
+     FreqLT = 120;
+(* 121 <FREQ REL ITEM ::=> > = <DIGIT SEQ> *)
+     FreqGE = 121;
+(* 122 <FREQ REL ITEM ::=> "< = <DIGIT SEQ> *)
+     FreqLE = 122;
+(* 123 <FREQ EQ ITEM ::=> <DIGIT SEQ> *)
+     FreqEQ = 123;
+(* 124 <FREQ EQ ITEM ::=> <NUMERIC RANGE SPEC> *)
+     FreqRange = 124;
+(* 125 <SIMIL SELECTION ::=> <SIMIL START> <SIMIL PARMS> *)
+     SimilDone = 125;
+(* 126 <SIMIL START ::=> <SIMIL HEADER> *)
+     SimilStart = 126;
+(* 128 <SIMIL WORD REQUEST ::=> "" <LETTER SEQ> *)
+     SimilWord1 = 128;
+(* 129 <SIMIL WORD REQUEST ::=> <LETTER SEQ> *)
+     SimilWord2 = 129;
+(* 132 <PERCENT NUMBER ::=> <DIGIT SEQ> *)
+     SimilNumber = 132;
+(* 133 <SPAN SELECTION ::=> <SPAN START> <SPAN PARMS> *)
+     SpanDone = 133;
+(* 134 <SPAN START ::=> <SPAN HEADER> *)
+     SpanStart = 134;
+END RULES .

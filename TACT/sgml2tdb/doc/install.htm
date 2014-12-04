@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+    <TITLE>Acquiring and installing sgml2tdb</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H3>Acquiring and installing <I>sgml2tdb</I></H3>
+<HR>
+<P><I>sgml2tdb</I> is not of any use to you unless you have other TACT components already. Thus, the <I>sgml2tdb</I> installation package is set up to be installed in the context of other TACT programs. 
+<UL>
+  <LI><I>sgml2tdb</I> is available via anonymous ftp from <TT>tactweb.humanities.mcmaster.ca.
+</TT>Look for the directory /pub/sgml2tdb 
+  <LI>It is packaged as a ZIP file called &quot;<TT>sgml2tdb.zip </TT>&quot;.
+To install it you will need the program PKUNZIP or equivalent. 
+  <LI>Once you have downloaded the ZIP file, place it in the directory in
+which you have installed the other TACT programs. Usually, this is &quot;<TT>c:\tact\</TT>&quot;.
+  <LI>The ZIP file contains a directory structure that you should preserve when unzipping. In the version of PKUNZIP I have (2.04g), this is the -d option. Thus, the command to install the <I>sgml2tdb </I>components would be: 
+</UL>
+<PRE>c:\tact&gt; pkunzip -d sgml2tdb.zip
+</PRE>
+<UL>
+  <LI><I>pkunzip</I> will install the basic set of files that permits <I>sgml2tdb</I> to run in the current directory. These files include <I>sgml2tdb.exe</I>, <I>tactjb.res</I>, <I>sgml2tdb.xdt </I>and the extended memory management files <I>rtm.exe</I> and <I>dpmi16bi.ovl</I> 
+  <LI><I>pkunzip</I> will also install a basic set of sgml files required to process TEIlite documents in a subdirectory <I>sgmls. </I>
+  <LI><I>pkunzip</I> will also install this documentation in subdirectory
+<I>doc</I>. 
+  <LI><I>pkunzip</I> will install a sample file marked up using TEIlite, and the files that are necessary to allow <I>sgml2tdb </I>to process
+it in subdirectory <I>sample</I>.
+  <LI>Finally, <I>pkunzip</I> will install a version of the basic <i>sgmls</i> program that has been compiled to run in expanded memory from the DOS command prompt.  This program is not necessary when using <i>sgml2tdb</i>.  However, because it is a verifying SGML parser, and is to a large extent used inside of <i>sgml2tdb</i>, it is sometimes useful as a diagnostic tool. 
+</UL>
+<P>Make sure that both the environment variables <A HREF="running.htm#anchor22564419">TACTPATH</A>
+and <A HREF="running.htm#anchor22476622">SGML_PATH</A> are set appropriately.
+The links in the previous sentence will take you to more information about them that is found elsewhere in this material. 
+<HR>
+<P><CENTER>[<A HREF="main.htm">sgml2tdb home</A> | <A HREF="running.htm">Running
+sgml2tdb</A>]</CENTER>
+</BODY>
+</HTML>

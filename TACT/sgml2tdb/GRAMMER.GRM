@@ -1,0 +1,359 @@
+$ language:c stateptr:2 statedata:3
+> copyright (c) 1995 John Bradley
+> Licensed under the Apache License, Version 2.0 (the "License");
+> you may not use this file except in compliance with the License.
+> You may obtain a copy of the License at
+> http://www.apache.org/licenses/LICENSE-2.0
+
+> Unless required by applicable law or agreed to in writing, software
+> distributed under the License is distributed on an "AS IS" BASIS,
+> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+> See the License for the specific language governing permissions and
+> limitations under the License.
+>
+<final result> <action file>
+>
+> Overall structure: one statement per line
+>                    global declarations start: first TACTids then other globals
+>                    action programs are grouped into action segments
+>                    each segment is a "begin" or "end" segment
+>
+<action file> <action components> <end of file>
+<action components> <tactid decls> <global decls> <action segs>
+<tactid decls> <tact decl> <statement end>
+ <tactid decls> <tact decl> <statement end>
+<global decls>
+ <global decls> <variable decl> <statement end>
+<action segs> <action segment>
+ <action segs> <action segment>
+>
+> tact decl
+>
+> <declarations> <tact decl> <statement end>
+>  <variable decl> <statement end>
+<tact decl> TACTID <tactid items>
+<tactid items> <tactid items> , <tactid item>
+ <tactid item>
+<tactid item> <tactid type> <tactid names>
+<tactid type>
+	TACTIDTYPESTR1
+ <standard types>
+ LINENO
+   TACTIDTYPELINE
+ WORD
+	TACTIDTYPEWORD
+<standard types> STRING
+	TACTIDTYPESTR2
+ NUMBER
+	TACTIDTYPENUMB
+<tactid names> <main name>
+ <main name> ( <alt name list> )
+<main name> <name>
+   TACTIDMAINNAME
+<alt name list> <alt name list> , <name>
+   TACTIDALTNAME1
+ <name>
+	TACTIDALTNAME2
+>
+> declarations
+>
+<variable decl> DECLARE <declare items>
+<declare items> <declare item>
+ <declare items> , <declare item>
+<declare item> <declare type> <declare name>
+<declare type>
+	VARTYPESTR1
+ <standard types>
+<declare name> <name>
+	DECLAREDGLOBALNAME
+>
+> action segment
+>
+<action segment> <action opener> <actions> <action closer>
+<action opener> BEGIN <segment id> <statement end>
+<segment id> <segment type> <element list>
+<segment type> OPEN
+   SEGMENTISOPEN
+ CLOSE
+   SEGMENTISCLOSE
+<element list> <element name>
+   FIRSTELEMENTNAME
+ <element list> , <element name>
+   OTHERELEMENTNAMES
+<action closer> END <statement end>
+>
+> actions are groups of statements within segments
+>
+<actions> <actions> <action statement>
+	ACTIONSTATEMENT1
+ <action statement>
+	ACTIONSTATEMENT2
+<action statement> <simple action statement> <statement end>
+ <control statement>
+>
+>simple action statement types
+>
+<simple action statement> <change value statements>
+ <variable decl>
+ output <output items>
+ error <char expression>
+	 HANDLEERRORCOMMAND
+ remark <char expression>
+    HANDLEREMARKCOMMAND
+ format <format options>
+ word <word ops>
+>
+<change value statements> <let statement>
+ inc <declared name>
+	 HANDLEINC
+ dec <declared name>
+	 HANDLEDEC
+ <popstack which> <popstack item list>
+>
+> pop, stack operands
+>
+<popstack which> POP
+	  ITSPOP
+ STACK
+	  ITSSTACK
+<popstack item list> <popstack item list> , <ps item>
+ <ps item>
+<ps item> <var name>
+     POPSTACKVAR
+>
+<output items> <output item>
+ <output items> , <output item>
+<output item> <char expression>
+	 HANDLEOUTPUTCOMMAND
+ blines <arith expression>
+    DOBLANKLINES
+>
+> word ops
+>
+<word ops> <word ops> , <word op>
+ <word op>
+<word op> collect <logical expression>
+	 HANDLECOLLECTCOMMAND
+ append <char expression>
+	 HANDLEAPPENDCOMMAND
+ prepend <char expression>
+	 HANDLEPREPENDCOMMAND
+ replace <char expression>
+    HANDLEREPLACECOMMAND
+>
+> format statement
+>
+<format options> <format option>
+ <format options> , <format option>
+<format option> compress <logical expression>
+	 SETFORMATCOMPRESS
+ centre <logical expression>
+	 SETFORMATCENTRE
+ display <logical expression>
+	 SETFORMATDISPLAY
+ fill <logical expression>
+	 SETFORMATFILL
+ fold <arith expression>
+	 SETFORMATFOLD
+ indent <arith expression>
+	 SETFORMATINDENT
+ to <var name>
+	 SETOUTTOVAR
+ to tdb
+	 SETOUTTOTDB
+>
+> assign statement
+>
+> <let statement> let <let operators>
+> <let operators> <destination> = <let expression>
+> 	 DOTHEASSIGN
+<let statement> <destination> = <let expression>
+	 DOTHEASSIGN
+<destination> <var name>
+	 GETASSIGNID
+<let expression> <char expression>
+>
+> expression syntax: char expression
+>
+<char expression> <char expression> | <char item>
+	CHAREXPAPPEND
+ <char item>
+<char item> <string>
+	CHAREXPSTRING
+ nl
+	CHAREXPNEWLINE
+ THISGI
+   CHARTHISGI
+ <arith value>
+ SUBSTR ( <sub operands> )
+	CHARSUBSTR
+ PAD ( <pad operands> )
+   CHARPAD
+> CHAR ( <arith expression> )
+ UPPER ( <char expression> )
+	CHAREXPUPPER
+<sub operands> <sub item> , <start numb> , <len numb>
+ <sub item> , <start numb>
+	SUBSTRMISSLEN
+<sub item> <char expression>
+	SUBSTRITEM
+<start numb> <arith expression>
+	SUBSTRSTART
+<len numb> <arith expression>
+	SUBSTRLEN
+<pad operands> <pad position> <pad item> , <pad length> <pad pattern>
+<pad item> <char expression>
+	PADITEM
+<pad length> <arith expression>
+	PADLEN
+<pad pattern>
+	PADNOPATTERN
+ , <char expression>
+	PADPATTERN
+<pad position>
+	PADBACK1
+ FRONT ,
+	PADFRONT
+ BACK ,
+	PADBACK2
+<arith value> <arith expression>
+>
+> arith expression
+>
+<arith expression> <signed term>
+ <arith expression> + <arith term>
+	 ARITHEXPPLUS
+ <arith expression> - <arith term>
+	 ARITHEXPMINUS
+<signed term> <arith term>
+ - <arith term>
+	 ARITHEXPUMINUS
+ + <arith term>
+<arith term> <arith primary>
+ <arith term> * <arith primary>
+	 ARITHEXPTIMES
+ <arith term> / <arith primary>
+	 ARITHEXPDIV
+<arith primary> <arith item>
+ ( <char expression> )
+<arith item> <number>
+	 ARITHEXPNUMB
+ <name or attrib>
+ ARITH ( <char expression> )
+ VERIFY ( <char expression> , <char expression> )
+ FIND ( <char expression> , <char expression> )
+    ARITHEXPFIND
+ MAX ( <arith expression> , <arith expression> )
+	 ARITHEXPMAX
+ MIN ( <arith expression> , <arith expression> )
+	 ARITHEXPMIN
+ INDEX ( <char expression> , <char expression> )
+	 ARITHEXPINDEX
+ LENGTH ( <char expression> )
+	 ARITHEXPLEN
+<name or attrib> <var name>
+	 GETTACTGLOBAL
+ <attribute>
+<attribute> @ <name>
+	 LOADLOCALATTRIB
+ <the element> @ <name>
+	 LOADELEMATTRIB
+<the element> <element name>
+    SAVEELEMENT
+>
+> control statements
+>
+<control statement> <if group>
+ <while group>
+> <for group>
+> <case group>
+>
+<if group> <if start> <actions> <opt elsif groups> <opt else group> <end if>
+<if start> IF <logical expression> THEN <statement end>
+	 IFSTART
+>
+<opt elsif groups>
+ <opt elsif groups> <opt elsif group>
+<opt elsif group> <elsif line> <actions>
+<elsif line> <elsif id> <logical expression> THEN <statement end>
+    ELSEIFCOND
+<elsif id> ELSE IF
+    ELSEIFSTART
+>
+<opt else group>
+ <ELSE ID> <actions>
+<ELSE ID> ELSE <statement end>
+	 IFELSESTART
+<end if> END <statement end>
+	 IFEND
+>
+<while group> <while test> <actions> <end while>
+<while test> <WHILE ID> <logical expression> <statement end>
+	 WHILECOND
+<WHILE ID> WHILE
+	 WHILESTART
+<end while> END <statement end>
+	 WHILEEND
+>
+> <for group> <for header> <actions> <end for>
+> <for header> <FOR ID> ( <for init> ; <for end> ; <for incre> )
+> <FOR ID> FOR
+> <for init> <let statement>
+> 	 FORINIT
+> <for end> <logical expression>
+> 	 FORENDCOND
+> <for incre> <change value statements>
+> 	 FORINCRE
+> <end for> END <statement end>
+>     FOREND
+>
+> logical expression syntax
+>
+<logical expression> <logical term>
+ <logical expression> OR <logical term>
+	LOGOR
+<logical term> <signed logical term>
+ <logical term> AND <signed logical term>
+	LOGAND
+<signed logical term> <logical primary>
+ NOT <logical primary>
+   LOGNOT
+<logical primary> <compare>
+ ( <logical expression> )
+ <ele function>
+ ON
+	 LOGEXPON
+ OFF
+    LOGEXPOFF
+> <char expression>
+<compare> <exp 1> = <exp 2>
+	 COMPEQU
+ <exp 1> ~ = <exp 2>
+	 COMPNOTEQU
+ <exp 1> "> <exp 2>
+	 COMPGT
+ <exp 1> "< <exp 2>
+	 COMPLT
+ <exp 1> "> = <exp 2>
+	 COMPGE
+ <exp 1> "< = <exp 2>
+	 COMPLE
+<exp 1> <char expression>
+<exp 2> <char expression>
+>
+<ele function> in ( <in funct elem> )
+ is ( <is funct elem> )
+<in funct elem> <element name>
+   DOINFUNCT
+<is funct elem> <element name>
+   DOISFUNCT
+>
+> what's in a name?
+>
+<name> <declared name>
+ <undeclared name>
+ <element name>
+<declared name> <var name>
+  DECLAREDISTACTID
+  DECLAREDISVAR
+

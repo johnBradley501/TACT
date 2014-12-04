@@ -1,0 +1,86 @@
+DEFINITION MODULE VirtMem;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* types *) VirtAddr, VirtMemFile,
+  (* const *) FirstTempPool,
+  (* vars  *) NILVirt, PDBFile,
+  (* procs *) CopyFromVirtMem, CopyToVirtMem, VMAccess, VMModify, InitVirtMem,
+              VMRelease, GetSpace, FreeSpace, RealToPool, VirtToPool,
+              EqualVirts, FreePool, WriteAll, OpenVirtFile, CloseVirtFile;
+*)
+
+FROM SYSTEM IMPORT BYTE, ADDRESS;
+
+TYPE
+   VirtAddr = RECORD
+      PageNo:    CARDINAL;
+      Offset:    CARDINAL;
+   END;
+   VirtMemFile;
+
+CONST
+   FirstTempPool = MAX(CARDINAL) DIV 2 + 1;
+
+VAR
+   NILVirt:    VirtAddr;
+   PDBFile:    VirtMemFile;
+
+PROCEDURE CopyFromVirtMem(VA:    VirtAddr;
+                          Sz:    CARDINAL;
+                      VAR Dt:    ARRAY OF BYTE);
+
+PROCEDURE CopyToVirtMem(VA:    VirtAddr;
+                        Sz:    CARDINAL;
+                        Dt:    ARRAY OF BYTE);
+
+PROCEDURE VMAccess(VA: VirtAddr): ADDRESS;
+
+PROCEDURE VMModify(VA: VirtAddr): ADDRESS;
+
+PROCEDURE VMMarkChanged(VA: VirtAddr);
+
+PROCEDURE VMRelease(VA: VirtAddr);
+
+PROCEDURE VMDefined(VA: VirtAddr): BOOLEAN;
+
+PROCEDURE GetSpace(Size:  CARDINAL;
+                   Pool:  CARDINAL;
+               VAR VA:    VirtAddr): ADDRESS;
+
+PROCEDURE FreeSpace(VA:   VirtAddr;
+                    Size: CARDINAL);
+
+PROCEDURE RealToPool(Adr: ADDRESS): CARDINAL;
+
+PROCEDURE VirtToPool(Adr: VirtAddr): CARDINAL;
+
+PROCEDURE EqualVirts(First,Second: VirtAddr): BOOLEAN;
+
+PROCEDURE FreePool(No: CARDINAL);
+
+PROCEDURE ChangePoolNo(Old, New: CARDINAL);
+
+PROCEDURE WriteAllVirts();
+
+PROCEDURE InitVirtMem();
+
+PROCEDURE OpenVirtFile(Name:   ARRAY OF CHAR;
+                   VAR file:   VirtMemFile;
+                   VAR ErrMsg: ARRAY OF CHAR;
+                       tmpfile:BOOLEAN): BOOLEAN;
+
+PROCEDURE CloseVirtFile(VAR file: VirtMemFile);
+END VirtMem.

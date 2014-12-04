@@ -1,0 +1,51 @@
+DEFINITION MODULE TokenBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM HyperDataModel IMPORT
+  (* Types *) HTokenData, HCompTokenData;
+FROM HyperBase IMPORT
+  (* Types *) HRecPntr;
+
+(*
+EXPORT QUALIFIED
+  (* types *) HTokenHandle, HTokenPntr,
+  (* procs *) GetToken, FreeTokenHandle, GetNextToken, GetPrevToken,
+              GetTokenNo, GetTokenHRec, DecompressTokenInfo;
+*)
+
+TYPE
+   HTokenPntr =   POINTER TO HTokenData;
+   HTokenHandle = POINTER TO POINTER TO HCompTokenData;
+
+  PROCEDURE GetToken(Token:    HRecPntr;
+                 VAR Handle:   HTokenHandle);
+
+  PROCEDURE FreeTokenHandle(VAR Handle: HTokenHandle);
+
+  PROCEDURE GetNextToken(Old:  HRecPntr;
+                     VAR New:  HRecPntr): BOOLEAN;
+
+  PROCEDURE GetPrevToken(Old:  HRecPntr;
+                     VAR New:  HRecPntr): BOOLEAN;
+
+  PROCEDURE GetTokenNo( Token : HRecPntr; VAR Result : LONGINT ) ;
+
+  (* complement of "GetTokenNo" *)
+  PROCEDURE GetTokenHRec( TokenNo : LONGINT; VAR Result : HRecPntr ) ;
+
+  PROCEDURE DecompressTokenInfo(Handle:   HTokenHandle;
+                            VAR Result:   HTokenData);
+
+END TokenBase.

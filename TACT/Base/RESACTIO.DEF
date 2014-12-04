@@ -1,0 +1,47 @@
+DEFINITION MODULE ResActionBar;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM SYSTEM IMPORT BYTE;
+FROM TWB IMPORT WinType ;
+
+(*
+EXPORT QUALIFIED
+  (* type *) BarID,
+  (* Vars *) ABWindow,
+  (* proc *) BuildActionBar, DiscardActionBar, ShowActionBar, DoActionBar;
+*)
+
+TYPE
+    BarID;
+VAR
+    ABWindow	: WinType ;
+
+PROCEDURE BuildActionBar(VAR ID:       BarID;
+                         ResID:        CARDINAL;
+                         PopupIDs:     ARRAY OF CARDINAL);
+
+PROCEDURE DiscardActionBar(VAR ID:       BarID);
+
+PROCEDURE ShowActionBar(ID:     BarID);
+
+PROCEDURE DoActionBar(ID:            BarID;
+                      Term:          ARRAY OF CHAR;
+                      FunctTerm:     ARRAY OF CHAR;
+                  VAR TC:            CHAR;
+                  VAR FunctKey:      BOOLEAN;
+                  VAR ActionBarSele: BYTE;
+                  VAR PopupSelect:   BYTE ) : BOOLEAN;
+
+END ResActionBar.

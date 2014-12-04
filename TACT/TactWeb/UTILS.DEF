@@ -1,0 +1,209 @@
+DEFINITION MODULE Utils ;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*V1=Modf Modula-2 FTL version *)
+(*V2=Modl Modula-2 Logitech version *)
+
+FROM GlobalDefs IMPORT
+  (* Type *) StrAny ;
+IMPORT FIO;
+
+(*
+EXPORT QUALIFIED
+ (* type *) BFile, RWType,
+ (* var  *) month, day, year, StandardSearchList, CrLf, BeepMode,
+ (* proc *) MsDosDate, StandardizeCharName, UpcaseStr, LowcaseStr,
+            PrintCode, PrintHex1, PrintHex2, PrintHex, ConstStr, TimeDelay,
+            Beep, Exist, StandardizeFileName, RemoveExtension, GetXlationType,
+            GetEnv, FindFileInList, ReadLine, WriteLine, WrStr, WrLn,
+            BOpen, BClose, BCreate, BDelete, TrimBlanks;
+*)
+
+  CONST
+    BufSize =          1024+FIO.BufferOverhead;
+
+  TYPE
+    RWType = (ReadType,WriteType,AppendType, BStdOut);
+    BFile = RECORD
+       FileID:          FIO.File;
+(*     BufPos:          CARDINAL; *)
+       Buf:             ARRAY [0..BufSize-1] OF CHAR;
+       RW:              RWType;
+    END;
+(* m.s. - no longer needed, replace BResultType with CARDINAL everywhere
+(*<Modl*)
+    BResultType = (OK,
+                    InternalError,            (* internal error in FileIO *)
+                    FileNotFound,
+                    FileAlreadyExists,
+                    PathNotFound,
+                    TooManyFiles,
+                    DeviceFull,
+                    DirectoryFull,
+                    FileAccessDenied,
+                    DeviceAccessDenied,
+                    InvalidFileHandle, (* probably uninitialized File var. *)
+                    InsufficientMemory,
+                    NoSuchDevice,
+                    DeviceNotReady,
+                    EndOfMedium,       (* printer out-of-paper, etc. *)
+                    DataError,         (* CRC error, seek error *)
+                    DeviceFailure,
+                    InsufficientData,  (* see ReadChar, ReadWord, ..  *)
+                    TranslationError);
+(*Modl>*)
+(*<Modf
+    BResultType = (OK,
+                   OpenFailed,
+                   CreateFailed,
+                   WriteFailed,
+                   CloseFailed,
+                   ReadFailed,
+                   InsufficientData,
+                   TranslationError);
+Modf>*)
+*)
+
+(* Conversion module part between Logitech and JPI Modula-2   j.b. *)
+TYPE
+   Status = ( Normal, Warning, Stopped, Fatal,
+              Halt, CaseErr, StackOvf, HeapOvf,
+              FunctionErr, AdressOverflow, RealOverflow,
+              RealUnderflow, BadOperand, CardinalOverflow, IntegerOverflow,
+              RangeErr, DivideByZero, CoroutineEnd, CorruptedData,
+              FileStructureErr, IllegalInstr, IllErrorCode, TooManyInterrupts,
+              TermListFull, InitListFull, NoCoprocessor87 );
+
+
+  VAR
+    month, day, year   : INTEGER;
+    StandardSearchList : StrAny ;
+    CrLf:                ARRAY [0..2] OF CHAR;
+    AllowWildCards     : BOOLEAN; (* tells StandardizeFileName *)
+    BeepMode		: BOOLEAN; (* TRUE == beep, FALSE == don't beep (quiet) *)
+
+    ALLOCATE:   PROCEDURE(VAR ADDRESS, CARDINAL);
+    DEALLOCATE: PROCEDURE(VAR ADDRESS, CARDINAL);
+
+
+  PROCEDURE MsDosDate(VAR month, day, year: INTEGER);
+
+  PROCEDURE StandardizeCharName(InputName:  ARRAY OF CHAR;
+                            VAR OutputName: ARRAY OF CHAR);
+
+  PROCEDURE UpcaseStr(InputName:  ARRAY OF CHAR;
+                  VAR OutputName: ARRAY OF CHAR);
+
+  PROCEDURE LowcaseStr(InputName: ARRAY OF CHAR;
+                  VAR OutputName: ARRAY OF CHAR);
+
+  PROCEDURE PrintCode(SeqIn:  ARRAY OF CHAR;
+                  VAR SeqOut: ARRAY OF CHAR);
+
+  PROCEDURE PrintHex1(SeqIn:  ARRAY OF CHAR;
+                  VAR SeqOut: ARRAY OF CHAR);
+  PROCEDURE PrintHex2(SeqIn:  ARRAY OF CHAR;
+                  VAR SeqOut: ARRAY OF CHAR);
+
+  PROCEDURE PrintHex(SeqIn:   ARRAY OF CHAR;
+                  VAR SeqOut: ARRAY OF CHAR);
+
+  PROCEDURE PrintHexByte(SeqIn: ARRAY OF BYTE;
+                     VAR SeqOut: ARRAY OF CHAR);
+
+  PROCEDURE ConstStr(c: CHAR;
+                     N: CARDINAL;
+                 VAR SeqOut: ARRAY OF CHAR);
+
+  PROCEDURE Beep;
+
+  PROCEDURE Exist(FileName: ARRAY OF CHAR): BOOLEAN;
+
+(* the following two procedures where directly stolen from JPI (but
+   used with permission, since source was licensed, and code borrowing
+   is permitted by the license j.b. *)
+
+  PROCEDURE ParseFilename(f:ARRAY OF CHAR;
+                      VAR drive,path,name,ext:ARRAY OF CHAR):BOOLEAN;
+
+  PROCEDURE MakeFilename(drive,path,name,ext:ARRAY OF CHAR;
+                     VAR f:ARRAY OF CHAR);
+
+  PROCEDURE StandardizeFileName(VAR FileName: ARRAY OF CHAR;
+                                Extension: ARRAY OF CHAR): BOOLEAN;
+
+  PROCEDURE RemoveExtension(FileName: ARRAY OF CHAR;
+                        VAR Result: ARRAY OF CHAR);
+
+  PROCEDURE GetXlationType(VAR FileName: ARRAY OF CHAR;
+                           VAR XlName:   ARRAY OF CHAR);
+
+  PROCEDURE BOpen( VAR file:   BFile;
+                  name:   ARRAY OF CHAR;
+                  mode:   RWType;
+                  VAR result: CARDINAL);
+
+  PROCEDURE BCreate(VAR file:   BFile;
+                   name:   ARRAY OF CHAR;
+                   erase:  BOOLEAN;
+                   VAR result: CARDINAL);
+
+  PROCEDURE BClose(file: BFile; VAR result: CARDINAL);
+
+  PROCEDURE BDelete( Name : ARRAY OF CHAR; VAR result : CARDINAL ) ;
+
+  PROCEDURE ReadLine(VAR file:       BFile;
+                     VAR data:       ARRAY OF CHAR;
+                     VAR enoughdata: BOOLEAN;
+                     VAR result:     CARDINAL):BOOLEAN;
+
+  PROCEDURE WrStr(VAR file:  BFile;
+                      data:  ARRAY OF CHAR;
+                      VAR result:     CARDINAL);
+
+  PROCEDURE WrBin(VAR file:       BFile;
+                      data:       ARRAY OF BYTE;
+                      size:       CARDINAL;
+                  VAR result:     CARDINAL);
+
+  PROCEDURE WrLn(VAR file:  BFile;
+                 VAR result:     CARDINAL);
+
+  PROCEDURE WriteLine(VAR file:       BFile;
+                          data:       ARRAY OF CHAR;
+                      VAR result:     CARDINAL);
+
+  PROCEDURE GetEnv(EnvVar: ARRAY OF CHAR; VAR Strg: ARRAY OF CHAR) ; 
+
+  PROCEDURE FindFileInList(List:        ARRAY OF CHAR;
+                           FileName:    ARRAY OF CHAR;
+                       VAR DirName:     ARRAY OF CHAR): BOOLEAN;
+
+  PROCEDURE TrimBlanks(     InStr  : ARRAY OF CHAR;
+                        VAR OutStr : ARRAY OF CHAR);
+
+  PROCEDURE TimeDelay(Time:  CARDINAL);
+
+  PROCEDURE Terminate(st:  Status);
+
+  PROCEDURE InstallTermProc(p: PROC);
+
+  PROCEDURE CallTermProc;
+
+  PROCEDURE GetTempFile(VAR file: FIO.File;
+                        VAR name: ARRAY OF CHAR) (* name must be at least 13
+                                  characters longer than the string length it'
+                                  contains *): BOOLEAN;
+
+END Utils .

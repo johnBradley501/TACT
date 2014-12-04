@@ -1,0 +1,86 @@
+DEFINITION MODULE  PreHash ;
+
+(* copyright (c) 1991-96 Ian Lancashire, Mike Stairs, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+(*
+Title:    Virtual Hashing - to improve Word find with Balanced Tree
+LastEdit: June 1, 1988
+Author:   Lidio Presutti
+System:   LOGITECH MODULA-2/86
+*)
+
+FROM VirtualMemory IMPORT
+  (* Type *) VirtualAddrType ;
+
+FROM SYSTEM IMPORT TSIZE ;
+
+FROM Utils IMPORT BFile ;
+
+FROM StartUp IMPORT WordAny ;
+
+(*
+EXPORT QUALIFIED
+  (* Procs *) InsertHash, SearchHashTable, FreeHashMemory ;
+*)
+
+
+CONST
+        SegmentSize = 1024 ;     (* VirtualPageSize div TSIZE(VirtualAddrType) *)
+        DirectorySize = 64 ;
+
+   TYPE WordPtr = POINTER TO WordType ;
+        WordType = RECORD
+           Key : WordAny ;
+           Type  : BOOLEAN ;
+           Next    : VirtualAddrType ;
+        END ;
+        Segment = ARRAY[0..SegmentSize-1] OF VirtualAddrType (* DictDataPtr *) ;
+        SegmentPtr = POINTER TO Segment ;
+        HashTable = RECORD
+		p 		: CARDINAL ;	(* next bucket to split *)
+		MaxP 		: CARDINAL ;	(* Upper bound on p during this expansion *)
+		KeyCount 	: CARDINAL ;	(* number of records in table *)
+		CurrentSize 	: CARDINAL ;	(* current number of buckets  *)
+		MaxLoadFactor 	: CARDINAL ;	(* upper bound on load factor *)
+		Directory	: ARRAY[0..DirectorySize-1] OF VirtualAddrType ;
+	    END ;
+
+VAR
+  T : HashTable ;
+
+CONST
+        WordTypeSize = TSIZE( WordType ) ;
+
+VAR
+  VWordUnusedSpace  : VirtualAddrType ;
+
+(* Usage: first check if Key is Hash table with SearchHashTable, if absent
+	  use the HashId calculated from Key to insert into Hash table	*)
+
+PROCEDURE InsertHash( (* HashId : LONGINT ; *)
+		      CurrentWord : ARRAY OF CHAR ;
+		      Type : BOOLEAN ) ;
+
+PROCEDURE SearchHashTable(     Key : ARRAY OF CHAR ;
+			   VAR HashId : LONGINT ) : BOOLEAN ;
+
+PROCEDURE FreeHashMemory ;
+
+PROCEDURE InitVirtHash;
+
+PROCEDURE DumpHash( OutFile : BFile ) ;
+
+
+END PreHash .

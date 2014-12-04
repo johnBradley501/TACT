@@ -1,0 +1,282 @@
+copyright (c) 1995 John Bradley
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+               Production listing
+               ========== =======
+
+
+
+    1 <FINAL RESULT> ::= <ACTION FILE> 
+    2 <ACTION FILE> ::= <ACTION COMPONENTS> <END OF FILE> 
+    3 <ACTION COMPONENTS> ::= <TACTID DECLS> <GLOBAL DECLS> <ACTION SEGS> 
+    4 <TACTID DECLS> ::= <TACT DECL> <STATEMENT END> 
+    5                | <TACTID DECLS> <TACT DECL> <STATEMENT END> 
+    6 <GLOBAL DECLS> ::= 
+    7                | <GLOBAL DECLS> <VARIABLE DECL> <STATEMENT END> 
+    8 <ACTION SEGS> ::= <ACTION SEGMENT> 
+    9               | <ACTION SEGS> <ACTION SEGMENT> 
+   10 <TACT DECL> ::= TACTID <TACTID ITEMS> 
+   11 <TACTID ITEMS> ::= <TACTID ITEMS> , <TACTID ITEM> 
+   12                | <TACTID ITEM> 
+   13 <TACTID ITEM> ::= <TACTID TYPE> <TACTID NAMES> 
+   14 <TACTID TYPE> ::= 
+   15               | <STANDARD TYPES> 
+   16               | LINENO 
+   17               | WORD 
+   18 <STANDARD TYPES> ::= STRING 
+   19                  | NUMBER 
+   20 <TACTID NAMES> ::= <MAIN NAME> 
+   21                | <MAIN NAME> ( <ALT NAME LIST> ) 
+   22 <MAIN NAME> ::= <NAME> 
+   23 <ALT NAME LIST> ::= <ALT NAME LIST> , <NAME> 
+   24                 | <NAME> 
+   25 <VARIABLE DECL> ::= DECLARE <DECLARE ITEMS> 
+   26 <DECLARE ITEMS> ::= <DECLARE ITEM> 
+   27                 | <DECLARE ITEMS> , <DECLARE ITEM> 
+   28 <DECLARE ITEM> ::= <DECLARE TYPE> <DECLARE NAME> 
+   29 <DECLARE TYPE> ::= 
+   30                | <STANDARD TYPES> 
+   31 <DECLARE NAME> ::= <NAME> 
+   32 <ACTION SEGMENT> ::= <ACTION OPENER> <ACTIONS> <ACTION CLOSER> 
+   33 <ACTION OPENER> ::= BEGIN <SEGMENT ID> <STATEMENT END> 
+   34 <SEGMENT ID> ::= <SEGMENT TYPE> <ELEMENT LIST> 
+   35 <SEGMENT TYPE> ::= OPEN 
+   36                | CLOSE 
+   37 <ELEMENT LIST> ::= <ELEMENT NAME> 
+   38                | <ELEMENT LIST> , <ELEMENT NAME> 
+   39 <ACTION CLOSER> ::= END <STATEMENT END> 
+   40 <ACTIONS> ::= <ACTIONS> <ACTION STATEMENT> 
+   41           | <ACTION STATEMENT> 
+   42 <ACTION STATEMENT> ::= <SIMPLE ACTION STATEMENT> <STATEMENT END> 
+   43                    | <CONTROL STATEMENT> 
+   44 <SIMPLE ACTION STATEMENT> ::= <CHANGE VALUE STATEMENTS> 
+   45                           | <VARIABLE DECL> 
+   46                           | OUTPUT <OUTPUT ITEMS> 
+   47                           | ERROR <CHAR EXPRESSION> 
+   48                           | REMARK <CHAR EXPRESSION> 
+   49                           | FORMAT <FORMAT OPTIONS> 
+   50                           | WORD <WORD OPS> 
+   51 <CHANGE VALUE STATEMENTS> ::= <LET STATEMENT> 
+   52                           | INC <DECLARED NAME> 
+   53                           | DEC <DECLARED NAME> 
+   54                           | <POPSTACK WHICH> <POPSTACK ITEM LIST> 
+   55 <POPSTACK WHICH> ::= POP 
+   56                  | STACK 
+   57 <POPSTACK ITEM LIST> ::= <POPSTACK ITEM LIST> , <PS ITEM> 
+   58                      | <PS ITEM> 
+   59 <PS ITEM> ::= <VAR NAME> 
+   60 <OUTPUT ITEMS> ::= <OUTPUT ITEM> 
+   61                | <OUTPUT ITEMS> , <OUTPUT ITEM> 
+   62 <OUTPUT ITEM> ::= <CHAR EXPRESSION> 
+   63               | BLINES <ARITH EXPRESSION> 
+   64 <WORD OPS> ::= <WORD OPS> , <WORD OP> 
+   65            | <WORD OP> 
+   66 <WORD OP> ::= COLLECT <LOGICAL EXPRESSION> 
+   67           | APPEND <CHAR EXPRESSION> 
+   68           | PREPEND <CHAR EXPRESSION> 
+   69           | REPLACE <CHAR EXPRESSION> 
+   70 <FORMAT OPTIONS> ::= <FORMAT OPTION> 
+   71                  | <FORMAT OPTIONS> , <FORMAT OPTION> 
+   72 <FORMAT OPTION> ::= COMPRESS <LOGICAL EXPRESSION> 
+   73                 | CENTRE <LOGICAL EXPRESSION> 
+   74                 | DISPLAY <LOGICAL EXPRESSION> 
+   75                 | FILL <LOGICAL EXPRESSION> 
+   76                 | FOLD <ARITH EXPRESSION> 
+   77                 | INDENT <ARITH EXPRESSION> 
+   78                 | TO <VAR NAME> 
+   79                 | TO TDB 
+   80 <LET STATEMENT> ::= <DESTINATION> = <LET EXPRESSION> 
+   81 <DESTINATION> ::= <VAR NAME> 
+   82 <LET EXPRESSION> ::= <CHAR EXPRESSION> 
+   83 <CHAR EXPRESSION> ::= <CHAR EXPRESSION> | <CHAR ITEM> 
+   84                   | <CHAR ITEM> 
+   85 <CHAR ITEM> ::= <STRING> 
+   86             | NL 
+   87             | THISGI 
+   88             | <ARITH VALUE> 
+   89             | SUBSTR ( <SUB OPERANDS> ) 
+   90             | PAD ( <PAD OPERANDS> ) 
+   91             | UPPER ( <CHAR EXPRESSION> ) 
+   92 <SUB OPERANDS> ::= <SUB ITEM> , <START NUMB> , <LEN NUMB> 
+   93                | <SUB ITEM> , <START NUMB> 
+   94 <SUB ITEM> ::= <CHAR EXPRESSION> 
+   95 <START NUMB> ::= <ARITH EXPRESSION> 
+   96 <LEN NUMB> ::= <ARITH EXPRESSION> 
+   97 <PAD OPERANDS> ::= <PAD POSITION> <PAD ITEM> , <PAD LENGTH> <PAD PATTERN> 
+   98 <PAD ITEM> ::= <CHAR EXPRESSION> 
+   99 <PAD LENGTH> ::= <ARITH EXPRESSION> 
+  100 <PAD PATTERN> ::= 
+  101               | , <CHAR EXPRESSION> 
+  102 <PAD POSITION> ::= 
+  103                | FRONT , 
+  104                | BACK , 
+  105 <ARITH VALUE> ::= <ARITH EXPRESSION> 
+  106 <ARITH EXPRESSION> ::= <SIGNED TERM> 
+  107                    | <ARITH EXPRESSION> + <ARITH TERM> 
+  108                    | <ARITH EXPRESSION> - <ARITH TERM> 
+  109 <SIGNED TERM> ::= <ARITH TERM> 
+  110               | - <ARITH TERM> 
+  111               | + <ARITH TERM> 
+  112 <ARITH TERM> ::= <ARITH PRIMARY> 
+  113              | <ARITH TERM> * <ARITH PRIMARY> 
+  114              | <ARITH TERM> / <ARITH PRIMARY> 
+  115 <ARITH PRIMARY> ::= <ARITH ITEM> 
+  116                 | ( <CHAR EXPRESSION> ) 
+  117 <ARITH ITEM> ::= <NUMBER> 
+  118              | <NAME OR ATTRIB> 
+  119              | ARITH ( <CHAR EXPRESSION> ) 
+  120              | VERIFY ( <CHAR EXPRESSION> , <CHAR EXPRESSION> ) 
+  121              | FIND ( <CHAR EXPRESSION> , <CHAR EXPRESSION> ) 
+  122              | MAX ( <ARITH EXPRESSION> , <ARITH EXPRESSION> ) 
+  123              | MIN ( <ARITH EXPRESSION> , <ARITH EXPRESSION> ) 
+  124              | INDEX ( <CHAR EXPRESSION> , <CHAR EXPRESSION> ) 
+  125              | LENGTH ( <CHAR EXPRESSION> ) 
+  126 <NAME OR ATTRIB> ::= <VAR NAME> 
+  127                  | <ATTRIBUTE> 
+  128 <ATTRIBUTE> ::= @ <NAME> 
+  129             | <THE ELEMENT> @ <NAME> 
+  130 <THE ELEMENT> ::= <ELEMENT NAME> 
+  131 <CONTROL STATEMENT> ::= <IF GROUP> 
+  132                     | <WHILE GROUP> 
+  133 <IF GROUP> ::= <IF START> <ACTIONS> <OPT ELSIF GROUPS> <OPT ELSE GROUP> <END IF> 
+  134 <IF START> ::= IF <LOGICAL EXPRESSION> THEN <STATEMENT END> 
+  135 <OPT ELSIF GROUPS> ::= 
+  136                    | <OPT ELSIF GROUPS> <OPT ELSIF GROUP> 
+  137 <OPT ELSIF GROUP> ::= <ELSIF LINE> <ACTIONS> 
+  138 <ELSIF LINE> ::= <ELSIF ID> <LOGICAL EXPRESSION> THEN <STATEMENT END> 
+  139 <ELSIF ID> ::= ELSE IF 
+  140 <OPT ELSE GROUP> ::= 
+  141                  | <ELSE ID> <ACTIONS> 
+  142 <ELSE ID> ::= ELSE <STATEMENT END> 
+  143 <END IF> ::= END <STATEMENT END> 
+  144 <WHILE GROUP> ::= <WHILE TEST> <ACTIONS> <END WHILE> 
+  145 <WHILE TEST> ::= <WHILE ID> <LOGICAL EXPRESSION> <STATEMENT END> 
+  146 <WHILE ID> ::= WHILE 
+  147 <END WHILE> ::= END <STATEMENT END> 
+  148 <LOGICAL EXPRESSION> ::= <LOGICAL TERM> 
+  149                      | <LOGICAL EXPRESSION> OR <LOGICAL TERM> 
+  150 <LOGICAL TERM> ::= <SIGNED LOGICAL TERM> 
+  151                | <LOGICAL TERM> AND <SIGNED LOGICAL TERM> 
+  152 <SIGNED LOGICAL TERM> ::= <LOGICAL PRIMARY> 
+  153                       | NOT <LOGICAL PRIMARY> 
+  154 <LOGICAL PRIMARY> ::= <COMPARE> 
+  155                   | ( <LOGICAL EXPRESSION> ) 
+  156                   | <ELE FUNCTION> 
+  157                   | ON 
+  158                   | OFF 
+  159 <COMPARE> ::= <EXP 1> = <EXP 2> 
+  160           | <EXP 1> ~ = <EXP 2> 
+  161           | <EXP 1> > <EXP 2> 
+  162           | <EXP 1> < <EXP 2> 
+  163           | <EXP 1> > = <EXP 2> 
+  164           | <EXP 1> < = <EXP 2> 
+  165 <EXP 1> ::= <CHAR EXPRESSION> 
+  166 <EXP 2> ::= <CHAR EXPRESSION> 
+  167 <ELE FUNCTION> ::= IN ( <IN FUNCT ELEM> ) 
+  168                | IS ( <IS FUNCT ELEM> ) 
+  169 <IN FUNCT ELEM> ::= <ELEMENT NAME> 
+  170 <IS FUNCT ELEM> ::= <ELEMENT NAME> 
+  171 <NAME> ::= <DECLARED NAME> 
+  172        | <UNDECLARED NAME> 
+  173        | <ELEMENT NAME> 
+  174 <DECLARED NAME> ::= <VAR NAME> 
+
+Goal Symbol is:<FINAL RESULT>
+               Terminal Symbol Listing
+               ======== ====== =======
+
+
+
+       1    <ELEMENT NAME>
+       2    <END OF FILE>
+       3    <NUMBER>
+       4    <STATEMENT END>
+       5    <STRING>
+       6    <UNDECLARED NAME>
+       7    <VAR NAME>
+       8    @
+       9    =
+      10    |
+      11    (
+      12    )
+      13    >
+      14    <
+      15    ~
+      16    *
+      17    /
+      18    +
+      19    -
+      20    ,
+ *    21    ;
+      22    AND
+      23    APPEND
+      24    ARITH
+      25    BACK
+      26    BEGIN
+      27    BLINES
+      28    CENTRE
+      29    CLOSE
+      30    COLLECT
+      31    COMPRESS
+      32    DEC
+      33    DECLARE
+      34    DISPLAY
+      35    ELSE
+      36    END
+      37    ERROR
+      38    FILL
+      39    FIND
+      40    FOLD
+ *    41    FOR
+      42    FORMAT
+      43    FRONT
+      44    IF
+      45    IN
+      46    INC
+      47    INDENT
+      48    INDEX
+      49    IS
+      50    LENGTH
+      51    LINENO
+      52    MAX
+      53    MIN
+      54    NL
+      55    NOT
+      56    NUMBER
+      57    OFF
+      58    ON
+      59    OPEN
+      60    OR
+      61    OUTPUT
+      62    PAD
+      63    POP
+      64    PREPEND
+      65    REMARK
+      66    REPLACE
+      67    STACK
+      68    STRING
+      69    SUBSTR
+      70    TACTID
+      71    TDB
+      72    THEN
+      73    THISGI
+      74    TO
+      75    UPPER
+      76    VERIFY
+      77    WHILE
+      78    WORD
+
+Legend:
+"*" means Symbol found in .SYL, not in Productions
+">" means Symbol found in Productions, not in .SYL
+
+Number of Terminal Symbols: 78

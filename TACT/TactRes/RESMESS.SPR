@@ -1,0 +1,71 @@
+R 65,T 5
+The various messages TACT programs can issue in the messagewindow are coded in MSG resources.  These resources are also,from time to time, used for other purposes.  CHE resources areonly used within Prompt boxes within the TACT programs -- but arequite similar to MSG resources.  We'll discuss both in thischapter, and outline the special CHE needs near it's end.
+
+We've seen a simple example of a MSG resource earlier.  Here is aslightly more complex one:
+
+@begin(example)
+(*RES OLD MSG 112
+Parameter "%0" to MAKBAS is not acceptable
+*)
+@end(example)
+
+This message is used as an error message by MAKBAS when theMAKBAS user starts it and gives illegal parameters to MAKBAS onthe DOS command line.
+
+Note the characters "@t{%0}" in the message text.  This indicatesa point in the message where MAKBAS is to insert the parameter itis unhappy about.  The text "@t{%0}" itself will @i{not} appearin the message when it is displayed -- instead MAKBAS willprovide the offending parameter that will be substituted when themessage is displayed.  These points in the message text arecalled "substitution points".
+
+All substitution points take the form "@t{%<number>}", where"number" is an integer between zero and 20 (hence 21 is themaximum number of different substitutions supported).  Hence, thesequence @t{%0} says "place the first piece of variableinformation I give you here".  @t{%1} would say "place the secondpiece of variable information here", etc.
+
+How do you know what MAKBAS will put in position %0, or %1, etc? Well, the commentary text we've included in the .RSI will,generally, tell you this.  When you reword the message you mayneed to change the order of these substitution points.  If thisis necessary, remember that %0 will always represent the same"thing" when the message is used.  If you need to code %1 before%0 to fit the needs of the language you are working with, do so.
+
+@Section(Message and Choice Resource Concepts)
+As we said above, Messages and Choice resources are similar.  Wewill discuss the Message resource features first, and thensupplement it with the added features necessary to understand theChoice Resource.
+
+@SubSection(Message Concepts)
+The Message resource is a string which can, optionally, containpoints at which substitution from values available at the time ofexecution can occur.  The resource is coded as one or more linesof text following the "(*RES ...  MSG" line.  Leading spaces onall lines in MSG and CHE resources are ignored, but spaces withintext on each line @i{are} preserved in the resulting string. Line endings within MSG and CHE resources are not preservedeither; instead, a single space is inserted to replace each lineending.  Hence, the resulting resource is, logically, a singleline.  When displayed in TACT's message box, TACT (or MAKBAS,etc.) will fold the message text if necessary so it all fits on 2or more lines.  TACT will not necessarily fold the message textat the same place you have folded it in the RSI file.
+
+Substitution points are indicated by the sequence "@t{%<number>}"where "<number>" is an integer in the range 0..20.  If themessage is meant to contain a percent sign, code two of them.
+
+At the time the message is going to be used the TACT program willhave values that it must insert for @i{all} substitution points. Be sure that @i{all} are coded in any new replacement message --although they don't have to be in the same order.
+
+@SubSection(Additional Choice Concepts)
+The Choice resource is similar to the message resource in that asubstituted message is generated and displayed to the user. Furthermore, the Choice resource may have substitution points,exactly the same as MSG types.  However, a CHE resource isdifferent in that the user is then given a choice (in a promptbox), and must indicate which choice s/he has made by typing asingle key.  Hence, the choice resource has not only messagetext, but a list of possible legal keys the user may push.
+
+In the resource definition, the list of legal keys the user isallowed to push is given on a line that begins with the character"=".  This can be any line in the resource material, although itis usually the last, and is not considered a part of the message.Hence, the following is a sample RESMAN command for a new choiceresource:
+@begin(example)
+(*RES OLD CHE 5
+Proceed to RUN phase now? Y)es N)o:
+=YN
+*)
+@end(example)
+Any spaces on the "=" line are ignored.  Hence, this resourcecontains two pieces of information:
+@begin(Enumerate)
+The message text to display to the user.  This message textshould explicitly indicate what keys the user may type inresponse to the message!  As in messages, the message textassociated with a choice resource may contain substitutionpoints.
+
+The list of keys (in this case "Y", "N") that the program willaccept as legal response from the user.
+@end(Enumerate)
+
+CHE resources are only used in Prompt messages were the user isprompted to type a single key.  At this point, the only legalkeys are the standard ASCII keys on the IBM keyboard -- noextended keys may be used, so no accented letters are currentlypermitted@foot{If you feel your language needs accented keys aschoices, ask the TACT programming team -- support can be added}. We recommand strongly that you stick to single letters.  Also,remember that the TACT programs will translate any character theprogram user enters into upper case.  Hence, you should specifyonly standard Roman capital letters as choices -- there is nopoint in specifying both an upper and lower case letter in asingle string.
+
+It is important to understand that the TACT program that uses theCHE resource will have different actions associated with theletters on the "=" line.  It will always do the same action whenthe program user enters the first letter, and a different actionwhen they enter the second letter.  More than two choices arepossible if the user can enter more than 2 letters.  The order ofthe letters on the "=" line is, therefore, critical.
+
+How would you change the letters a user can type in response to aprompt?  For example, suppose that the following code appeared (afanciful example!):
+
+@begin(example)
+(*RES UPD CHE 999
+Include elephants in your file?
+Y)es N)o
+=Y N
+*)
+@end(example)
+
+If this choice was offered to the user, s/he would indicate a "y"or "n" response.  What happens, however, if a new resource fileis created with the resource messages translated into French fora french version of the program?  Now, the options are "Oui" or"Non" -- "O" or "N":
+@begin(example, tct yes)
+(*RES UPD CHE 999
+Voulez-vous des ‚l‚phants dans votre file?
+O)ui, N)on
+=O N
+*)
+@end(example)
+The order of the letters following the "=" is important.  Inessence, the TACT program will not actually see the letter theuser types -- instead it will simply be told the number of theletter which was typed.  In the original resource the TACTprogram would be told letter 1 was chosen when "Y" was typed, andletter 2 was chosen when "N" was typed.  The action the programtakes is based on this letter number -- one action for "letter1", and a different one for "2".  In the new resource the programwill be told letter 1 was typed when the user types "O", andwill, therefore do the first thing (the same it used to do for"Y") when "O" is typed, and the second thing when "N" is entered.
+
+Note that it is important that the choice list (number of lettersfollowing "=") in an updated resource be the same length as theold resource.  If they are not the TACT program will fail, oftenwith an obscure error message.

@@ -1,0 +1,958 @@
+R 79,T 5
+
+Copyright 1990 John Bradley, University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+                                      >>> TACT <<<
+
+================================================
+TACT produces this error message if it is trying to finish up and had problemclosing a PDB.  The DOS error is put in %0 (from MSG 0-23 in BASE.RSI).
+================================================
+
+(*RES OLD MSG 136
+Problem closing Personal Database: %0
+*)
+
+================================================
+This is the text that appears in the TACT action bar.  Notice the conventionsused:
+
+-- Each line represents a single item on the bar.
+
+-- Unless the text contains an underscore the first letter will be highlightedin the action bar, and the user can choose by typing it.
+
+-- If an item contains the underscore character, the >following< letter ishighlighted and used.
+
+-- IBM SAA standards for action bars requires Help and e_Xit as the first twoitems.
+
+-- If there is a function key equivalent it is listed after the action name.
+
+You CANNOT change the order of the options by naming them in a differentorder!!
+
+You CANNOT add or delete options by adding or deleting items!!!
+================================================
+(*RES OLD DTA 8
+"Help (F1)"
+"e_Xit (F10)"
+"Select"
+"Current"
+"New"
+"c_Ategory"
+"File"
+*)
+
+================================================
+the names of the menu options for the "Select" menu
+================================================
+(*RES OLD DTA 9
+"selected _List ... F3"
+"Word List        ^F3"
+"Categories          "
+"Rule ...          F2"
+*)
+
+================================================
+the names of the menu options for the "Current" display menu
+================================================
+(*RES OLD DTA 10
+"Modify ...   F4"
+"KWIC"
+"Text"
+"Index"
+"Distribution"
+"C_ollocate"
+"Next         F7"
+"Synchronize  F9"
+"Close       ^F4"
+"Panel       ^F7"
+"Zoom        ^F9"
+*)
+
+================================================
+the names of the menu options for the "New" display menu
+================================================
+(*RES OLD DTA 11
+"KWIC"
+"Text"
+"Index"
+"Distribution"
+"C_ollocate"
+*)
+
+================================================
+the names of the menu options for the "Category" display menu
+================================================
+(*RES OLD DTA 12
+"Delete ..."
+"Create ... F8"
+"Replace ..."
+"view _List ..."
+"view a c_Ategory ..."
+*)
+
+================================================
+the names of the menu options for the "File" display menu
+================================================
+(*RES OLD DTA 13
+"Open ..."
+"Print ...   F6"
+"Disk ...   ^F6"
+"Import ... ^F2"
+"Export ..."
+"Record ..."
+"Pl_ay ..."
+*)
+
+================================================
+The famous TACT initial display screen.
+
+Fields are (notice fields are intentially out of order):
+4 TACT version number (from MSG resource 203)
+5 TACT version date (from MSG 203)
+
+1: textual database filename and Database name
+0: PDB database name (if any)
+2: number of types in TDB
+3: number of tokens in TDB
+================================================
+(*RES OLD MNU 16
+
+
+
+
+                   TACT Version %4_____ %5______________________
+
+
+            Text: %1_________________________________________________
+            PDB : %0________________________________________
+            Number of Types: %2_________  Tokens: %3______________
+
+              For help, push the F1 key. To exit, push F10.
+          To choose action from Action Bar, push the SPACEBAR
+
+
+
+ ____________________________________________________________________________
+ Short Cuts:
+ F1: Help                      F5: Resize (^Move)     F9: Synchronize (^Zoom)
+ F2: Rule (^Import)            F6: Print (^File)      F10: QUIT
+ F3: Select (^WordList)        F7: Next Display (^Panel)
+ F4: Modify (^Close) Display   F8: Create Category
+*)
+
+================================================
+The following messages are used when TACT is opening the TDB or PDB
+
+Given name %0 is illegal as a filename or wildcard pattern.
+================================================
+(*RES OLD MSG 318
+"%0" could not be used as a file name or pattern.
+*)
+
+================================================
+wildcard pattern %0 was given for TDB or PDB search, but no files match it
+================================================
+(*RES OLD MSG 321
+There are no .TDB or .PDB files that match "%0".
+*)
+
+================================================
+wildcard pattern %0 for other types of filename searches was given, but nofiles match it.
+================================================
+(*RES OLD MSG 319
+Your File pattern "%0" selected nothing.
+*)
+
+================================================
+The TACT open database dialog box.
+
+0: is database name to open
+1: switch to create new PDB: "Yes"
+2: switch "no"
+================================================
+(*RES OLD MNU 33
+                 Open TACT Database
+
+   Database: %0_______________________________________
+
+       Create New PDB? Yes: %|1 No: %|2
+*)
+
+================================================
+%0 exists as a file but is not a TDB or PDB.
+================================================
+(*RES OLD MSG 215
+"%0" is not a TACT database file.
+*)
+
+================================================
+given name %0 does not exist
+================================================
+(*RES OLD MSG 293
+File "%0" does not exist.
+*)
+
+================================================
+user has asked TACT to create a new PDB with given name %0 -- cannot do thisbecause file with this name already exists.
+================================================
+(*RES OLD MSG 294
+I cannot create a new PDB file named "%0": file already exists.
+*)
+
+(*RES OLD MSG 150
+"%0" is improper as a file name for a TACT DataBase.
+*)
+
+(*RES OLD MSG 292
+Parameter "%0" to TACT is not acceptable
+*)
+
+(*RES OLD MSG 157
+Please give no more than one Database name when invoking this program.
+*)
+File: TDBINIT.MOD
+
+(*RES OLD MSG 145
+%0 is not a TACT Textual Database
+*)
+
+(*RES OLD MSG 144
+%0 is not a TACT Textual Database of the correct level.
+*)
+
+(*RES OLD MSG 142
+Textual DataBase Name %0 is improper
+*)
+
+(*RES OLD MSG 143
+Problem Opening Textual Database %0: %1
+*)
+
+(*RES OLD MSG 141
+Error reading Textual Database: %0
+*)
+File: PDBINIT.MOD
+
+(*RES OLD MNU 15
+%1______________________________________________________________________
+%2______________________________________________________________________
+%3______________________________________________________________________
+
+Name of Text Database: %0_______________________________________________
+
+                         Push PF10 to exit from TACT.
+*)
+
+(*RES OLD MSG 147
+To try a different Text Database File, give its name below
+*)
+
+(*RES OLD MSG 148
+Cannot use "%0" as a Text DB.
+*)
+
+(*RES OLD MSG 151
+Problem Opening Personal Database %0: %1
+*)
+
+(*RES OLD MSG 152
+Error reading Personal Database %0: %1
+*)
+
+(*RES OLD MSG 153
+This version of TACT cannot read your Personal Database.
+*)
+
+(*RES OLD MSG 154
+Associated Text DB "%0" doesn't match your Personal DB.
+*)
+
+(*RES OLD MSG 155
+Personal DB "%0" does not exist.
+*)
+
+(*RES OLD MSG 156
+To create it, please give the name of an associated TEXT DB:
+*)
+File: KEYUTILS.DEF
+
+(*RES OLD MSG 344
+"%0" cannot be a legal file name for a script file.
+*)
+File: KEYUTILS.MOD
+
+(*RES OLD MSG 337
+Error "%0" reported opening Script File "%1".
+*)
+
+(*RES OLD MNU 35
+                   Playing a Script File
+  FileName: %0______________________________________________
+           Push ESC to interrupt during playing
+*)
+
+(*RES OLD MNU 37
+                   Creating a Script File
+  FileName: %0______________________________________________
+         Type Alt-Esc to finish the Script File.
+    Type Ctrl-F10 to use special scripting functions.
+*)
+
+(*RES OLD MSG 349
+REC
+*)
+
+(*RES OLD MSG 339
+Error "%0" reported while writing script file "%1".
+*)
+
+(*RES OLD MSG 338
+Cannot open Script file "%0", file "%1" already being written.
+*)
+
+(*RES OLD CHE 22
+=C O A
+Script file "%0" exists. Type "C" to Cancel, "O" to overwrite it,
+or "A" to append to it.
+*)
+
+(*RES OLD MSG 340
+Cannot open Script file "%0", file "%1" already being read.
+*)
+
+(*RES OLD MSG 348
+Push F10 to exit TACT, ESC to stop script, or any other key to continue
+*)
+
+(*RES OLD CHE 23
+= S C F
+Script File Running Options: S)ingle step,
+C)ontinue, F)inish using file:
+*)
+
+(*RES OLD MSG 341
+Invalid character "%0" found in input script file "%1".
+*)
+
+(*RES OLD MSG 342
+TACT is already reading Script file "%0".
+*)
+
+(*RES OLD MSG 343
+TACT is already writing Script file "%0".  Type Alt-Esc to
+finish it first.
+*)
+
+(*RES OLD MSG 345
+Delay time of %0 ms is more than 10 seconds.
+*)
+
+(*RES OLD MSG 346
+Delay time of %0 ms is less than 0.1 seconds.
+*)
+
+(*RES OLD MNU 36
+ Script Instruction:
+
+   Pause
+   Delay %0____ ms
+   Window
+*)
+
+(*RES OLD MSG 347
+PDW
+*)
+
+(*RES OLD CHE 15
+=Q C
+Do you really want to quit?  To quit type "Q", to continue type "C".
+*)
+=================
+  Displays
+=================
+File: DISPLAYD.MOD
+
+(*RES OLD MNU 24
+Index Display Options:
+
+  Refs: %0_________________________________________________________
+
+         Order:  Natural: %|1Position: %|2Word: %|3Word Only: %|4
+                Show Text:  Yes: %|5No: %|6
+*)
+
+(*RES OLD MNU 21
+Display Options:
+
+  Refs: %0_________________________________________________________
+
+*)
+
+(*RES OLD MNU 18
+Distribution Display Options:    Block Char:   %|3
+     Type:  Text Position: %|0    Reference: %|1    Word:  %|2
+___________________________________________________________________
+
+
+
+
+*)
+
+(*RES OLD MNU 19
+
+  Refs:  %0_________________________________________________________
+
+  Start: %1_%  End: %2_%  By:  %3_%
+*)
+
+(*RES OLD MNU 22
+
+  Refs: %0_________________________________________________________
+
+      Selection Ref ID : %1________________________________
+*)
+
+(*RES OLD MNU 34
+Collocate Generator Display Options:
+
+  Refs: %0_________________________________________________________
+
+  Collocate Display Context:  Unit: %3________________
+                            Before: %1______  After: %2_______
+
+  Count Overlaps:   Yes: %|4 No: %|5
+  Show Intermediate Results:   Yes: %|6 No: %|7
+
+  For list of Reference Names for Unit, type "?" in the Unit Field.
+*)
+
+(*RES OLD MSG 181
+"Start" is given in terms of a percentage of the text.  Please
+give a value between 0 and 99.
+*)
+
+(*RES OLD MSG 182
+"End" is given in terms of a percentage of the text.  Please
+give a value between 0 and 99.
+*)
+
+(*RES OLD MSG 183
+"ByValue" is given in terms of a percentage of the text.  Please
+give a value between 1 and 99.
+*)
+
+(*RES OLD MSG 184
+A "ByValue" of %0 will yield a histogram with only 1 column.
+Usually values of 20 percent or less are given.
+*)
+
+(*RES OLD MSG 197
+You have no display on screen to close.
+*)
+
+(*RES OLD MSG 185
+The Start Value must be less than the End Value.
+*)
+
+(*RES OLD MSG 186
+The By Value must be smaller than the range between Start And End.
+*)
+
+(*RES OLD MSG 168
+You have no display screen at the moment.
+*)
+
+(*RES OLD DTA 15
+'KWIC Display'
+'Text Display'
+'Index Display'
+'Collocate Display'
+'Distr Display'
+'Options for '
+*)
+File: COLDISPL.MOD
+
+(*RES OLD MSG 322
+Mini: %0 Total: %1
+*)
+
+(*RES OLD MSG 323
+Collocates          Sel. Collocate Type   Type   Expected  Standard  Z-score
+*)
+
+(*RES OLD MSG 324
+                    Node    Freq   Freq   Prob.   Observ.    Dev.
+*)
+
+(*RES OLD MSG 331
+Collocates          Sel. Collocate Type  Z-score
+*)
+
+(*RES OLD MSG 332
+                    Node    Freq   Freq
+*)
+
+(*RES OLD MSG 325
+Collocate data cannot be displayed.  Please select some words first.
+*)
+
+(*RES OLD MSG 328
+Collecting collocates now ... please wait
+*)
+
+(*RES OLD MSG 329
+Calculating Z-Scores now ...
+*)
+
+(*RES OLD MSG 330
+Sorting by Z-Scores now ... please wait
+*)
+
+(*RES OLD MSG 326
+Display Screen is too narrow to show Collocate data.
+Use complete screen.
+*)
+
+(*RES OLD MSG 333
+Display Screen is too short to show Collocate data.
+Display requires at least %0 screen lines.
+*)
+
+(*RES OLD MSG 327
+No Collocate Data can be printed/written to file.
+Please select some words first.
+*)
+File: DISTDISP.MOD
+
+(*RES OLD MSG 88
+Total: %0
+*)
+
+(*RES OLD MSG 187
+No Distribution can be displayed.
+*)
+
+(*RES OLD MSG 188
+You Have Specified a very fine division in your distribution specifications.
+*)
+
+(*RES OLD MSG 67
+Display Screen is too narrow to show Distributions
+*)
+
+(*RES OLD MSG 248
+No Distribution can be printed/written to file.
+*)
+File: INDEXDIS.MOD
+
+(*RES OLD MSG 172
+No Index can be displayed.
+*)
+
+(*RES OLD MSG 249
+No Index can be printed/written to file
+*)
+File: KWICDISP.MOD
+
+(*RES OLD MSG 180
+No Kwic can be displayed.
+*)
+
+(*RES OLD MSG 250
+No KWIC display can be printed/written to file
+*)
+
+================================================
+this message appears when user has chosen "Print" or "Disk" from the File menu,and currently has no display to print or write to disk.
+================================================
+(*RES OLD MSG 251
+No printing or writing to a file can be performed until a
+TACT KWIC, Text, Index or Distribution display is selected.
+*)
+=================
+  Lists
+=================
+File: FILENAME.MOD
+
+================================================
+user has chosen "Word List" from Select menu which will discard the currentselected list.  This choice allows them to confirm this action, key choice (1)means "proceed and discard current list", key choice (2) means, cancel request.
+================================================
+(*RES OLD CHE 18
+= Y N
+Do you wish to discard the current selected word list?  Type "Y" for yes, or"N" for no:
+*)
+
+(*RES OLD MSG 318
+"%0" could not be used as a file name or pattern.
+*)
+
+(*RES OLD MSG 319
+Your File pattern "%0" selected nothing.
+*)
+File: RULELIST.MOD
+
+(*RES OLD MSG 232
+"%0" cannot be a legal file name for a rule file.
+*)
+
+(*RES OLD MSG 233
+"%0" is empty.
+*)
+
+(*RES OLD MSG 234
+Error opening rule file %0: %1
+*)
+
+(*RES OLD MSG 235
+Incorrectly formed Rule Line in file %0: %1
+*)
+
+(*RES OLD MSG 236
+Incorrectly formed Rule Line in file %0: Name %1 has no rule.
+*)
+=================
+  Rules
+=================
+File: RULEIO.MOD
+
+(*RES OLD MNU 25
+    Export Rule Name: %0_______________
+    Rule File:  %1________________________________________
+*)
+
+(*RES OLD MNU 26
+    Import Rule Name: %0_______________
+    Rule File:  %1________________________________________
+*)
+
+(*RES OLD MSG 237
+"%0" does not exist.
+*)
+
+(*RES OLD MSG 238
+"%0" is not in rule file "%1".
+*)
+
+(*RES OLD MSG 253
+Sorry, given rule is too large to fit.
+*)
+
+(*RES OLD MSG 239
+You have provided no criteria to export.  First create
+a criteria using the Autoselection window.
+*)
+
+(*RES OLD CHE 10
+= Y N
+File "%0" does not exist,
+Do you wish to create it? Y)es, N)o:
+*)
+
+(*RES OLD CHE 11
+= Y N
+Rule "%0" is already in file "%1".
+Do you wish to replace old entry? Y)es, N)o:
+*)
+File: RULEWIND.DEF
+
+(*RES OLD CHE 3
+"%0" is not a TACT Reference Name.  Type "S" to Select Reference
+name from a Selection List, or "C" to indicate you wish to
+correct your given entry.
+= S C
+*)
+
+(*RES OLD MSG 252
+Selected item could not be inserted in your criteria: it
+made it too big.
+*)
+File: RULEWIND.MOD
+
+(*RES OLD MNU 17
+                AutoSelection Dialog Box
+  Rule:
+  %2___________________________________________________
+  %3___________________________________________________
+  %4___________________________________________________
+  %5___________________________________________________
+
+  Config Context:    Unit: %8________________
+                     Before: %6______  After: %7_______
+
+  For list of Reference Names for Unit, type "?" in the
+                       Unit Field.
+
+  Manual Select? Yes: %|0No: %|1  %9___________________
+*)
+
+(*RES OLD MSG 159
+Searching
+*)
+
+(*RES OLD MSG 336
+Your selection rule did not select anything.
+*)
+
+(*RES OLD CHE 4
+= Y N
+Your criteria generated warning messages.
+Do you wish to use the resulting list? Y)es, N)o:
+*)
+File: PARSERUL.MOD
+
+(*RES OLD MSG 265
+Nothing selected, please use the INS key to select one or more words.
+*)
+
+(*RES OLD MSG 200
+Category "%0" contains nothing.
+*)
+
+(*RES OLD MSG 202
+Category "%0" is not defined.  Please select one from list.
+*)
+
+(*RES OLD MSG 165
+Word "%0" isn't in the vocabulary
+*)
+
+(*RES OLD MSG 305
+Selector Character ">" found twice within a single phrase
+*)
+
+(*RES OLD MSG 335
+Problem with "@": you currently have no selected list.
+*)
+
+(*RES OLD MSG 196
+A Regular Expression must be specified after "REGEXP"
+*)
+File: PARSERSO.MOD
+
+(*RES OLD MSG 161
+I couldn't understand this!  Problem occurred at :"%0"
+*)
+File: SCANNERS.MOD
+
+(*RES OLD DTA 14
+'<Criteria End>'
+'WHEN' 'REGEXP' 'POS' 'FREQ' 'SIMIL' 'SPAN'
+*)
+
+(*RES OLD MSG 162
+Your specification contains an unrecognized character: %0
+*)
+
+(*RES OLD MSG 160
+There is a missing closing delimiter for a string: %0
+*)
+
+(*RES OLD MSG 254
+The Escape Character "\" should not appear at the
+end of a line.
+*)
+File: SEARCHUT.MOD
+
+(*RES OLD CHE 21
+=S C
+To stop search immediately type "S", to continue type "C"
+*)
+
+(*RES OLD MSG 267
+SIMILarity specification requires a percentage value between 1 and 100.
+*)
+
+(*RES OLD MSG 111
+A SIMILarity specification selected nothing.
+*)
+
+(*RES OLD MSG 218
+A phrase selector (using "|"s) selected nothing.
+*)
+
+(*RES OLD MSG 219
+Your "with in range (ie. &)" criteria selected nothing.
+*)
+
+(*RES OLD MSG 220
+Your "not with in range (ie. ~)" criteria selected nothing.
+*)
+
+(*RES OLD MSG 255
+The "-" operand in your criteria selected nothing.
+*)
+File: REGULARE.MOD
+
+(*RES OLD MSG 163
+The specified range (between %0 and %1) is improper.
+*)
+
+(*RES OLD MSG 164
+The given regular expression must select everything.  Sorry,
+this is not permitted.
+*)
+
+(*RES OLD MSG 217
+Syntax error at "%0", probably missing a connector operator such as ",".
+*)
+
+(*RES OLD MSG 166
+A regular expression pattern selected nothing.
+*)
+File: WHENWORK.MOD
+
+(*RES OLD MSG 179
+"%0" cannot be used in numeric WHEN selection.
+*)
+
+(*RES OLD MSG 214
+"%0" cannot be used in string WHEN selection.
+*)
+
+(*RES OLD CHE 7
+Reference String "%0" not found in text DataBase.
+Enter: S)elect, or E)dit:
+= S E
+*)
+
+(*RES OLD MSG 263
+Nothing selected, please use the INS key to select one or more entries.
+*)
+
+(*RES OLD CHE 8
+In When: "%0" is not a name of a reference.
+Enter: S)elect, or E)dit:
+= S E
+*)
+
+(*RES OLD MSG 194
+"%0:%1" is not a proper range in a WHEN selection.
+*)
+
+(*RES OLD MSG 195
+A WHEN selection selected nothing.
+*)
+File: FREQBASE.MOD
+
+(*RES OLD MSG 257
+Improper FREQ specification found.
+*)
+
+(*RES OLD MSG 256
+A FREQ specification selected nothing.
+*)
+=================
+  Categories
+=================
+File: CATEGORI.DEF
+
+================================================
+User has choosen Category from Select menu, but then hasn't selected anycategories that were displayed.
+================================================
+(*RES OLD MSG 240
+No categories were selected.
+*)
+
+(*RES OLD MSG 216
+Category operations can only be used when you have a personal database.
+*)
+File: CATEGORI.MOD
+
+(*RES OLD MNU 23
+                Name of Category to create
+
+  Name: %0___________________________________________
+*)
+
+(*RES OLD MSG 191
+No categories defined.
+*)
+
+(*RES OLD MSG 334
+Category names cannot start with a digit, please start name "%0" with a letter.
+*)
+
+(*RES OLD MSG 192
+Category "%0" is already defined.  Please enter new name.
+*)
+
+(*RES OLD MSG 198
+A word list must be selected before creating a new category.
+*)
+
+(*RES OLD MSG 199
+A word list must be selected before modifying a category.
+*)
+
+(*RES OLD MSG 191
+No categories defined.
+*)
+=================
+  Database Utils
+=================
+File: HYPERBAS.MOD
+
+(*RES OLD MSG 135
+TACT ran out of usable memory
+*)
+
+(*RES OLD MSG 137
+Could not close file "%0": %1
+*)
+
+(*RES OLD MSG 138
+Error adding to File "%0": %1
+*)
+File: PDBBASE.MOD
+
+(*RES OLD MSG 146
+Fatal Error trying to Add record to Personal Database: %0
+*)
+File: REFSTRBA.MOD
+
+(*RES OLD MSG 193
+No reference strings defined.
+*)
+File: REFVALBA.MOD
+
+(*RES OLD MSG 264
+Reference pattern "%0" does not refer to any units.  Unit names are preceededby "%1".
+For a list of valid unit names type "%2?" and select one.
+*)
+=================
+  Selection Window
+=================
+File: SELECTWI.MOD
+
+(*RES OLD MSG 169
+A word must be given after character "%0"
+*)
+
+(*RES OLD MSG 170
+A category name must be given after character "%0"
+*)
+
+(*RES OLD MSG 171
+Some text must be given after character "%0"
+*)
+
+(*RES OLD MSG 201
+"%0" contains invalid characters for a word token number (only digitspermitted).
+*)
+
+(*RES UPD MSG 158
+"%0" contains characters that can't occur within a word/category name.
+*)
+
+(*RES OLD MSG 176
+Sorry, I cannot select all items from this list.
+*)

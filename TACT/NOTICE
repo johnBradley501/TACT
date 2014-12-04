@@ -1,0 +1,25 @@
+TACT Text Analysis software
+Individual files are Copyright 1986-1996 by one or more of 
+John Bradley, Lidio Presutti, Mike Stairs, Ian Lancashire, Geoffrey Rockwell, 
+University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+   limitations under the License.
+
+sgml2tdb includes an SGML parser "sgmls" developed by James Clark (jjc@jclark.com),
+and contained within sgmls are also SGML Parser
+materials provided free by the Standard Generalized Markup
+Language Users' Group (SGMLUG). The parts that were written by
+James Clark are in the public domain.
+
+A few modules are copyright Borland International or Jenson and Partners International,
+but were put in the public domain.

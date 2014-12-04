@@ -1,0 +1,148 @@
+DEFINITION MODULE TACTListModule;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM SYSTEM IMPORT ADDRESS;
+FROM HyperBase IMPORT HRecPntr;
+FROM VirtMem IMPORT VirtAddr;
+FROM ListData IMPORT
+  (* types *) ItemType, DataItemPntr;
+
+(*
+EXPORT QUALIFIED
+  (* types *) TACTListType, TACTList, TACTListData, TACTListItem,
+  (* procs *) InitializeList, NewListItem, DisposeListItem, GetListType,
+	CopyList, CopyListItem, InsertListItem, DeleteListItem, InitialRefStrList,
+	DiscardList, GetItemData, GetFirstItem, GetLastItem, GetNextItem,
+	GetPrevItem, FindItem, ItemDataPresent, FindFromString;
+*)
+
+TYPE
+   TACTListType = (MemoryList, FileNameList, CatList, TypeList, OccurrenceList,
+                   RuleList, RefNameList, RefStrList);
+
+(* TACTListItem should be treated as an Opaque type!  It is not stored as
+   such because some compilers (e.g. JPI) assume that Opaque types **MUST**
+   be pointers!   j.b. *)
+
+   TACTListItem = RECORD
+      CASE : BOOLEAN OF
+        TRUE:  DataVA:  VirtAddr
+      | FALSE: DataRA:  ADDRESS
+      END;
+   END;
+
+(* TACTList users (as opposed to creators) should treat TACTList as
+   Opaque -- do >>>not<<< use these data structures *)
+
+   DispLstItemProcType = PROCEDURE(ADDRESS, VAR TACTListItem);
+   GetItemDataProcType = PROCEDURE(ADDRESS, TACTListItem,
+                                   VAR VirtAddr, VAR DataItemPntr);
+   ReleaseItemProcType = PROCEDURE(ADDRESS, TACTListItem);
+
+   FindItemProcType = PROCEDURE(ADDRESS, VirtAddr (* as DataItemVA *),
+                                VAR TACTListItem): BOOLEAN;
+   GeneralListProcType = PROCEDURE(ADDRESS, VAR TACTListItem): BOOLEAN;
+   ItemDataPrsProcType = PROCEDURE(ADDRESS, ItemType, HRecPntr,
+                                   VAR TACTListItem): BOOLEAN;
+   FindFromStrProcType = PROCEDURE(ARRAY OF CHAR, ItemType, ADDRESS,
+                                   VAR TACTListItem): BOOLEAN;
+
+   TACTList = POINTER TO TACTListData;
+   TACTListBaseData = RECORD
+      NewItemProc:       PROCEDURE(ADDRESS, VAR TACTListItem);
+      DispListItemProc:  DispLstItemProcType;
+      DisposeListProc:   PROCEDURE(VAR ADDRESS);
+      GetItemDataProc:   GetItemDataProcType;
+      ReleaseItemProc:   ReleaseItemProcType;
+      GetFirstItemProc:  GeneralListProcType;
+      GetLastItemProc:   GeneralListProcType;
+      GetNextItemProc:   GeneralListProcType;
+      GetPrevItemProc:   GeneralListProcType;
+      FindItemProc:      FindItemProcType;
+      ItemDataPresProc:  ItemDataPrsProcType;
+      FindFromStrProc:   FindFromStrProcType;
+      CopyListItemProc:  PROCEDURE(TACTList, TACTListItem, VAR TACTListItem ) ;
+   END;
+   TACTListBasePntr = POINTER TO TACTListBaseData;
+
+   TACTListData = RECORD
+      LDataSize:       CARDINAL;
+      BaseData:        TACTListBasePntr;
+      Type:            TACTListType;
+      UniqueData:      ARRAY[0..0] OF BYTE; (* actual size varies *)
+   END;
+
+PROCEDURE NewListItem(List:  TACTList; VAR Item: TACTListItem);
+
+PROCEDURE DisposeListItem(List:  TACTList; VAR Item: TACTListItem);
+
+PROCEDURE GetListType(List:  TACTList): TACTListType;
+
+PROCEDURE CopyListItem(List:    TACTList;
+                       Item1:   TACTListItem;
+                   VAR Item2:   TACTListItem);
+
+PROCEDURE DiscardList(VAR List:   TACTList);
+
+PROCEDURE GetItemData(List: TACTList;
+                      Item: TACTListItem;
+                  VAR DVA:  VirtAddr; (* VAddress of Data *)
+                  VAR Data: DataItemPntr);
+
+PROCEDURE ReleaseItemHold(List: TACTList;
+                          Item: TACTListItem);
+
+PROCEDURE GetFirstItem(List:    TACTList;
+                   VAR Item: TACTListItem): BOOLEAN;
+
+PROCEDURE GetLastItem(List:     TACTList;
+                  VAR Item: TACTListItem): BOOLEAN;
+
+PROCEDURE GetNextItem(List:     TACTList;
+                  VAR Item: TACTListItem): BOOLEAN;
+
+PROCEDURE GetPrevItem(List:     TACTList;
+                  VAR Item: TACTListItem): BOOLEAN;
+
+PROCEDURE FindItem(List:        TACTList;
+                   Data:        VirtAddr; (* as DataItem VA *)
+               VAR Item:        TACTListItem): BOOLEAN;
+
+PROCEDURE ItemDataPresent(List:   TACTList;
+                          Type:   ItemType;
+                          Pos:    HRecPntr;
+                      VAR Item:   TACTListItem): BOOLEAN;
+
+PROCEDURE FindFromString(Text:   ARRAY OF CHAR; (* sort form *)
+                         Type:   ItemType;
+                         List:   TACTList;
+                     VAR Item:   TACTListItem): BOOLEAN;
+
+(* the following procedures are meant to be used only by list definers --
+   not users -- they provide common definitions of simple LIST functions.
+
+   NB: Not all list types >can< use them!!    jb *)
+
+PROCEDURE GenericNewListItem(List:  TACTList; VAR Item: TACTListItem);
+PROCEDURE GenericCopyListItem(List : TACTList; Item1 : TACTListItem; VAR Item2 : TACTListItem ) ;
+PROCEDURE GenericDisposeListItem(List:  TACTList; VAR Item: TACTListItem);
+PROCEDURE GenericDisposeList(VAR List :ADDRESS);
+PROCEDURE GenericGetItemData(List: TACTList;
+                         Item: TACTListItem;
+                     VAR DVA:  VirtAddr; (* VAddress of Data *)
+                     VAR Data: DataItemPntr);
+PROCEDURE GenericReleaseItemHold(List: TACTList;
+                                 Item: TACTListItem);
+END TACTListModule.

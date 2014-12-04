@@ -1,0 +1,97 @@
+DEFINITION MODULE HyperBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM FIO IMPORT File;
+FROM MemoryManagement IMPORT RealStoragePntr;
+FROM HyperDataModel IMPORT HRecPntr ;
+
+(*
+EXPORT QUALIFIED
+  (* TYPE *) HyperFile, HRecPntr,
+  (* Vars *) NilHRecPntr,
+  (* PROC *) OpenHyperFile, CloseHyperFile,
+             WriteAll, GetBaseHyper, MakeNewBaseHyper, ReleaseBaseHyper,
+             HyperFileSize;
+*)
+
+TYPE
+    IOModeType = (readmode, writemode, appendmode, readwritemode);
+    HyperFile;
+
+VAR
+    NilHRecPntr : HRecPntr ;
+
+(* CompareHRecs compares two HRecPntr's:  HRec1 < HRec2 returns -1
+					  HRec1 = HRec2    "     0
+					  HRec1 > HRec2    "    +1  *)
+PROCEDURE CompareHRecs( HRec1, HRec2 : HRecPntr ) : INTEGER ;
+
+
+(* HyperFileSize establishes the size of a HyperFile in
+   terms of number of HyperFile blocks it contains *)
+
+PROCEDURE OpenHyperFile(VAR HFile:    HyperFile;
+                            FileName: ARRAY OF CHAR;
+                            Mode:     IOModeType;
+                        VAR ErrMsg:   ARRAY OF CHAR):BOOLEAN;
+PROCEDURE SetTruncOK(HFile: HyperFile);
+
+
+(* CloseHyperFile is called within TACT to open a HyperFile
+   (either the Personal or Text DataBase) *)
+
+PROCEDURE CloseHyperFile(VAR File:    HyperFile;
+                         VAR ErrMsg:  ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE GetNumbRecs(File: HyperFile): CARDINAL;
+
+PROCEDURE FIOFile(HFile: HyperFile;
+              VAR Rslt:  File);
+
+(* WriteAll ensures that all HRecords that have been
+   marked as Changed are written to the HyperFile *)
+
+PROCEDURE WriteAll(VAR HFile:  HyperFile);
+
+(* GetBaseHyper is given a HyperFile, and a record number
+   on that file and returns a HyperAllocPointer that points to a record
+   containing an in-memory copy of that HyperFile Record.  It also
+   locks this record in memory so that it cannot disappear until released.
+   To unlock it (when finished with it) call ReleaseBaseHyper *)
+
+PROCEDURE GetBaseHyper(RecNo:     CARDINAL;
+                   VAR CX:        RealStoragePntr;
+                   VAR HFile:     HyperFile);
+
+(* MakeNewBaseHyper is given a HyperFile, and allocates a new Hyper-
+   record on that file; returning a HyperAllocPointer that points to the 
+   in-memory copy of that brand new HyperFile Record.  It also
+   locks this record in memory so that FreeUpHyperAlloc cannot release
+   it.  To unlock it (when finished with it) call ReleaseBaseHyper *)
+
+PROCEDURE MakeNewBaseHyper(VAR RecNo:     CARDINAL;
+                           VAR CX:        RealStoragePntr;
+                           VAR HFile:     HyperFile;
+                           VAR ErrMsg:    ARRAY OF CHAR): BOOLEAN;
+
+
+(* ReleaseBaseHyper indicates that the storage pointed at via
+   CX is no longer needed and can be released, if storage is needed
+   for other purposes.  It doesn't actually DEALLOCATE the storage *)
+
+PROCEDURE ReleaseBaseHyper(VAR HFile: HyperFile;
+                           VAR CX:    RealStoragePntr);
+
+END HyperBase.

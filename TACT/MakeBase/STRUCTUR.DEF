@@ -1,0 +1,116 @@
+DEFINITION MODULE StructuralInfo ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM SYSTEM IMPORT ADDRESS;
+FROM TWB    IMPORT WinType;
+FROM Lists      IMPORT ListPointer ;
+
+(*
+EXPORT QUALIFIED
+  (* type  *) StructInfoType, StructInfoDataType, StructInfoDataPntr,
+  (* vars  *) StructList,
+  (* Const *) MaxRefIDLen, NameFieldLen,
+  (* Procs *) MakeStructMenus, DestroyStructMenus, ShowStructMenu,
+              GetStructMenu, ShowStructTitleMenu, NewStructData, DeleteStructData,
+              IsStructDataEmpty, InitStructList, DeleteStructList ;
+*)
+
+CONST
+   NameFieldLen = 60 ;
+   MaxRefIDLen  = 20 ;
+
+TYPE
+   StructInfoType = ( NoType, EmptyType, WordCounterType, LineCounterType,
+                      ReferenceType, LabelType, CounterType, BYUType, PosType ) ;
+   StructInfoDataType = RECORD
+       Names             : ARRAY[0..NameFieldLen] OF CHAR ;
+       CASE TypeOfStructInfo : StructInfoType OF
+          NoType :        |
+          EmptyType :     |
+          WordCounterType :
+             WordCounterInit  : CARDINAL ;
+             |
+          LineCounterType :
+             LineCounterReset : ARRAY[0..NameFieldLen] OF CHAR ;
+             LineCounterInit  : CARDINAL ;
+             |
+          ReferenceType :
+             RefRefID : ARRAY[0..MaxRefIDLen] OF CHAR ;
+             RefNumeric : BOOLEAN ;
+             RefNoCharsKeep : CARDINAL ;
+             |
+          LabelType :
+             LabelOpenBracket   : ARRAY[0..7] OF CHAR;
+             LabelCloseBracket  : ARRAY[0..7] OF CHAR;
+             LabelSuppressText  : BOOLEAN ;
+             LabelWordSep       : BOOLEAN ;
+             LabelNumeric       : BOOLEAN ;
+             LabelNoCharsKeep   : CARDINAL ;
+             |
+          CounterType :
+             CounterRefID : ARRAY[0..NameFieldLen] OF CHAR ;
+             CounterReset : ARRAY[0..NameFieldLen] OF CHAR ;
+             CounterInit  : CARDINAL ;
+             CounterSuppressText  : BOOLEAN ;
+             |
+          BYUType :
+             BYURefID   : ARRAY[0..0 (* MaxRefIDLen *) ] OF CHAR ;
+             BYUNumeric : BOOLEAN ;
+             BYUNoCharsKeep : CARDINAL ;
+             |
+          PosType :
+             PosStart   :  CARDINAL;
+             PosEnd     :  CARDINAL;
+             PosNumeric :  BOOLEAN;
+       END ;
+    END;
+
+   StructInfoDataPntr = POINTER TO StructInfoDataType;
+
+VAR
+      StructList       : ListPointer ;
+
+PROCEDURE MakeStructMenus;
+
+PROCEDURE DestroyStructMenus;
+
+PROCEDURE ShowStructMenu( WindowRec:   WinType;
+                          OffX,OffY:   CARDINAL;
+                          Dta:         ADDRESS);
+
+PROCEDURE GetStructMenu(     WindowRec:  WinType;
+                             OffX,OfY:   CARDINAL;
+                             Term:       ARRAY OF CHAR;
+                             FunctTerm:  ARRAY OF CHAR;
+                         VAR Dta:        ADDRESS;
+                         VAR NumbItem:   CARDINAL;
+                         VAR TC:         CHAR;
+                         VAR FunctKey:   BOOLEAN );
+
+PROCEDURE ShowStructTitleMenu( WindowRec:  WinType;
+                               OffX,OffY:  CARDINAL);
+
+PROCEDURE NewStructData( VAR Dta :  ADDRESS);
+
+PROCEDURE DeleteStructData( VAR Dta : ADDRESS);
+
+PROCEDURE InitStructList();
+
+PROCEDURE DeleteStructList();
+
+PROCEDURE IsStructDataEmpty( Dta : ADDRESS): BOOLEAN;
+
+END  StructuralInfo .

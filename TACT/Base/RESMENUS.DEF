@@ -1,0 +1,98 @@
+DEFINITION MODULE ResMenus;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+IMPORT TWB;
+FROM SYSTEM IMPORT
+  (* type    *)  ADDRESS, BYTE;
+
+(*
+EXPORT QUALIFIED
+  (* const   *)
+  (* type    *)  MenuID, DispVProc,
+  (* var     *)
+  (* proc    *)  StartMenu, CharField, IntField, LongIntField, CardField,
+                 CharFieldProc, IntFieldProc, LongIntFieldProc, CardFieldProc,
+                 Switches, SwitchValue, SkipField, MakeMenu, DestroyMenu,
+                 GetFieldInfo, ClearMenuArea, ShowFixedText, ShowMenu, DoMenu;
+*)
+
+TYPE
+  MenuID;
+  DispVProc = PROCEDURE(ADDRESS,           (* pointer to data record being used *)
+                        VAR BOOLEAN,       (* TRUE = redisplay field *)
+                        VAR BOOLEAN);      (* TRUE = force re-edit *)
+
+PROCEDURE StartMenu(VAR Struct:   ARRAY OF BYTE);
+
+PROCEDURE CharFieldProc(VAR Result:  ARRAY OF CHAR;VerifyProc: DispVProc);
+
+PROCEDURE IntFieldProc(VAR Result:  INTEGER;VerifyProc: DispVProc);
+
+PROCEDURE LongIntFieldProc(VAR Result: LONGINT;VerifyProc: DispVProc);
+
+PROCEDURE CardFieldProc(VAR Result:  CARDINAL;VerifyProc: DispVProc);
+
+PROCEDURE LongCardFieldProc(VAR Result:  LONGCARD;VerifyProc: DispVProc);
+
+PROCEDURE CharField(VAR Result:  ARRAY OF CHAR);
+
+PROCEDURE IntField(VAR Result:  INTEGER);
+
+PROCEDURE LongIntField(VAR Result: LONGINT);
+
+PROCEDURE CardField(VAR Result:  CARDINAL);
+
+PROCEDURE LongCardField(VAR Result:  LONGCARD);
+
+PROCEDURE Switches(VAR Result:  BYTE);
+
+PROCEDURE SwitchValue(ResultVal: BYTE);
+
+PROCEDURE SkipField;
+
+PROCEDURE MakeMenu(ResID:   CARDINAL;
+              VAR  ID:     MenuID);
+
+PROCEDURE DestroyMenu(VAR ID:   MenuID);
+
+PROCEDURE GetFieldInfo(Menu:       MenuID;
+                       ItemID:     CARDINAL;
+                   VAR X,Y,Len:    CARDINAL);
+
+PROCEDURE ClearMenuArea(WindowID:   TWB.WinType;
+                        OffX:       CARDINAL;
+                        OffY:       CARDINAL;
+                        ID:         MenuID);
+
+PROCEDURE ShowFixedText(WindowID: TWB.WinType;
+                        ID:  MenuID;
+                        OffX,OffY:   CARDINAL);
+
+PROCEDURE ShowMenu(WindowID:    TWB.WinType;
+                   ID:          MenuID;
+                   OffX,OffY:   CARDINAL;
+               VAR Data:        ARRAY OF BYTE);
+
+PROCEDURE DoMenu(WindowID:      TWB.WinType;
+                 ID:            MenuID;
+                 OffX,OffY:     CARDINAL;
+                 Term:          ARRAY OF CHAR;
+                 FunctTerm:     ARRAY OF CHAR;
+             VAR Result:        ARRAY OF BYTE;
+             VAR ItemNumb:      CARDINAL;
+             VAR TC:            CHAR;
+             VAR FunctKey:      BOOLEAN );
+
+END ResMenus.

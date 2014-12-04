@@ -1,0 +1,156 @@
+DEFINITION MODULE XlatUserInput ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*# data(const_in_code=>on) *)
+
+FROM SYSTEM IMPORT ADDRESS ;
+ FROM VirtualMemory IMPORT VirtualAddrType ;
+ FROM StructuralInfo IMPORT StructInfoType, MaxRefIDLen, NameFieldLen ;
+
+(*
+EXPORT QUALIFIED
+  (* Const *) MaxNumbResets, EolSymbol, WordSepCode, HighKeyCode,
+  (* Types *) IgnoreRefPtr, CounterPtr, CounterCharPtr, LabelPtr,
+              RefBYUPtr, NamesTypePtr, NamesType, ReshowMenuType,
+  (* Vars  *) IgnoreBrkList, RefBrkList, CounterCharList, LabelList,
+              RefList, BYUList, WordCounterPtr, LineCounterPtr, NamesList,
+              NumberNamesInList, StructIDCounter,
+  (* Procs *) InitXlateLists, FreeXlateLists, BuildAlphabetXlate,
+              BuildSpecialCharXlate, BuildStructInfoXlate;
+*)
+
+CONST
+  MaxNumbResets = 10 ;
+  EolSymbol      = 15C ;  (* = ASCII CR *)
+  HighKeyCode  = 377C ;
+  WordSepCode  = 1C ;
+
+TYPE
+  ReshowMenuType = (XUAllOK, XUSpecChars, XUStructList);
+  IgnoreRefPtr  = POINTER TO IgnoreRefType ;
+  IgnoreRefType = RECORD
+                    OpenCode, ClosingCode:  CHAR ;
+                    SuppressText:           BOOLEAN ;
+                    WordSep:                BOOLEAN ;
+                    Next:                   IgnoreRefPtr
+                  END ;
+
+  CounterPtr  = POINTER TO CounterRecType ;
+  CounterRecType = RECORD
+                    StructID              : CARDINAL ;
+                    CurrentValue          : CARDINAL ;
+                    Init                  : CARDINAL ;
+                    SuppressText          : BOOLEAN ;
+                    Next                  : CounterPtr ; (* used as a thread thru
+                                      all counter recs needed to check for loops *)
+                    ResetsCounters        : ARRAY[1..MaxNumbResets] OF CounterPtr
+                  END ;
+
+  CounterCharPtr  = POINTER TO CounterCharRecType ;
+  CounterCharRecType = RECORD
+                    Code                  : CHAR ;
+                    ToCounterData         : CounterPtr ;
+                    Next                  : CounterCharPtr ;
+                  END ;
+
+  LabelPtr  = POINTER TO LabelRecType ;
+  LabelRecType = RECORD
+                    StructID              : CARDINAL ;
+                    OpenCode, ClosingCode : CHAR ;
+                    SuppressText          : BOOLEAN ;
+                    WordSep               : BOOLEAN ;
+                    Numeric               : BOOLEAN ;
+                    NoCharsKeep           : CARDINAL ;
+                    VLastStr		  : VirtualAddrType ; (* pointer for current str val *)
+                    StrHeader             : VirtualAddrType ; (* Bal Tree of str *)
+                    StrRecInfo            : ARRAY[0..3] OF CHAR ;
+                    Next                  : LabelPtr ;
+                    IncremCounters        : ARRAY[1..MaxNumbResets] OF CounterPtr ;
+                  END ;
+
+  RefBYUPtr  = POINTER TO RefBYURecType ;
+  RefBYURecType = RECORD
+                    StructID              : CARDINAL ;
+                    RefID                 : ARRAY[0..MaxRefIDLen] OF CHAR ;
+                    Numeric               : BOOLEAN ;
+                    NoCharsKeep           : CARDINAL ;
+                    VLastStr		  : VirtualAddrType ; (* pointer for current str val *)
+                    StrHeader             : VirtualAddrType ; (* Bal Tree of str *)
+                    StrRecInfo            : ARRAY[0..3] OF CHAR ;
+                    Next                  : RefBYUPtr ;
+                    IncremCounters        : ARRAY[1..MaxNumbResets] OF CounterPtr ;
+                  END ;
+
+  RefPosPtr  = POINTER TO RefPosRecType ;
+  RefPosRecType = RECORD
+                    StructID              : CARDINAL ;
+                    StartPos              : CARDINAL ;
+                    EndPos                : CARDINAL ;
+                    Next                  : RefPosPtr;
+                    IncremCounters        : ARRAY[1..MaxNumbResets] OF CounterPtr ;
+                    VLastStr		  : VirtualAddrType ; (* pointer for current str val *)
+                    StrHeader             : VirtualAddrType ; (* Bal Tree of str *)
+                    StrRecInfo            : ARRAY[0..3] OF CHAR ;
+                    CASE Numeric : BOOLEAN OF
+                      FALSE: LastValStr   : ARRAY [0..99] OF CHAR
+                    | TRUE:  LastValCard  : CARDINAL
+                    END;
+                  END;
+
+  NamesTypePtr = POINTER TO NamesRecType ;
+  NamesType = ARRAY[0..NameFieldLen] OF CHAR ;
+  NamesRecType = RECORD
+                    Name        : NamesType ;
+                    NameID      : CARDINAL ;
+                    Preference  : CARDINAL ;  (* added, j.b. *)
+                    AddrType    : StructInfoType ;
+                    CounterAddr : ADDRESS ;
+                    Next        : NamesTypePtr ;
+                 END ;
+
+VAR
+  IgnoreBrkList   : IgnoreRefPtr ;
+  RefBrkList      : IgnoreRefPtr ;
+  CounterCharList : CounterCharPtr ; (* for punctuation type of resets *)
+  LabelList       : LabelPtr ;
+  RefList         : RefBYUPtr ;
+  BYUList         : RefBYUPtr ;
+  PosRefList      : RefPosPtr ;
+  WordCounterPtr  : CounterPtr ;
+  LineCounterPtr  : CounterPtr ;
+  NamesList       : NamesTypePtr ;
+  NumberNamesInList : CARDINAL ;
+  StructIDCounter : CARDINAL ;
+
+(*---------------------------------------------------------------------
+   Note: the order of calling is important.
+   Order - InitXlateLists
+           BuildAlphabetXlate
+           BuildSpecialCharXlate
+           BuildStructInfoXlate
+---------------------------------------------------------------------*)
+PROCEDURE InitXlateLists( ) ;
+
+PROCEDURE FreeXlateLists( ) ;
+
+PROCEDURE BuildAlphabetXlate( ) : CARDINAL ;
+
+PROCEDURE BuildSpecialCharXlate( ) : CARDINAL ;
+
+PROCEDURE BuildStructInfoXlate():   ReshowMenuType;
+
+PROCEDURE VerifyRefTemplate(InTemplate: ARRAY OF CHAR):   BOOLEAN;
+
+END XlatUserInput .

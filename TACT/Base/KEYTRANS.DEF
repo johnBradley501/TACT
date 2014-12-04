@@ -1,0 +1,131 @@
+DEFINITION MODULE KeyTranslation ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+IMPORT ASCII;
+FROM Utils      IMPORT BFile;
+FROM TWB        IMPORT WinType, PaletteRange;
+FROM Translations IMPORT OutProc;
+
+(*
+EXPORT QUALIFIED
+  (* Const *) XlatTablDatFileTag,
+              IntTab, IntEnhOn, IntEnhOff,
+  (* Type  *) TabInfo,TabType,
+  (* Procs *) GetScreenField, WriteScreenField, FancyScreenDisplay, DumpKeyData,
+              InitialTranslationData ;
+*)
+CONST
+   XlatTablDatFileTag = 'XLATTABL.DAT'; (* File name for XlatTabl *)
+   IntTab = ASCII.ht; (* screen & internal value TAB key same as ASCII Tab *) 
+   IntEnhOn = 374C; (* from STANDARD.CDF file *)
+   IntEnhOff = 375C; (* from STANDARD.CDF file *)
+
+TYPE
+    TabType = (Right,Left,Decimal, Centre);
+    TabInfo = RECORD
+       Pos:    CARDINAL;
+       Type:   TabType;
+       FilPat: ARRAY[0..2] OF CHAR;
+    END;
+
+    KeyCode = RECORD
+       Char : CHAR ;
+       Ext  : BOOLEAN ;
+    END ;
+
+VAR
+      FILEText:            ARRAY[0..15] OF CHAR;
+      PRINTERText:         ARRAY[0..15] OF CHAR;
+      FirstKeyIsText:      BOOLEAN ; (* is set by GetScreenField *)
+      FieldEditingAttr:    PaletteRange;
+      FieldNotEditingAttr: PaletteRange;
+
+PROCEDURE WriteScreenField( WindowRec:   WinType;
+                            L, X, Y:     CARDINAL;
+                            Text:        ARRAY OF CHAR;
+                            Attr:        CARDINAL;
+                            Update:      BOOLEAN);
+
+(* FancyScreenDisplay is like WriteScreenField in that it writes to the
+   screen.  However, it does some fancier things: in particular, handles
+   Enhanced screen display and tabbing, based on the appearance of codes
+   in the Text file *)
+
+PROCEDURE FancyScreenDisplay( WindowRec:   WinType;
+                              X, Y:        CARDINAL;
+                              Text:        ARRAY OF CHAR;
+                              Tabs:        ARRAY OF TabInfo;
+                              Update:      BOOLEAN);
+
+
+(* m.s. - reads keystroke from keyboard, translates and returns *)
+PROCEDURE DoKeyTranslation( VAR Numb : CARDINAL ;
+                            VAR Result : ARRAY OF CHAR ;
+                            Term       : ARRAY OF CHAR ;
+                            VAR TC     : CHAR ;
+                            VAR FunctKey:      BOOLEAN);
+
+
+
+PROCEDURE GetScreenField( WindowRec:     WinType;
+                          L, X, Y:       CARDINAL;
+                          Term:          ARRAY OF CHAR;
+                          FunctTerm:     ARRAY OF CHAR;
+                      VAR Result:        ARRAY OF CHAR;
+                      VAR TC:            CHAR;
+                      VAR FunctKey:      BOOLEAN );
+
+    (* PROCEDURE GetScreenField reads an existing portion of text on
+       the screen (a "field") and allows the program user at the
+       keyboard to edit this line.  It returns the resulting line to the
+       calling routine.  The procedure supports the type of automatic
+       keyboard translation that is required to conveniently handle
+       foreign-language character sets.  The parameters are:
+
+       WindowRec: This data structure contains the WM's identifer of which
+                 screen is to be used, the CurrentAttribute, the user buffer
+                 address and size of buffer.
+
+       L:        Is the maximum apparent length of the string on
+                 the screen.  Note that this length is NOT the same as the
+                 size of the Result array!!!
+
+       X,Y:      Is the position on the screen the field is to be
+                 displayed.
+
+       Result:   This variable returns the version of the string that
+                 exists after the user has edited it.
+
+       Term:     Is the set of characters that the user can enter
+                 to indicate that s/he has finished entering the string.
+
+       FunctTerm:  Is the set of extended character codes to allow Function
+                 keys, etc, to be used to indicate end of string editing.
+
+       TC:       Is the character or extended character code that
+                 is returned to the calling program, indicating which "end of
+                 editing" code was entered by the user.
+
+       FunctKey:  Is a boolean: FALSE indicates user used a
+                 character from Term, TRUE indicates a character from FunctTerm.
+    *)
+
+
+
+PROCEDURE DumpKeyData( OutPut:     OutProc);
+
+PROCEDURE InitialTranslationData() : BOOLEAN;
+
+END KeyTranslation .

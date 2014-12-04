@@ -1,0 +1,41 @@
+(* Copyright (C) 1987 Jensen & Partners International *)
+
+DEFINITION MODULE TFormIO ;
+
+PROCEDURE WrF ( Pat : ARRAY OF CHAR ;
+            VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF1 ( Pat : ARRAY OF CHAR ;
+                 P1  : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF2 ( Pat : ARRAY OF CHAR ;
+                 P1,P2  : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF3 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3  : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF4 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3,P4  : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF5 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3,P4,P5  : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF6 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3,P4,P5,P6 : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF7 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3,P4,P5,P6,P7 : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+PROCEDURE WrF8 ( Pat : ARRAY OF CHAR ;
+                 P1,P2,P3,P4,P5,P6,P7,P8 : ARRAY OF BYTE ;
+             VAR res : ARRAY OF CHAR) ;
+
+END TFormIO.
+

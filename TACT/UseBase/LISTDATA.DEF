@@ -1,0 +1,204 @@
+DEFINITION MODULE ListData;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM SYSTEM IMPORT ADDRESS;
+FROM GlobalDefs IMPORT StrAny;
+FROM VirtMem IMPORT VirtAddr;
+FROM TypeBase IMPORT HTypeHandle;
+FROM HyperBase IMPORT
+  (* TYPE *)  HRecPntr;
+FROM HyperDataModel IMPORT
+  (* Types *) HyperData, HTypePntr, HyperRType, HTypeData, TDBTypeData, HOccurData,
+              HLogDataType, HTokenData;
+(*
+Last Modified:
+  Jan 21/91 - removed referenced to TypeType: WordInt   **LP**
+*)
+
+(*
+EXPORT QUALIFIED
+  (* Const *) MaxOccursPerBlock, MaxListItemsPerBlock,
+  (* types *) ItemType,
+              StringPntr, StringData, DataItem, DataItemPntr,
+  (* procs *) MakeStringData, ReleaseStringData, MakeTypeDataItem, MakeTDBTypeDataItem,
+              MakeTokenDataItem, MakeCatDataItem, AllocateDataItem,
+              MakeRefNameItem, CompareDataItems, MarkAsUsed,
+              MarkAsFreed, MakeRefStringItem, MakeColDataItem, MakeDistDataItem ;
+*)
+
+CONST
+    MaxOccursPerBlock = 100;
+    MaxListItemsPerBlock = 100;
+    MaxDistID = 10;
+
+TYPE
+   ItemType = (CatType, TypeType, TokenType, RefNameType, RuleType,
+               RefStringType, RefNumbType, FileNameType, ColDataItemType,
+               ZScoreType, DistDataItemType, MKSInfoLineType (* m.s.*), AnyType);
+
+(* AnyType is used >>only<< as a legal "ItemType" value to TACTListModule
+procedure "FindFromString".  There, it means, match all types using
+the "string" type I have given you j.b. *)
+
+   StringPntr = POINTER TO StringData;
+   DataItemPntr = POINTER TO DataItem;
+
+   StringData = RECORD
+        ItemSize:   CARDINAL;
+        String:     StrAny;
+   END;
+
+   DataItem = RECORD
+        ItemSize:   CARDINAL;
+        UsageCount: CARDINAL;
+        FilePos:    HRecPntr;
+        NoContents: CARDINAL;
+        Contents:   VirtAddr; (* Contents will always be a TACTList *)
+        Annotation: VirtAddr;
+        CASE DataType: ItemType OF
+          TypeType:
+             TypeFileData: HTypeData;
+        | TokenType:
+             TokenFileData: HTokenData;
+             HeadWord:      VirtAddr; (* to DataItem *)
+             CurrentContextCount: CARDINAL ;
+             StartContext:  HRecPntr ;
+             FinishContext: HRecPntr ;
+             BefOffset:     CHAR ;
+             AftOffset:     CHAR ;
+             TokenDataLoaded: BOOLEAN;
+        | CatType:
+             CatName:     ARRAY[0..40] OF CHAR;
+        | RefStringType:
+             RefID:     INTEGER ;
+             IntStrVA:  VirtAddr ; (* to StringPntr *)
+             SortStrVA: VirtAddr ; (* to StringPntr *)
+        | RuleType:
+             RuleName:     StringPntr; (* do these still work?? j.b.*)
+             SortRuleName: StringPntr;
+             RuleLine:     StringPntr;
+        | RefNameType:
+             (* No extra storage needed here j.b. *)
+        | FileNameType:
+             FNameInt:     ARRAY[0..15] OF CHAR;
+        | MKSInfoLineType:  (* m.s. - type for MKS info to be stored in VM *)
+             Next:	   VirtAddr ;
+             Prev:	   VirtAddr ;
+             LineInfo:	   ARRAY[0..79] OF CHAR; (* m.s. - max screen width? *)
+        | ColDataItemType, ZScoreType :
+	     PrevColVA:	   VirtAddr ;
+	     NextColVA:	   VirtAddr ;
+	     Freq:	   CARDINAL ;
+	     ZScore:	   REAL ;
+             HeadWordData: HTypeData;
+	| DistDataItemType:
+	     PrevDistVA:   VirtAddr ;
+	     NextDistVA:   VirtAddr ;
+	     LogID:	   HLogDataType ;
+	     LineID:	   ARRAY[0..MaxDistID-1] OF CHAR;
+        END;
+   END;
+
+VAR
+      FirstMKSLine: VirtAddr ;
+
+PROCEDURE MarkAsUsed(  Pntr : DataItemPntr);
+
+PROCEDURE MarkAsFreed( Pntr : DataItemPntr);
+
+(* all the Make.* procedures require a VMRelease after their use !! j.b. *)
+
+PROCEDURE AllocateDataItem(Size:     CARDINAL;
+                           Pool:     CARDINAL;
+                       VAR VA:       VirtAddr;
+                       VAR Pntr:     DataItemPntr);
+
+PROCEDURE MakeStringData(Data:     ARRAY OF CHAR;
+                         Pool:     CARDINAL;
+                     VAR VA:       VirtAddr);(* StringData VA *)
+
+PROCEDURE MakeRealStringData(Data:  ARRAY OF CHAR;
+                         VAR Pntr:  StringPntr);
+
+PROCEDURE ReleaseStringData(VAR VA:  VirtAddr);
+
+PROCEDURE ReleaseRealStringData(VAR Pntr: StringPntr);
+
+PROCEDURE MakeTDBTypeDataItem(Data: TDBTypeData;
+                           Pool:    CARDINAL;
+                       VAR VA:      VirtAddr;
+                       VAR Pntr:    DataItemPntr);
+
+PROCEDURE MakeTypeDataItem(Data:    HTypeData;
+                           Pool:    CARDINAL;
+                       VAR VA:      VirtAddr;
+                       VAR Pntr:    DataItemPntr);
+
+PROCEDURE MakeTokenDataItem(VAR VA:    VirtAddr;
+                            Pool:      CARDINAL;
+                            VAR Pntr:  DataItemPntr);
+
+PROCEDURE MakeCatDataItem(Name:    ARRAY OF CHAR;
+                          Pool:    CARDINAL;
+                      VAR VA:      VirtAddr;
+                      VAR Pntr:    DataItemPntr);
+
+PROCEDURE MakeRefNameItem(Idx:     CARDINAL;
+                          Pool:    CARDINAL;
+                      VAR VA:      VirtAddr;
+                      VAR Pntr:    DataItemPntr);
+
+PROCEDURE MakeRefStringItem( RefID : INTEGER ;
+                             Pool  : CARDINAL;
+                         VAR VA    : VirtAddr;
+                         VAR Pntr  : DataItemPntr ) ;
+
+PROCEDURE MakeRuleItem( pRuleName: ARRAY OF CHAR;
+                    VAR pRuleLine: ARRAY OF CHAR; (* read only *)
+                        Pool:      CARDINAL;
+                    VAR VA:        VirtAddr;
+                    VAR Pntr:      DataItemPntr ) ;
+
+PROCEDURE MakeFileNameItem(fName: ARRAY OF CHAR;
+                           Pool:  CARDINAL;
+                       VAR VA:    VirtAddr;
+                       VAR Pntr:  DataItemPntr);
+
+PROCEDURE MakeMKSLineItem(Line: ARRAY OF CHAR;
+                           Pool:  CARDINAL );
+(*                       VAR VA:    VirtAddr;
+                       VAR Pntr:  DataItemPntr);
+*)
+
+PROCEDURE MakeColDataItem(     Data	: HTypeHandle;
+			       Pool	: CARDINAL;
+			   VAR VA	: VirtAddr;
+			   VAR Pntr	: DataItemPntr);
+
+PROCEDURE MakeDistDataItem(    Pool	: CARDINAL;
+			   VAR VA	: VirtAddr;
+			   VAR Pntr	: DataItemPntr);
+
+(* DuplicateDataItem needs call to VMRelease for new object *)
+
+PROCEDURE DuplicateDataItem( DataIn:   VirtAddr; (* as DataItemVA *)
+                             PoolOut:  CARDINAL;
+                         VAR DataOut:  VirtAddr; (* as DataItemVA *)
+                         VAR PntrOut:  DataItemPntr);
+
+PROCEDURE CompareDataItems( Data1, Data2 : DataItemPntr ) : INTEGER;
+
+PROCEDURE CompareVADataItems( Data1, Data2 : VirtAddr ) : INTEGER;
+END ListData.

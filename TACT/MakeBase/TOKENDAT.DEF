@@ -1,0 +1,121 @@
+DEFINITION MODULE TokenDataSource ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*--------------------------------------------------------------------------*)
+(* By:    Lidio Presutti                                                    *)
+(* Date:  June  8, 1988                                                     *)
+(* Purpose: Global definitions of the "hyper-record" data format for the    *)
+(*   virtual memory.                                                        *)
+(*                                                                          *)
+(* History:                                                                 *)
+(*   8 June 88 - changed NumbOccursInList from 4 to 8 (less thrashing but   *)
+(*     more wast of virtual memory for words with few frequancies).         *)
+(*     Chanced OccurenceData from RECORD VTokenP : VirtAddr ; TokenO : BYTE.*)
+(*     This improves the WriteOccurData by doing less MakeReals.            *)
+(*     -- Lidio Presutti.                                                   *)
+(*   1 Dec 90 - modified TypeData (removed CASE) for data compression in    *)
+(*     Type info (see new HyperDataModel.DEF).  **LP**                      *)
+(*--------------------------------------------------------------------------*)
+
+
+FROM GlobalDefs IMPORT StrAny ;
+FROM VirtualMemory IMPORT VirtualAddrType ;
+FROM Translations IMPORT XFileType ;
+
+(*
+EXPORT QUALIFIED
+  (* Const *) NumbTokensInList, NumbOccursInList, BaseTypeDataLen,
+  (* Types *) TypeData, TypeDataPointer, TokenData, TokenListData, TokenListPointer,
+              OccurrenceData, OccurrenceListPointer, OccurrenceListData,
+  (* Vars  *) RecordNumber, TokenNumber, TypeNumber, HeadWordHeader,
+              TokenListStart, CurrTokenArray, CurrTokenPos, BeginToken,
+              VTokenListStart, VCurrTokenArray,
+              BeginOccur, BeginType, BeginText, BeginIndex,
+              EndTextRec, EndTextIdx, EndTypeRec, EndTypeIdx,
+              EndTokenRec, EndTokenIdx, NoTypes, BeginStr, EndStr,
+              BeginLog, EndLog, BeginStrRec, NoStrRecs ;
+  (* Vars  *) InputFileID ;
+*)
+  CONST
+     NumbTokensInList = 16 ;
+     NumbOccursInList = 8 ;
+     BaseTypeDataLen  = 14 ; (* 2 + 2 + 2 + 4 + 4 *)
+
+  TYPE
+     TypeDataPointer  = POINTER TO TypeData ;
+     TypeData = RECORD
+                   KRecNo  : CARDINAL ;  (* pointer to Type HeadWord location in DB *)
+                   KRecPos : CARDINAL ;
+		   NoOccurs : CARDINAL ;
+		   VOccurList : VirtualAddrType (* OccurrenceListPointer *);
+		   VOccurListEnd : VirtualAddrType (* OccurrenceListPointer *) ;
+                END ;
+
+     TokenData = RECORD
+                    VLogPtr  : VirtualAddrType (* LogListPtr *) ;
+                    TRecNo   : CARDINAL ;
+                    TRecPos  : CARDINAL ;
+                    VWordType : VirtualAddrType (* TypeDataPointer *) ;
+                 END ;
+
+     TokenListPointer = POINTER TO TokenListData ;
+     TokenListData = RECORD
+                        TokenA : ARRAY [1..NumbTokensInList] OF TokenData ;
+                        Next : VirtualAddrType (* TokenListPointer *) ;
+                     END ;
+
+     OccurrenceListPointer = POINTER TO OccurrenceListData ;
+     OccurrenceData = RECORD
+                         TokenRecNo  : CARDINAL (* was pntr to TokenListPointer *) ;
+                         TokenRecPos : CARDINAL ;
+                      END ;
+     OccurrenceListData = RECORD
+                             OccurA : ARRAY [1..NumbOccursInList] OF OccurrenceData ;
+                             Next   : VirtualAddrType (* OccurrenceListPointer *);
+                          END ;
+
+  VAR
+     RecordNumber : LONGCARD ;
+     TokenNumber  : LONGCARD ;
+     TypeNumber   : LONGCARD ;
+     HeadWordHeader  : VirtualAddrType ;
+     TokenListStart  : TokenListPointer ;
+     VTokenListStart : VirtualAddrType ;
+     CurrTokenArray  : TokenListPointer ;
+     VCurrTokenArray : VirtualAddrType ;
+     CurrTokenPos    : CARDINAL ;
+
+     BeginToken : CARDINAL ;
+     BeginOccur : CARDINAL ;
+     BeginType  : CARDINAL ;
+     BeginText  : CARDINAL ;
+     BeginIndex : CARDINAL ;
+     EndTextRec : CARDINAL ;
+     EndTextIdx : CARDINAL ;
+     EndTypeRec : CARDINAL ;
+     EndTypeIdx : CARDINAL ;
+     EndTokenRec : CARDINAL ;
+     EndTokenIdx : CARDINAL ;
+     BeginStr    : CARDINAL ;
+     EndStr      : CARDINAL ;
+     BeginLog    : CARDINAL ;
+     EndLog      : CARDINAL ;
+     BeginStrRec : CARDINAL ;
+     NoStrRecs   : CARDINAL ;
+     NoTypes     : CARDINAL ;
+
+     InputFileID : XFileType ;
+
+END TokenDataSource .

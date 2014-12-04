@@ -1,0 +1,227 @@
+DEFINITION MODULE Translations ;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+IMPORT ASCII;
+FROM Utils      IMPORT BFile;
+FROM GlobalDefs IMPORT
+  (* Type   *) SequenceType, StrAny,
+  (* Contst *) MaxStringLen ;
+
+(*
+EXPORT QUALIFIED
+ (* type *) XlateTablePointer, XlateEntryPointer, XlateEntryDataType,
+            XlateTable, XlateTableRec, XlateDirectionType,
+            HandleDuplicateType, LengthDataType, XFileType, XlateStrAny,
+            OutProc,
+ (* var  *) Int2Scr, Int2Prt, Scr2Int, Int2Alp, Alp2Int, Int2FAlp,
+            Int2File,File2Int;
+ (* proc *) InsertXlateData, EquateXlateData, DeleteXlateTable,
+            DumpXlateTable, XlateLine, FindXlateTable, XOpenInput, XAppend,
+            XOpenOutput, XClose, XReadLine, XWriteLine, XWrStr, XWrLn, WrNXlate,
+            AddIfAbsent, AddNewXlateListEntry, InitialXlateData;
+*)
+CONST
+   XlatTablDatFileTag = 'XLATTABL.DAT'; (* File name for XlatTabl *)
+   IntTab = ASCII.ht; (* screen & internal value TAB key same as ASCII Tab *)
+   IntEnhOn = 374C; (* from STANDARD.CDF file *)
+   IntEnhOff = 375C; (* from STANDARD.CDF file *)
+
+TYPE
+    OutProc = PROCEDURE(ARRAY OF CHAR): BOOLEAN;
+    XlateEntryPointer = POINTER TO XlateEntryDataType; 
+    XlateEntryDataTypeType = (StrResult, ModeChange);
+    XlateEntryDataType = RECORD
+                           InChar: CHAR; 
+                           Next: XlateEntryPointer;
+                           Failure: XlateEntryPointer;
+                           CASE Type:XlateEntryDataTypeType OF
+                             StrResult:
+                                 OutSeq:  SequenceType;
+                                 OutLen: CARDINAL;
+                                 OutMode: CHAR;
+                           | ModeChange:
+                                 NewMode: CHAR;
+                           END;
+                         END; 
+    XlateTable = ARRAY [1C..377C] OF XlateEntryPointer; 
+    XlateTableRec = RECORD 
+                      XlateTableDat: XlateTable
+                    END;
+    XlateTablePntr = POINTER TO XlateTableRec;
+    XlateModeData = RECORD
+                      Table:   XlateTablePntr;
+                      Seq:     SequenceType;
+                    END;
+    XlateModeList = RECORD
+                      XlateMode: ARRAY['0'..'9'] OF POINTER TO XlateModeData;
+                    END;
+    XlateTablePointer = POINTER TO XlateModeList;
+    CurrentModeType = RECORD
+       ModeIn:    CHAR;
+       ModeOut:   CHAR;
+    END;
+
+    XlateDirectionType = (To,From,Append,StdOut,Defective);
+    HandleDuplicateType = (GiveError, UpdateEntry, DiscardEntry);
+    LengthDataType = RECORD
+        Int:        CARDINAL;
+        Out:        CARDINAL;
+        ApprOut:    CARDINAL;
+        END ;
+    XlateStrAny = ARRAY[0..MaxStringLen] OF LengthDataType ;
+    XFileType = RECORD
+        ID:         BFile;
+        Dir:        XlateDirectionType;
+        XP:         XlateTablePointer;
+        ModeData:   CurrentModeType;
+        END ;
+    TabType = (Right,Left,Decimal, Centre);
+    TabInfo = RECORD
+       Pos:    CARDINAL;
+       Type:   TabType;
+       FilPat: ARRAY[0..2] OF CHAR;
+    END;
+
+VAR
+(*  Int2Scr:  XlateTablePointer;
+    Int2Prt:  XlateTablePointer;
+    Scr2Int:  XlateTablePointer; *)
+    Int2Alp:  XlateTablePointer;
+    Alp2Int:  XlateTablePointer;
+    Int2FAlp: XlateTablePointer;
+    Int2File: XlateTablePointer;
+    File2Int: XlateTablePointer;
+
+    MODEText: ARRAY[0..12] OF CHAR;
+    FILEText: ARRAY[0..15] OF CHAR;
+    PRINTERText: ARRAY[0..15] OF CHAR;
+    INTERNALText: ARRAY[0..15] OF CHAR;
+
+    LenD:     XlateStrAny; (* available to all modules *)
+
+PROCEDURE InitialXlateData(VAR XP:    XlateTablePointer);
+
+PROCEDURE InsertXlateData(VAR XP:                XlateTablePointer;
+                          ModeIn,ModeOut:        CHAR;
+                          GivenSeq, GivenOutSeq: ARRAY OF CHAR;
+                          GivenOutLen:           CARDINAL;
+                          DupWhat:               HandleDuplicateType;
+                      VAR ErrorMsg:              ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE InsertXModeData(VAR Int2Out:       XlateTablePointer;
+                          VAR Out2Int:       XlateTablePointer;
+                              Mode:          CHAR;
+                              GivenSeq:      ARRAY OF CHAR;
+                              DupWhat:       HandleDuplicateType;
+                          VAR ErrorMsg:      ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE EquateXlateData(VAR XP: XlateTablePointer);
+
+PROCEDURE XlateLine(TransType:       XlateTablePointer;
+                    BadChar:         CHAR;
+                    GivenLine:       ARRAY OF CHAR;
+                VAR CurrentMode:     CurrentModeType;
+                VAR ActualLength:    CARDINAL;
+                VAR LenD:            ARRAY OF LengthDataType;
+                VAR NumbSeq:         CARDINAL;
+                VAR EnoughData:      BOOLEAN;
+                VAR OutputLine:      ARRAY OF CHAR);
+
+PROCEDURE DeleteXlateTable( VAR XP : XlateTablePointer );
+
+PROCEDURE DumpXlateTable(XP: XlateTablePointer;
+                         InDev, OutDev: ARRAY OF CHAR;
+                         Output:   OutProc);
+
+PROCEDURE AddNewXlateListEntry(N:    ARRAY OF CHAR;
+                               T:    XlateTablePointer;
+                               F:    XlateTablePointer): BOOLEAN;
+
+PROCEDURE LineIsMode(InputLine: ARRAY OF CHAR;
+                     DevName:   ARRAY OF CHAR;
+                 VAR Success:   BOOLEAN;
+                 VAR Mode:      CHAR;
+                 VAR Seq:       ARRAY OF CHAR;
+                 VAR TErrorMsg: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE AddIfAbsent(XP:      XlateTablePointer;
+                      C:       CHAR;
+                      R:       ARRAY OF CHAR);
+
+PROCEDURE FindXlateTable(N:          ARRAY OF CHAR;
+                         Direction:  XlateDirectionType;
+                     VAR Pointer:    XlateTablePointer;
+                     VAR ErrorMsg:   ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE XOpenInput(VAR FN:       ARRAY OF CHAR;  (* Full File Name        *)
+                         DE:       ARRAY OF CHAR;  (* Default Extension     *)
+                         DD:       ARRAY OF CHAR;  (* Default Xlation Table *)
+                     VAR FL:       XFileType;      (* File Pointer and Data *)
+                     VAR ErrorMsg: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE XOpenOutput(VAR FN:       ARRAY OF CHAR;  (* Full File Name        *)
+                          DE:       ARRAY OF CHAR;  (* Default Extension     *)
+                          DD:       ARRAY OF CHAR;  (* Default Xlation Table *)
+                      VAR FL:       XFileType;      (* File Pointer and Data *)
+                      VAR ErrorMsg: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE XAppend(    VAR FN:       ARRAY OF CHAR;  (* Full File Name        *)
+                          DE:       ARRAY OF CHAR;  (* Default Extension     *)
+                          DD:       ARRAY OF CHAR;  (* Default Xlation Table *)
+                      VAR FL:       XFileType;      (* File Pointer and Data *)
+                      VAR ErrorMsg: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE XStdOut (DD:   ARRAY OF CHAR; (* Default Xlation Table *)
+               VAR FL:   XFileType);    (* File Pointer and Data *)
+
+PROCEDURE XClose(VAR FL:     XFileType);
+
+PROCEDURE XReadLine(VAR file:        XFileType;
+                        badchar:     CHAR;
+                    VAR data:        ARRAY OF CHAR;
+                    VAR enoughdata:  BOOLEAN;
+                    VAR IOresult:    CARDINAL): BOOLEAN;
+
+PROCEDURE XWrStr(VAR file:     XFileType;
+                     data:     ARRAY OF CHAR;
+                 VAR IOresult: CARDINAL): CARDINAL; (* actual length *)
+
+PROCEDURE XWrLn(VAR file:     XFileType;
+                VAR IOresult: CARDINAL);
+
+PROCEDURE XWrNXlate(VAR file:     XFileType;
+                        data:     ARRAY OF CHAR;
+                    VAR IOresult: CARDINAL);
+
+PROCEDURE XWrBin(VAR file:      XFileType;
+                     data:      ARRAY OF BYTE;
+                     size:      CARDINAL;
+                 VAR IOResult:  CARDINAL);
+
+PROCEDURE XWriteLine(VAR file:        XFileType;
+                         badchar:     CHAR;
+                         data:        ARRAY OF CHAR;
+                     VAR IOresult:    CARDINAL): BOOLEAN;
+
+PROCEDURE WriteWithTabs(VAR file:   XFileType;
+                            text:   ARRAY OF CHAR;
+                            Tabs:   ARRAY OF TabInfo): BOOLEAN;
+
+PROCEDURE InitialTranslationData() : BOOLEAN;
+
+VAR
+   OutFile:  XFileType;
+   OutFileName: StrAny;
+END Translations .

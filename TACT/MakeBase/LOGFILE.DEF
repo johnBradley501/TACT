@@ -1,0 +1,62 @@
+DEFINITION MODULE LogFile ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM VirtualMemory IMPORT VirtualAddrType ;
+
+(*
+EXPORT QUALIFIED
+  (* Types *) LogListPtr, LogListEntry,
+  (* Vars  *) VHeadLogList, VLastLogEntry, VWordLogEntry, StringsStartIndex,
+  (* Procs *) InitLogList, AddNoToLogList, AddStrToLogList, WriteLogListToDB,
+		LogFileInitCode ;
+*)
+
+TYPE
+   LogListPtr = POINTER TO LogListEntry ;
+   LogListEntry = RECORD
+                   StructID : INTEGER ;  (* when > 0 use Number; < 0 use StrPrt *)
+                   Next     : VirtualAddrType (* LogListPtr *) ;
+                   TokenNo  : LONGCARD ;
+                   CASE : CARDINAL OF
+                      1: Number  : CARDINAL  |
+                      2: VStrPtr : VirtualAddrType (* will point to StringRecPtr *) |
+                      3: LRecNo  : CARDINAL ; (* after write entry in DB, overlay these *)
+                         LRecPos : CHAR ;     (* with pos. in DB for TokenListData use. *)
+                   END ;
+                END ;
+
+VAR
+   VHeadLogList	 : VirtualAddrType ;
+   VWordLogEntry : VirtualAddrType ;
+   VLastLogEntry : VirtualAddrType ;
+
+   (* Note: StringsStartIndex should go elsewhere and limits StructID to <= 255 *)
+   (*       and taking into consideration that string record info is stored     *)
+   (*	    in 1 HyperRecord (ie. limit of 170 entries -- now 127 for SHORTINT).*)
+
+   StringsStartIndex : ARRAY[0..255] OF CHAR ;
+
+PROCEDURE LogFileInitCode ;
+
+PROCEDURE InitLogList() ;
+
+PROCEDURE AddNoToLogList( ID : CARDINAL ; Numb : CARDINAL ) ;
+
+PROCEDURE AddStrToLogList( ID : CARDINAL ; VStrPtr : VirtualAddrType ) ;
+
+PROCEDURE WriteLogListToDB() ;
+
+END LogFile .

@@ -1,0 +1,74 @@
+DEFINITION MODULE WordBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* Const *) NonRetDiacCode, ExtraCodeSep,
+  (* Types *) AlphaCharType,
+  (* Vars  *) SimpAlphTable, TypeOfChar, SortNoBitsPerChar,
+  (* Procs *) FullToSortWord, SortToFullWord, SetSortNoBitsPerChar,
+              IntToSortWord, SortToIntWord, Int2FirstAlphWord;
+*)
+
+(*----------------------------------------------------------------------*)
+(* A note about code conventions within a string:                       *)
+(*   0C - end of string code                                            *)
+(*   1C - word separator in a string                                    *)
+(*   2C - extra code separator                                          *)
+(* 377C - highest char to build delimiter high key                      *)
+(*----------------------------------------------------------------------*)
+
+CONST
+  NonRetDiacCode = 376C ;
+  WordSepCode  = 1C ;
+  ExtraCodeSep = 2C ;
+
+TYPE
+  AlphaCharType = (NullChar, Letter, RetDiac, NonRetDiac, IgnBrkStart,
+                   IgnBrkEnd, IgnBrkStEnd, RefBrkStart,
+                   RefBrkEnd, RefBrkStEnd, ContinuationChar,
+                   LabelStart, LabelEnd, LabelStEnd, BYUStart,
+                   Counter, HighKeyChar ) ;
+VAR
+  SimpAlphTable    : ARRAY [0C..377C] OF CHAR ;
+  TypeOfChar       : ARRAY[1C..377C] OF AlphaCharType ; (* m.s. was 1C *)
+  SortNoBitsPerChar: CARDINAL ;
+
+PROCEDURE FullToSortWord(     FullWord : ARRAY OF CHAR ;
+                          VAR SortWord : ARRAY OF CHAR ) ;
+
+PROCEDURE SortToFullWord(     SortWord : ARRAY OF CHAR ;
+                          VAR FullWord : ARRAY OF CHAR ) ;
+
+PROCEDURE IntToSortWord(     IntWord : ARRAY OF CHAR ;
+                          VAR SortWord : ARRAY OF CHAR ) ;
+
+PROCEDURE IntToSingleSortWord(IntWord  : ARRAY OF CHAR ;
+                          VAR SortWord : ARRAY OF CHAR;
+                          VAR BadChar:   CHAR ): BOOLEAN ;
+
+PROCEDURE SortToIntWord(     SortWord : ARRAY OF CHAR ;
+                          VAR IntWord : ARRAY OF CHAR ) ;
+
+PROCEDURE Int2FirstAlphWord(IntStr:    ARRAY OF CHAR ;
+                        VAR EndOfWord: CARDINAL ;
+                        VAR IntRslt:   ARRAY OF CHAR ;
+                        VAR AlphRslt:  ARRAY OF CHAR);
+
+(* Must be called when first read TDB after set TypeOfChar array and
+   called BuildDBXlate proc.  *)
+PROCEDURE SetSortNoBitsPerChar ;
+
+END WordBase.

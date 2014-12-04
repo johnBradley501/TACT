@@ -1,0 +1,2743 @@
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+(*RES OLD HLP 0
+= D 38
+= L 9
+= A 1
+= S 7
+= C 44
+= H 2
+= T 37
+= G 47
+= W 31
+{B}Help: Introduction{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Welcome to the release 1.2 of TACT.
+
+This introductory message gives some information that will help
+you get started using TACT.  To read more than what shows on the
+screen, push the {B}PageDown{N} key.  To move "up" in this text, push
+the {B}PageUp{N} key.
+
+
+                       {B}What can I do now?{N}
+
+Before you can make TACT do anything else, you must finish
+looking at Help.  Do this by pushing either the "Enter" or "ESC"
+key.
+
+Following this, there are two ways to make TACT do something for
+you:
+
+    -  You can choose an action from the "Action Bar".  The
+       Action Bar is shown on the top line of the screen.  To
+       activate it, push either the "Enter" or "Space Bar" keys
+       on your keyboard.  For more information on the Action Bar
+       type the letter "{B}A{N}" now.
+
+    -  You can push a function key.  In the bottom 4 lines on the
+       screen you can see a summary of function key shortcuts.
+       For more information on function key operations type "{B}S{N}"
+       now.
+
+If you have not yet read the TACT Guide, we urge you to look at
+it now.  There is some general information about how TACT is
+designed in two help items:
+    -  {B}TACT's Working Lists{N}: go to it now by typing the letter
+       "{B}L{N}".
+
+    -  {B}TACT's Displays{N}: go to it now by typing the letter "{B}D{N}".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Action Bar Help . . . . . . . . . . . . . . . . . . . . . . . . A
+ShortCut Help . . . . . . . . . . . . . . . . . . . . . . . . . S
+TACT's Script Files . . . . . . . . . . . . . . . . . . . . . . C
+Intro to Help in TACT . . . . . . . . . . . . . . . . . . . . . H
+TACT Licensing Terms. . . . . . . . . . . . . . . . . . . . . . T
+TACT Distribution . . . . . . . . . . . . . . . . . . . . . . . G
+TACT Support: Who and Where . . . . . . . . . . . . . . . . . . W
+*)
+(*RES OLD HLP 1
+= B 0
+= K 6
+{B}Help: TACT's Action Bar{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Within the Action Bar you can choose from the following actions:
+
+{B}Help{N}           Choose this item to get help.
+
+{B}Exit{N}           Choose this item to stop TACT immediately.
+
+{B}Select{N}         You can choose from the following items:
+
+               {B}selected List{N}
+                           Choose this item when you wish to
+                           choose manually items to be included
+                           in the selected list.
+
+               {B}WordList{N}    Use this item when you have been
+                           working with a selection criterion and
+                           want TACT to re-show you the list of
+                           vocabulary words in the selection
+                           window.
+
+               {B}Categories{N}  Use this to show you the names of your
+                           categories in the select window, and
+                           to create a selected list by including
+                           the contents of categories you select.
+
+               {B}Rule{N}        Select this item when you want to give
+                           TACT a rule that will make it
+                           preselect words or text positions for
+                           you.  The items it selects can be
+                           viewed by you in the selection window.
+
+{B}Current{N}        Choose this Action Bar item when you want to
+               change the current display:
+
+               {B}Modify{N}      Choose this selection menu item when
+                           you want to change the settings
+                           associated with the current display.
+
+               {B}KWIC{N}        Choose this selection item when you
+                           want a {B}K{N}ey{B}w{N}ord {B}i{N}n {B}C{N}ontext display as
+                           the current display.
+
+               {B}Text{N}        Choose this selection item to see the
+                           full text as the current display.
+
+               {B}Index{N}       Choose this selection item to see a
+                           one-line index as the current display.
+
+               {B}Distribution{N}
+                           Choose this selection item to see a
+                           distribution graph as the current
+                           display.
+
+               {B}Collocate{N}   Choose this item to see a collocate
+                           display as the current display.  Note
+                           that you must type "o" to choose this
+                           item.
+
+               {B}Next{N}        This option will only work if you have
+                           more than one display active.  Choose
+                           this selection item to scroll between
+                           the various displays you currently
+
+                           have, making the "next" one the
+                           current display.
+
+               {B}Synchronize{N} This option will only work if you have
+                           more than one display active at a
+                           time.  Choose it to synchronize all
+                           active displays, so that they all
+                           display centered around the current
+                           selected position.
+
+               {B}Close{N}       This option closes the current
+                           display.
+
+               {B}Panel{N}       This option will divide up the screen
+                           to display all active displays at the
+                           same time.  It "panels" the screen.
+
+               {B}Zoom{N}        This option will resize the current
+                           display to full size.
+
+{B}New{N}            Choose this Action Bar item when you want to
+               create more than one active display.  Types of
+               displays:
+
+               {B}KWIC{N}        Keyword in Context displays.
+
+               {B}Text{N}        A view of the text, with selected
+                           positions highlighted.
+
+               {B}Index{N}       An index of positions.
+
+               {B}Distribution{N}
+                           A distribution graph.
+
+               {B}Collocate{N}   A collocate display.  Note that you
+                           must type "o" to choose this item.
+
+{B}Category{N}       Choose this Action Bar item when you want to work
+               with categories:
+
+               {B}Create{N}      Choose this option when you want to
+                           create a new category.  The current
+                           selected list will be stored in your
+                           personal database.  You will be
+                           presented with the opportunity to give
+                           the category a name.
+
+               {B}Delete{N}      Choose this option to delete a
+                           category and its associated list from
+                           your personal database.
+
+               {B}Replace{N}     Choose this option to change the list
+                           associated with an existing category
+                           in your personal database.  The old
+                           list will be discarded and replaced
+                           with the current selected list.
+
+               {B}View List{N}   Choose this option to view the list of
+                           all category names currently in your
+                           personal database.
+
+               {B}View a Category{N}
+                           Choose this option to view a list
+                           associated with a category.
+
+
+               To work with categories you must have a personal
+               database.  To create one, start TACT by coding the
+               "-c" option: "{B}c:> TACT -c new.pdb{N}"
+
+{B}File{N}           Choose this item to:
+
+               {B}Open{N}        open a new TDB or PDB database.
+
+               {B}Print{N}       Print the current display on your
+                           printer.
+
+               {B}Disk{N}        Put the contents of the current
+                           display into a file.
+
+               {B}Import{N}      Import a rule from a TACT Rule Library
+                           file.
+
+               {B}Export{N}      Export the current selection criteria
+                           as a rule in a TACT Rule Library file.
+
+               {B}Record{N}      Record a script file of keystrokes for
+                           future playback
+
+               {B}Play{N}        Play back a script of keystrokes you
+                           have created.  Note to choose this
+                           option type "{B}a{N}".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+ActionBar KeyStrokes. . . . . . . . . . . . . . . . . . . . . . K
+*)
+(*RES OLD HLP 2
+= B 0
+{B}Help: TACT Help{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Both TACT and MAKBAS are provided with a basic HELP facility.
+HELP is meant to assist you while you are using TACT or MAKBAS by
+reminding you of the formats of various commands, and the use of
+the various function keys.  It is not intended that you learn
+TACT from the HELP facility alone.  For this purpose, printed
+documentation has been prepared, and you should read through it.
+
+You access help by pushing either the F1 key or (from within
+TACT) by choosing "HELP" from the action bar.  The help text that
+you will see will vary depending upon what TACT is currently
+doing for you.
+
+TACT help works as follows:  TACT help is "context sensitive".
+This means that the help screen it displays will change depending
+on what TACT is doing at the time you push the F1 key.  Each help
+message is called an "item".  After you've read the help message
+you can dispose of it by pushing the ESC key, or pushing any
+Function Key that indicates that you are ready to do some other
+operation.
+
+All Help text (including this introduction) is put into a window.
+You use the UpArrow, DownArrow, Home, End, PgUp and PgDn keys to
+see parts that currently don't fit in the window.
+
+In addition, you can jump directly to a selected list of other
+help items by typing certain letters.  To see what other help
+items you can jump to, see the section at the end of the item
+called "For More Help".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 3
+= B 0
+{B}Help: Keyboard usage: Panels{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Function:                                    KeyStroke:
+
+{B}Operations Within Fields{N}
+
+Move Cursor Right . . . . . . . . . . . . . .RightArrow
+Move Cursor Left. . . . . . . . . . . . . . .LeftArrow
+Move Cursor to End of Field . . . . . . . . .Ctrl-RightArrow
+Move Cursor to Start of Field . . . . . . . .Ctrl-LeftArrow
+Delete to End of Field. . . . . . . . . . . .Ctrl-End
+Delete Current Character. . . . . . . . . . .Delete
+Delete Previous Character . . . . . . . . . .Backspace
+
+{B}Operations Between Fields{N}
+Move To Next Field. . . . . . . . . . . . . .DownArrow
+                                             (or) Tab
+Move To Previous Field. . . . . . . . . . . .UpArrow
+                                             (or) Shift-Tab
+Move To First Field . . . . . . . . . . . . .Home
+Move To Last Field. . . . . . . . . . . . . .End
+
+{B}Operations To End the Panel{N}
+End Panel, with changes . . . . . . . . . . .Return/Enter
+End Panel, cancel changes * . . . . . . . . .Esc
+
+* The "End Panel with cancel" operation is not supported for all
+panels.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 4
+= B 0
+{B}Help: Keyboard usage: Selection Window{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Selection Window works in two modes of operation.  This help
+item talks about how this window operates when more than one item
+can be selected from the list.
+
+Function:                                    KeyStroke:
+
+{B}Moving About in the List{N}
+
+Moving to Specified Spot in List. . . . . . .Alt-Tab
+Move To Previous Item . . . . . . . . . . . .UpArrow
+                                             (or) Shift-Tab
+Move To Next Item . . . . . . . . . . . . . .DownArrow
+                                             (or) Tab
+Move Up by several items. . . . . . . . . . .PgUp
+Move Down by several items. . . . . . . . . .PgDn
+Move To First Item. . . . . . . . . . . . . .Home
+Move To Last Item . . . . . . . . . . . . . .End
+
+{B}Indicating Item Selection Items In The List{N}
+
+Select/De-select Item . . . . . . . . . . . .Ins
+Select All Items *  . . . . . . . . . . . . .Alt-Ins
+De-Select All Items . . . . . . . . . . . . .Alt-Del
+
+{B}To End List Selection{N}
+
+End selection . . . . . . . . . . . . . . . .Return/Enter
+End selection, cancel **  . . . . . . . . . .Esc
+
+
+                              {B}Notes{N}
+
+* In some contexts all items in the list cannot be selected.
+
+** In some contexts changes to selection cannot be canceled.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 5
+= B 0
+{B}Help: Keyboard usage: Selection Window{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Selection Window works in two modes of operation.  This help
+item talks about how this window operates when only one item can
+be selected from the list.
+
+Function:                                    KeyStroke:
+
+{B}Moving About in the List{N}
+
+Moving to Specified Spot in List. . . . . . .Alt-Tab
+
+Move To Previous Item . . . . . . . . . . . .UpArrow
+                                             (or) Shift-Tab
+Move To Next Item . . . . . . . . . . . . . .DownArrow
+                                             (or) Tab
+Move Up by several items. . . . . . . . . . .PgUp
+Move Down by several items. . . . . . . . . .PgDn
+Move To First Item. . . . . . . . . . . . . .Home
+Move To Last Item . . . . . . . . . . . . . .End
+
+{B}Selecting Item from List{N}
+
+End, selecting current item . . . . . . . . .Return/Enter
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 6
+= A 1
+= B 0
+{B}Help: Keyboard usage: Action Bar{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+To select an action from the Action Bar you first push the
+Enter/Return Key to indicate that you want to select an action
+from the Action Bar.  Next, you select one of the highlighted
+items from the action bar list.  In many cases a short selection
+menu will then appear beneath the selected item.  Finally, you
+select an item from this selection menu.
+
+Function:                                    KeyStroke:
+
+{B}Action Bar Actions{N}
+
+Move To Previous Item . . . . . . . . . . . .LeftArrow
+                                             (or) Shift-Tab
+Move To Next Item . . . . . . . . . . . . . .RightArrow
+                                             (or) Tab
+Move To First Item. . . . . . . . . . . . . .Home
+Move To Last Item . . . . . . . . . . . . . .End
+Jumping to Item . . . . . . . . . . . . . . .Type highlighted
+                                             letter
+Select Item . . . . . . . . . . . . . . . . .Enter/Return Key
+                                             DownArrow
+
+{B}Selection Menu Actions{N}
+Move To Previous Item . . . . . . . . . . . .UpArrow
+                                             (or) Shift-Tab
+Move To Next Item . . . . . . . . . . . . . .DownArrow
+                                             (or) Tab
+Move To First Item. . . . . . . . . . . . . .Home
+Move To Last Item . . . . . . . . . . . . . .End
+Jumping to Item . . . . . . . . . . . . . . .Type highlighted
+                                             letter
+Select Item . . . . . . . . . . . . . . . . .Enter/Return Key
+
+{B}Cancel Action Bar{N} . . . . . . . . . . . . . .Esc Key
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT's Action Bar . . . . . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 7
+= A 6
+= B 0
+{B}Help: Keyboard usage: Short Cuts{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Some functions that are carried out through the menu bar are also
+available using function keys.  A summary of these short cuts is
+shown at the bottom of the TACT introductory screen.  An entry
+similar to:
+
+     F5: Resize (^Move)
+
+means push "F5" to resize the current window and "Control F5" to
+move the current window.
+
+Available short functions include:
+
+KeyStroke:               Function:
+F1. . . . . . . . . . . .Get Help
+F10 . . . . . . . . . . .End execution of TACT
+
+F2. . . . . . . . . . . .Show the auto selection Dialog box
+Ctrl-F2 . . . . . . . . .Import a rule from a rule library file
+F3. . . . . . . . . . . .Show selection window to control current
+                         selected list
+Ctrl-F3 . . . . . . . . .Make selection window choose from list
+                         of words
+F4. . . . . . . . . . . .Show/modify current display dialog box
+Ctrl-F4 . . . . . . . . .Close current active display window
+F5. . . . . . . . . . . .Resize current window ( * )
+Ctrl-F5 . . . . . . . . .Move current window ( * )
+F6. . . . . . . . . . . .Print current window
+Ctrl-F6 . . . . . . . . .Write current window to a file
+F7. . . . . . . . . . . .Switch current window to next display
+Ctrl-F7 . . . . . . . . .Divide screen between all active
+                         displays
+F8. . . . . . . . . . . .Create category from current selected
+                         list
+F9. . . . . . . . . . . .Synchronize all active displays
+Ctrl-F9 . . . . . . . . .Make current window full size.
+
+
+                              {B}Notes{N}
+
+* Not all windows can be resized or moved
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+ActionBar Action Summary. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 8
+= B 0
+= K 3
+= S 32
+{B}Help: The AutoSelection Rule Dialog Box{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+You use the Rule Dialog Box when you want to ask TACT
+automatically to select a list of words or text positions for
+you.  Essentially, you must specify a set of criteria that will
+tell TACT how to select for you.  TACT will then search its
+databases, find the matching items, and create a "Search Result
+List", from which you can further select items to create the
+"Selected List".
+
+Options are:
+
+{B}Criteria{N}       Four lines are provided upon which you can specify
+               the rule TACT is to use to select items for you.
+               Criteria are specified in a language with a very
+               specific syntax.  For help on the syntax, type "{B}S{N}"
+               now.
+
+{B}Config Context{N} You can specify a range of text to be used for
+               collocation searches in this area of the screen.
+
+{B}Manual Select{N}  If "Yes" is selected, TACT will present you with a
+               selection window as soon as it has created its
+               list of items.  If "No" is selected, TACT will not
+               present you with a selection window.  You can, of
+               course, always invoke the selection window
+               yourself using the F3 key.
+
+The Config Context options are:
+
+{B}Unit{N}           Use this field to specify what structural unit
+               should be used to define the context for various
+               selection options.  To choose the unit from an
+
+               available list, leave the field blank, or type a
+               "?".
+
+{B}Context Before{N} Number of units (given above) that should precede
+               the unit containing the occurrence. *
+
+{B}Context After{N}  Number of units (given above) that should follow
+               the unit containing the occurrence. *
+
+
+                              {B}Notes{N}
+
+* To specify a context such as "sentence containing the
+occurrence" (assuming that sentence is available as a structural
+unit), specify Context Unit as "sentence", Before and After
+values of "0".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+Selection Rules: Syntax . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 9
+= B 0
+= D 38
+= R 8
+= S 11
+{B}Help: TACT's Working Lists{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+
+TACT works with several different lists:
+
+  Base Lists:
+
+ ---------------
+|               |
+| List Of Words |
+|               |
+ ---------^F3---    -----------    ----------    ----------
+      |            |           |  |          |  |          |
+      >>>>>>>>>>>>>| Selection |>>| Selected |>>|   List   |
+      |            |   Window  |  |   List   |  | Displays |
+      |            |           |  |          |  |          |
+ ---------------    -------F3--    ----------    ----------
+|               |
+| Search Result |
+|     List      |
+|               |
+ ---------F2----
+
+To use TACT you must either select a set of words from the List
+of words, or give TACT a search strategy whereby it can select a
+list of words, or positions in the text that meet its
+requirements.
+
+   1.  If you have indicated that the base list is the list of
+       words found in your text, then TACT's selection window
+       (presented to you when you push F3) will show you a list
+       of all the words in the text.  You can select words that
+       interest you, to create the {B}Selected List{N}.
+
+   2.  Instead of selecting from the list of words, you can ask
+       TACT to preselect words or text positions for you.  You do
+       this by either selecting {B}Rule{N} from the {B}Action Bar's Select{N}
+       menu, or by pushing {B}F2{N} -- the short cut.
+
+       If you have provided TACT with a Search Strategy (via F2)
+       then the Selection Window (Short Cut: F3) will show all
+       the words or positions that TACT selected.  You can then
+       only select a subset of this list to create the {B}Selected{N}
+       {B}List{N}.
+
+   3.  When you are finished using a list created by a search
+       strategy, and again wish to select words based on the
+       entire vocabulary, you can indicate this by either
+       selecting {B}WordList{N} from the {B}Action Bar Select{N} menu, or by
+       pushing {B}Ctrl-F3{N} (which is TACT's shortcut).  In response,
+       TACT will first throw away both the Search Result list it
+       created, and the selected list.  However, you can then use
+       the Selection Window ({B}F3{N}) to select from the list of
+       words.
+
+TACT uses the selected list to create displays: KWIC displays, a
+text window with selected spots in the text highlighted, an
+index, or a distribution list.  For more information on these,
+type "{B}D{N}" now.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+AutoSelection Rule Menu . . . . . . . . . . . . . . . . . . . . R
+TACT's main Selection Display . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 10
+= B 0
+= L 9
+{B}Help: Keys controlling TACT's Displays{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use the following keys to move around in TACT's displays:
+
+{B}Cursor Up{N}      to move the selected line up one towards the top
+               of the display.
+
+{B}Cursor Down{N}    to move the selected line down one towards the end
+               of the display.
+
+{B}Cursor Right{N}   (for the distribution display only), to move the
+               current position item to the right in the current
+               distribution line.
+
+{B}Cursor Left{N}    (for the distribution display only), to move the
+               current position item to the left in the current
+               distribution line.
+
+{B}Ctrl-Cursor Right{N}
+               (for the distribution display only), to move the
+               current position item to the last item in the
+               current distribution line.
+
+{B}Ctrl-Cursor Left{N}
+               (for the distribution display only), to move the
+               current position item to the first item in the
+               current distribution line.
+
+{B}Home{N}           usually, to move the selected line to point to the
+               line containing the first item in the current
+               selection list.
+
+{B}End{N}            usually, to move the selected line to point to the
+               line containing the last item in the current
+               selection list.
+
+{B}PgUp{N}           usually, to move the selected line to point to the
+               line containing the previous item in the current
+               selection list.
+
+{B}PgDn{N}           usually, to move the selected line to point to the
+               line containing the next item in the current
+               selection list.
+
+The following Function keys can be used to make changes to the
+current display:
+
+{B}F2{N}             to change the rule that TACT uses to create the
+               list automatically
+
+{B}F3{N}             to change the selected items in the list that TACT
+               uses to create this display.
+
+{B}F4{N}             to change the options TACT uses to create this
+               display.
+
+{B}Ctrl-F4{N}        to close the current display
+
+{B}F7{N}             to change the top display to another currently
+               open display.
+
+{B}F9{N}             to synchronize all the open displays so that they
+               all point to the same selected position.
+
+In addition, the action bar menus {B}Current{N} or {B}New{N} can be activated
+to make other changes (such as to create a new display).
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+*)
+(*RES OLD HLP 11
+= B 0
+= K 4
+= L 9
+{B}Help: TACT's main Selection Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use TACT's main selection window when you want to select objects
+to be included in TACT's displays, or to be included in TACT's
+categories.
+
+The display will appear in two situations:
+
+    -  When you ask for it (by choosing List from the Action
+       Bar's Select menu) or by pushing {B}F3{N}.
+
+    -  After TACT has preselected items for you using the
+       criteria you gave in the Autoselection Rule Menu.
+
+The display consists of a list of objects -- one per line.  The
+objects are either the complete list of vocabulary words, the
+contents of one or more categories (if you earlier selected
+categories via the Category option on the Action Bar's Select
+menu) or are objects that TACT selected for you from the criteria
+you gave.
+
+You use the selection display to indicate which objects are to be
+in the selected list.  Objects that are currently in the selected
+list have the character "{B}>{N}" in front of them.
+
+One line in the selection list is always highlighted.  To select
+or deselect an object you first more the highlighted line to the
+object you wish to (de)select.  When the object is highlighted
+type the {B}Ins{N} key to select it (if not currently selected) or de-
+select it (if currently selected).
+
+When you are finished making selections, push the {B}Enter/Return{N}
+key
+
+Type "{B}K{N}" to see a list of all possible key operations you can do
+within this display.
+
+
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keystrokes within this display. . . . . . . . . . . . . . . . . K
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+*)
+(*RES OLD HLP 12
+= B 0
+= D 38
+= L 9
+= K 10
+= O 13
+{B}Help: TACT's Distribution Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Distribution display shows you how selected positions in the
+text are distributed: in the basic form the display shows how it
+is distributed through the text, but other types of distributions
+are available by modifying the distribution type (push F4 for
+this).
+
+
+    -  {B}To move about in the display{N}: use the Home, End, PgUp,
+       PgDn, Up, Down, or Left and Right cursor keys.  Moving the
+       highlighted position in the display will change the
+       current position in the text.
+
+    -  {B}To Change the type of display{N}: choose "Current" or "New"
+       from the Action Bar.  Other display types are KWIC, Index
+       and Text.
+
+    -  {B}To Change some option associated with the Distribution{N}
+       {B}Display{N}: push the F4 Key.
+
+The top line of the display contains the following information:
+
+    -  The reference information for the current position.
+
+    -  The total number of positions in the text represented in
+       the display.
+
+    -  If each box represents more than 1 position, the scale of
+       the display is shown.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Keyboard usage: Displays. . . . . . . . . . . . . . . . . . . . K
+Distribution Display Options. . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 13
+= B 0
+= K 3
+= D 12
+{B}Help: Distribution Display Options{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to change the options associated with the
+distribution display.  To confirm any changes you make to the
+field associated with this display, push the RETURN/ENTER key.
+To cancel without making any changes, push the ESC key.
+
+This panel can appear in two ways, depending upon whether the
+distribution type is by Text Position or by Reference.  You can
+switch between the two by changing the value of the top switch.
+
+{B}Distribution Type{N}
+               Set this switch to indicate how the distribution
+               is to be generated:
+
+                   -  {B}Text Position{N} based on the position of the
+                      selected items throughout the text.
+
+                   -  {B}Reference{N} based on the value of a reference
+                      item.
+
+                   -  {B}Word{N} based on the word type.
+
+
+If you have currently indicated a distribution by Text Position
+or by Word Type, you will see the following other items:
+
+{B}Refs{N}           Specify here the pattern that TACT is to use as
+               the reference display for the selected position.
+
+{B}Start{N}          Specify here the starting position for the
+               distribution (in terms of a percentage of the
+               number of words in the text).
+
+{B}End{N}            Specify here the ending position for the
+               distribution (in terms of a percentage of the
+               number of words in the text).
+
+{B}By{N}             Specify here the size of the division (in terms of
+               a percentage of the total number of words in the
+               text).
+
+If you have currently indicated a distribution by Reference, you
+will see the following other items:
+
+{B}Refs{N}           Specify here the pattern that TACT is to use as
+               the reference display for the selected position.
+
+{B}Selection Ref ID{N}
+               Specify here the reference name to be used for the
+               distribution.  To select the name from a list of
+               all references, either leave the field blank, or
+               type "?".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+TACT's Distribution Display . . . . . . . . . . . . . . . . . . D
+*)
+(*RES OLD HLP 14
+= B 0
+= D 38
+= L 9
+= K 10
+= O 15
+{B}Help: TACT's Index Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Index display shows you an index of the positions currently
+in the selected list: one position per line in the display.
+Optionally, you will also see a short excerpt of text that
+immediately surrounds the text position.
+
+    -  {B}To move about in the list{N}: use the Home, End, PgUp, PgDn
+       or Up and Down arrow keys.
+
+    -  {B}To Change the type of display{N}: choose "Current" or "New"
+       from the Action Bar.  Other display types are KWIC, Text
+       and Distribution.
+
+    -  {B}To Change some option associated with the Index Display{N}:
+       push the F4 Key.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Keyboard usage: Displays. . . . . . . . . . . . . . . . . . . . K
+Index Display Options . . . . . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 15
+= B 0
+= K 3
+= D 14
+{B}Help: Index Display Options{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to change the options associated with the Index
+display.  To confirm any changes you make to the field associated
+with this display push the RETURN/ENTER key.  To cancel without
+making any changes push the ESC key.
+
+The field and its meanings are:
+
+{B}Refs{N}           Use this field to specify the reference pattern
+               TACT will display for the current selected
+               position.
+
+{B}Order{N}          Use this switch to control the ordering of the
+               material in the display:
+
+                   -  {B}Natural{N}: based on the order in the selected
+                      list.
+
+                   -  {B}Position{N}: based on the position of the
+                      occurrences in the text -- earlier
+                      occurrences will come first.
+
+                   -  {B}Word{N}: based on the alphabetical ordering of
+                      the word types in the selected list.
+
+                   -  {B}Word Only{N}: based on the alphabetical
+                      ordering of the word types in the selected
+                      list.  Unlike "word", only the word types
+                      will be shown -- not their positions in the
+                      text.
+
+{B}Show Text{N}      Use this switch to indicate whether a one-line
+               context display for each occurrence should be
+               displayed or not.  Screen updating will be faster
+               if the one-line context is not shown.
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+TACT's Index Display. . . . . . . . . . . . . . . . . . . . . . D
+*)
+(*RES OLD HLP 16
+= B 0
+= D 38
+= K 10
+= L 9
+= O 17
+{B}Help: TACT's KWIC Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The KWIC display shows you some text in the area of each text
+position currently included in the selected list. (KWIC stands
+for "{B}K{N}ey{B}w{N}ord {B}I{N}n {B}C{N}ontext").
+
+    -  {B}To move about in the list{N}: use the Home, End, PgUp, PgDn
+       or Up and Down arrow keys.
+
+    -  {B}To Change the type of display{N}: choose "Current" or "New"
+       from the Action Bar.  Other List types are Text, Index and
+       Distribution.
+
+    -  {B}To Change some option associated with the KWIC Display{N}:
+       push the F4 Key.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+Keyboard usage: Displays. . . . . . . . . . . . . . . . . . . . K
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+KWIC Display Options. . . . . . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 17
+= B 0
+= L 9
+= K 3
+= D 16
+{B}Help: KWIC Display Options{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to change the options associated with the KWIC
+display.  To confirm any changes you make to the field associated
+with this display, push the RETURN/ENTER key.  To cancel without
+making any changes, push the ESC key.
+
+The fields and their meanings are:
+
+{B}Refs{N}           Use this field to specify the reference pattern.
+
+{B}Display Context Unit{N}
+               Use this field to specify what structural unit
+               should be used to define the context.  To choose
+               the unit from an available list, leave the field
+               blank, or type a "?".
+
+{B}Display Context Before{N}
+               Number of units (given above) that should precede
+               the unit containing the occurrence. *
+
+{B}Display Context After{N}
+               Number of units (given above) that should follow
+               the unit containing the occurrence. *
+
+{B}Order{N}          Use this switch to control the ordering of the
+               material in the display:
+
+                   -  {B}Natural{N}: based on the order in the selected
+                      list.
+
+                   -  {B}Position{N}: based on the position of the
+                      occurrences in the text -- earlier
+                      occurrences will come first.
+
+                   -  {B}Word{N}: based on the alphabetical ordering of
+                      the word types in the selected list.
+
+
+                              {B}Notes{N}
+
+* To specify a context such as "sentence containing the
+occurrence" (assuming that sentence is available as a structural
+unit), specify Context Unit as "sentence", Before and After
+values of "0".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+TACT's KWIC Display . . . . . . . . . . . . . . . . . . . . . . D
+*)
+(*RES OLD HLP 18
+= B 0
+= D 38
+= L 9
+= K 10
+= O 19
+{B}Help: TACT's Text Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Text display shows you the text in a "browse mode", with each
+text position from the selected list highlighted.
+
+    -  {B}To move about in the list{N}: use the Home, End, PgUp, PgDn
+       or Up and Down arrow keys.
+
+    -  {B}To Change the type of display{N}: choose "Current" or "New"
+       from the Action Bar.  Other display types are KWIC, Index
+       and Distribution.
+
+    -  {B}To Change some option associated with the Text Display{N}:
+       push the F4 Key.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Keyboard usage: Displays. . . . . . . . . . . . . . . . . . . . K
+Text Display Options. . . . . . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 19
+= B 0
+= K 3
+= D 18
+{B}Help: Text Display Options{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to change the options associated with the Text
+display.  To confirm any changes you make to the field associated
+with this display, push the RETURN/ENTER key.  To cancel without
+making any changes, push the ESC key.
+
+The field and its meaning is:
+
+{B}Refs{N}           Use this field to specify the reference pattern
+               TACT will display for the current selected
+               position.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+TACT's Text Display . . . . . . . . . . . . . . . . . . . . . . D
+*)
+(*RES OLD HLP 20
+= B 0
+= K 4
+= L 9
+{B}Help: TACT's Category Selection Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use TACT's category selection windows when you want to create a
+list for display with objects contained in your category lists.
+TACT will present you with all your category names, one per line.
+
+You should use the selection display to indicate which categories
+are to be in the selected list.  Categories whose contents are
+currently selected have the character "{B}>{N}" in front of them.
+
+One line in the selection list is always highlighted.  To select
+or deselect an object you first move the highlighted line to the
+object you wish to (de)select.  When the object is highlighted,
+type the {B}Ins{N} key to select it (if not currently selected) or de-
+select it (if currently selected).
+
+When you are finished making selections, push the {B}Enter/Return{N}
+key.
+
+Type "{B}K{N}" to see a list of all possible key operations you can do
+within this display.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keystrokes within this display. . . . . . . . . . . . . . . . . K
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+*)
+(*RES OLD HLP 21
+= B 0
+= K 3
+= W 22
+{B}Help: Printing from TACT{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+By pushing the F6 function key or choosing "Print" from the
+Action Bar's "File" menu, you will cause TACT to print something
+for you.  TACT can print three things for you:
+
+    -  The active display.
+
+    -  The contents of the current selection window
+
+    -  A Help Item
+
+Printing a Help item, or the current selection window is only
+available by using the F6 function key, since the Action Bar
+cannot be made active when inside a selection window, or a help
+display.
+
+The Print dialog box contains three fields:
+
+    -  {B}Printer{N}: identifies which printer you want to print to.
+       Valid options are "LPT1", "LPT2", "LPT3", "COM1" and
+       "COM2".
+
+    -  {B}Translation{N}: identifies which translation table TACT is to
+       use when printing.  The translation table tells TACT how
+       to print characters and certain attributes such as "bold".
+
+    -  {B}Number of lines per page{N}: tells TACT how many lines you
+       want per printer page (pages are separated by ASCII Form-
+       Feed characters).  Put "0" (zero) if you want no page
+       separation.
+
+When you are ready to print, push the "Enter/Return" key.  To
+avoid printing at this point, push the ESC key.  During printing
+you can type any key to interrupt.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keystrokes within this display. . . . . . . . . . . . . . . . . K
+Writing to a file from TACT . . . . . . . . . . . . . . . . . . W
+*)
+(*RES OLD HLP 22
+= B 0
+= K 3
+= P 21
+{B}Help: Writing to a file from TACT{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+By pushing the Ctrl-F6 function key or choosing "Disk" from the
+Action Bar's "File" menu, you will cause TACT to write something
+into a file on disk for you. TACT can write three types of
+reports:
+
+    -  The active display.
+
+    -  The contents of the current selection window
+
+    -  A Help Item
+
+Printing a Help item, or the current selection window is only
+available by using the F6 function key, since the Action Bar
+cannot be made active when inside a selection window, or a help
+display.
+
+The Disk Write dialog box contains two fields:
+
+    -  {B}File Name{N}: identifies the file to which you wish to write.
+       If the file does not exist, TACT will create it.  If it
+       does exist TACT will append onto the end of it.  DOS
+       WildCard characters "*" and "?" can be used.  If used,
+       TACT will generate a selection window showing the names of
+       all files that match the wildcard specification, and you
+       can select one.
+
+    -  {B}Translation{N}: identifies which translation table TACT is to
+       use when writing the file.  The translation table tells
+       TACT how to write characters and certain attributes such
+       as "bold".
+
+When you are ready to write to the file, push the "Enter/Return"
+key.  To avoid writing at this point, push the ESC key.  During
+writing you can type any key to interrupt.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keystrokes within this display. . . . . . . . . . . . . . . . . K
+Printing from TACT. . . . . . . . . . . . . . . . . . . . . . . P
+*)
+(*RES OLD HLP 23
+= B 0
+= K 3
+= A 8
+= E 24
+= S 25
+{B}Help: Importing rules into TACT{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+
+Select the Import option from the Action Bar's File menu when you
+wish to bring a rule into TACT from an outside rule file and use
+it as a criterion in a TACT selection.
+
+There are two fields on the menu:
+
+    *  {B}Import Rule Name{N}: The name of the rule in the file.  If
+       you leave this field blank, TACT will scan the rule file
+       and present you with a selection list from which you can
+       choose a rule.
+
+    *  {B}Rule File{N}: The name of the rule file from which to take
+       the rule.  The default file extension is ".RUL".
+
+After you have selected a rule to import, push the "Enter/Return"
+key.  TACT will when present you with the AutoSelection Rule
+dialog box, with the criteria filled in.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+The AutoSelection Rule Menu . . . . . . . . . . . . . . . . . . A
+Exporting rules from TACT . . . . . . . . . . . . . . . . . . . E
+TACT's Rule Selection Window. . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 24
+= B 0
+= K 3
+= I 23
+= S 25
+{B}Help: Exporting rules from TACT{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+
+Select the Export option from the Action Bar's File menu when you
+wish to save a criterion rule currently in TACT's AutoSelection
+Rule on an external rule file.
+
+There are two fields on the menu:
+
+    -  {B}Export Rule Name{N}: the name of the rule to be used in the
+       rule file.  If you leave this field blank, TACT will scan
+       the rule file and present you with a selection list from
+       which you can choose a rule.
+
+       If the name you give is already used in the file, TACT
+       will replace the old rule in the file with the new one
+       you've given.
+
+    -  {B}Rule File{N}: the name of the rule file to write the rule to.
+       If the file doesn't exist, TACT will create it.  The
+       default file extension is ".RUL".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+Importing rules into TACT . . . . . . . . . . . . . . . . . . . I
+TACT's Rule Selection Window. . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 25
+= B 0
+= K 5
+= E 24
+= I 23
+{B}Help: TACT's Rule Selection Window{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+
+TACT presents its rule selection window to you when you are
+either exporting or importing a rule from a rule file.  The
+window will show you a list of rules that were found in the rule
+file: one rule per line.  You can select a rule from the display
+by moving the highlighted line to the appropriate rule and
+pushing the "Enter/Return" key.
+
+TACT assumes that the rules are provided in the rule file in
+alphabetical order according to their names.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+Exporting rules from TACT . . . . . . . . . . . . . . . . . . . E
+Importing rules into TACT . . . . . . . . . . . . . . . . . . . I
+*)
+(*RES OLD HLP 26
+= A 27
+= C 28
+= S 29
+{B}Help: Introduction to MAKBAS{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Welcome to MAKBAS for TACT system 1.2.
+
+The rest of this introduction message is a some information that
+will help to get you started using MAKBAS.  To read more than
+what shows on the screen, push the {B}PageDown{N} key.  To move "up" in
+this text, push the {B}PageUp{N} key.
+
+
+                       {B}What can I do now?{N}
+
+Before you can make MAKBAS do anything else, you must finish
+looking at Help.  Do this by pushing either the "Enter" or "ESC"
+key.
+
+MAKBAS is used to produce a textual database for TACT from an
+input source text.  At this point you can do three things:
+
+   1.  You can stop MAKBAS immediately by pushing the F10 key.
+
+   2.  You can check over and alter if necessary the assumptions
+       MAKBAS will make about the text file it is about to work
+       on.
+
+   3.  When you're ready you can ask MAKBAS to proceed to create
+       the textual database by pushing the "Enter/Return" or "F9"
+       function keys.
+
+
+                       {B}On the Front Panel{N}
+
+You can change the names of the file MAKBAS is going to work with
+by moving the cursor to the appropriate field and editing the
+text.  You can specify the name of the text that will be stored
+in the textual database by modifying "{B}DB Title{N}".  You can give an
+initial reference template for this database by entering a
+template in the "{B}Starting Ref{N}" area.  Finally, you can tell
+MAKBAS to create scratch files on a different device or directory
+by coding your device or directory in the "{B}Temporary File Area{N}".
+
+
+
+                        {B}MAKBAS SubPanels{N}
+
+You can change other information MAKBAS will use to process your
+text by asking TACT to show you the appropriate subpanel, and
+then changing its contents.  The subpanels are:
+
+    -  {B}Alphabet{N}: This is the place where you can identify the
+       letters of the alphabet and other characters related to
+       words.  Type {B}F2{N} for this.
+
+    -  {B}Special Characters{N}: This is the place where you can
+       identify bracketting characters that surround text to be
+       ignored, brackets that surround COCOA-type references, or
+       strings of characters that need to be explicitly coded as
+       word-separators.  Type {B}F3{N} for this.
+
+    -  {B}Structural Information{N}: This is the place where you tell
+       MAKBAS how to identify and process the structural
+       information in your text.  This information can be coded
+       as counter characters, or by using BYU or COCOA-type
+       references. Type {B}F4{N} for this.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+MAKBAS's Alphabet Panel . . . . . . . . . . . . . . . . . . . . A
+MAKBAS's Special Characters Panel . . . . . . . . . . . . . . . C
+MAKBAS's Structure Panel. . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 27
+= I 26
+{B}Help: MAKBAS's Letters Diacritics ... Panel{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+
+Use this panel to control the characters MAKBAS will recognize as
+letters, diacritics and the continuation character when
+processing your text to produce a textual database.
+
+To change the specification, move to the appropriate set of
+fields and edit what's there.
+
+Objects that this Panel controls are:
+
+{B}Letters{N}        Characters that can appear in words and are used
+               for alphabetization.
+
+{B}Retained Diacritics{N}
+               Symbols that are not letters for alphabetization
+               purposes, but can appear within words, and should
+               be retained as a part of the word.
+
+{B}NonRetained Diacritics{N}
+               Symbols, similar to Retained Diacritics, that may
+               appear within a word, and are not to be considered
+               for alphabetization purposes.  However, unlike
+               Retained Diacritics, they will not be retained as
+               a part of the word.
+
+{B}Continuation Symbol{N}
+               A symbol that, when appearing at the end of a line
+               of text, indicates that the word continues on the
+               next line.
+
+When you are finished with this subpanel, push the "Enter/Return"
+key.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+Introduction to MAKBAS. . . . . . . . . . . . . . . . . . . . . I
+*)
+(*RES OLD HLP 28
+= I 26
+{B}Help: MAKBAS's Special Characters Panel{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to control the characters MAKBAS will recognize
+for several purposes.  First, choose the type of character(s) you
+wish to specify by setting the switch in the current display:
+
+{B}Ignore{N}         Pairs of symbols that are to be used to surround
+               text that is to be ignored by MAKBAS.
+
+{B}Reference{N}      Pairs of symbols that are to be used to delimit
+               COCOA-type text references.
+
+{B}Word Sep Seq{N}   Symbols that are to be recognized as a word
+               separator.
+
+The information in this panel is maintained as a list.
+Information about each character is stored as an entry in this
+list.  You can perform the following types of operations on
+entries:
+
+   1.  {B}To create a new entry{N}, move to the end of the list (using
+       the End key) and change the type switch from "Empty" to
+       the type of entry you wish to create.
+
+   2.  {B}To delete an existing entry{N}, find the entry you wish to
+       dispose of (the PgUp and PgDn keys will move you between
+       entries) and change the switch value to "Empty".
+
+   3.  {B}To change an existing entry{N}, find the entry you wish to
+       change and modify the fields to suit your purposes.  The
+       Up and Down arrow keys will move you between fields in
+       entries.
+
+
+            {B}Fields for Ignore and Reference brackets{N}
+
+    -  {B}Open Bracket{N}: Specify here the string of characters to
+       mark the front of the ignore or reference string.
+
+    -  {B}Close Bracket{N}: Specify here the string of characters to
+       mark the end of the ignore or reference string.
+
+    -  {B}Suppress Text{N}: "Yes" indicates that brackets and text are
+       not to appear in textual database.
+
+    -  {B}Word Separator{N}: "Yes" indicates that an occurrence of this
+       ignore or reference string always separates words.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+Introduction to MAKBAS. . . . . . . . . . . . . . . . . . . . . I
+*)
+(*RES OLD HLP 29
+= I 26
+{B}Help: MAKBAS's Structure Panel{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to specify the text structure MAKBAS will
+recognize while creating the textual database.  You can specify
+the following information:
+
+    o  Which of the pieces of structural information are to be
+       given to TACT.
+
+    o  How counters are organized hierarchically.
+
+    o  How labels are to be recognized.
+
+    o  Which BYU-type control data is to be recognized.
+
+The information in this panel is maintained as a list.
+Information about each character is stored as an entry in this
+list.  You can perform the following types of operations on
+entries:
+
+   1.  {B}To create a new entry{N}, move to the end of the list (using
+       the End key) and change the type switch from "Empty" to
+       the type of entry you wish to create.
+
+   2.  {B}To delete an existing entry{N}, find the entry you wish to
+       dispose of (the PgUp and PgDn keys will move you between
+       entries) and change the switch value to "Empty".
+
+   3.  {B}To change an existing entry{N}, find the entry you wish to
+       change and modify the fields to suit your purposes.  The
+       Up and Down arrow keys will move you between fields in
+       entries.
+
+
+                   {B}Types of Objects Available{N}
+
+    -  {B}Reference{N}: Choose this object to tell MAKBAS how to handle
+       COCOA-like references in your text.
+
+    -  {B}Label{N}: Choose this object to tell MAKBAS how to handle
+       references which are differentiated by different types of
+       brackets.
+
+    -  {B}Counter{N}: Choose this object to tell MAKBAS how to handle
+       references which are marked by single characters or short
+       sequences in your text.  The counter value will be a
+       number: the number of times the given character or
+       characters occurred.
+
+    -  {B}BYU{N}: Choose this object to tell MAKBAS how to handle
+       references given in the BYU format.
+
+
+                             {B}Fields{N}
+
+{B}The "TACT ID:" field{N} is present in all submenus in the Structural
+Information SubPanel.  On it you give the name or names by which
+you wish to refer to the item when using TACT.  Although these
+names are provided principally to give you access to the data in
+TACT, they are also used within MAKBAS when you need to make a
+reference from one type of structural information to another.
+
+{B}The "Text ID:" field{N} is used in reference and BYU-type entries.
+It is the place where you identify which Text reference you are
+talking about.  For example, a COCOA-type reference "<a 1>" has a
+Ref ID of "a".  The BYU reference "|a 1" has a Ref ID of "a"
+also.
+
+{B}Numeric:{N} This switch allows you to indicate whether the data
+associated with the Ref ID are numeric.  Among other things,
+tagging the data as numeric ensures that TACT will sort that data
+numerically.
+
+{B}Number of characters to keep:{N} If the value is a character string,
+this option allows you to indicate how many characters from the
+front of the string are to be passed to TACT.
+
+{B}Open and Close Brackets:{N} These fields appear only in "label-type"
+entries.  Use them to specify the type of brackets that surround
+text labels.
+
+{B}The counter ID{N} appears only in Counter entries and allows you to
+specify what MAKBAS should look for in the text to increment the
+counter.  There are two types of objects that can cause MAKBAS to
+increment a counter:
+
+   1.  One or more symbols.  In the case where the counter is
+       associated with sentence punctuation, you would simply
+       give the punctuation symbols, separated from each other by
+       spaces, e.g.: {B}Counter ID: . ? !{N}
+
+   2.  One or more text references or labels.  In this case, you
+       first give an at-sign (``@''), and then immediately
+       following one of the TACT names you have associated with
+       the text reference or label that you wish to tie the
+       counter to.
+
+{B}Reset{N}: In this field (only in counters) you can enter the TACT
+names of one or more other counters that are to be reset by the
+occurrence of the present counter.  To reset a sentence counter
+for each paragraph, enter the sentence counter name in the reset
+field of the paragraph counter.
+
+{B}Init{N}: In this field (in counter entries only) you can tell MAKBAS
+what to set the counter to at the beginning, and what to reset it
+to, when it is to be reset.
+
+{B}Suppress Text{N}: This switch allows you to indicate whether or not
+MAKBAS is to include the label as text in the textual database --
+or not.  If "Yes", MAKBAS will process and extract the
+information it finds and make it available to TACT, but the
+actual display of the reference information as it appears in the
+input text will not appear in the textual database saved for
+TACT's use.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+Introduction to MAKBAS. . . . . . . . . . . . . . . . . . . . . I
+*)
+(*RES OLD HLP 30
+{B}Help: Introduction to MERGEBAS{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Welcome to MERGEBAS for TACT version 1.2.
+
+The rest of this introduction message is a some information that
+will help to get you started using MERGEBAS.  To read more than
+what shows on the screen, push the {B}PageDown{N} key.  To move "up" in
+this text, push the {B}PageUp{N} key.
+
+
+                       {B}What can I do now?{N}
+
+Before you can make MERGEBAS do anything else you must finish
+looking at Help.  Do this by pushing either the "Enter" or "ESC"
+key.
+
+MERGEBAS is used to combine a collection of 1-4 textual databases
+(that you've already created using MAKBAS) into one large
+database.
+
+   1.  You can stop MERGEBAS immediately by pushing the F10 key.
+
+   2.  You can check over and alter if necessary the
+       specifications MERGEBAS will use about the textual
+       databases it is about to work on.
+
+   3.  When you're ready you can ask MERGEBAS to start to create
+       the merged textual database by pushing the "Enter/Return"
+       or "F9" function keys.
+                      {B}On the Control Panel{N}
+
+You can change the names of the files with which MERGEBAS is
+going to work by moving the cursor to the appropriate field and
+editing the text.  The fields and their meanings are:
+
+    o  {B}Output Database{N}: This is where you give MERGEBAS the name
+       of the merged textual database it is going to create for
+       you.  Make sure that the name you give is different from
+       all other databases you have already created.
+
+    o  {B}Output Title{N}: This is the title that MERGEBAS will store
+       in the database MERGEBAS is going to create for you.  This
+       field is optional.
+
+    o  {B}Starting Ref{N}: This is the reference template that MERGEBAS
+       will store in the database it is going to create for you.
+       If left blank, MERGEBAS will take the first reference
+       template it finds among the input databases and copy this
+       into the output database.
+
+    o  {B}Save Titles as{N}: If you wish, MERGEBAS can save the titles
+       of the input databases as reference information within the
+       resulting database.  Put a reference name here if you wish
+       MERGEBAS to do this for you.
+
+    o  {B}Input DataBases{N}: Put the names of two, three, or four
+       existing databases you want to use for input to MERGEBAS.
+       You must give at least 2 input databases to MERGEBAS.
+
+    o  {B}DB Title{N}: MERGEBAS will provide the database text name
+       that was stored in the input database in this field for
+       you.  If you are saving these names as references, you may
+       wish to change them by typing in new information here, or
+       by editing the existing information.
+*)
+(*RES OLD HLP 31
+= B 0
+{B}Help: Support{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+We appreciate your comments and suggestions.  We also need to
+hear from you if you've found something that doesn't work as
+advertised!  If you have any comments please contact
+
+     John Bradley or Lidio Presutti
+     University of Toronto
+     Computing Services
+     Rm 201, 4 Bancroft Ave
+     Toronto, Ont CANADA M5S 1A1
+     Telephone: (416)978-3995.
+
+     E-Mail: bradley@gpu.utcs.utoronto.ca
+     BITNET: BRADLEY AT UTORVM
+             LIDIO AT UTORVM
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+*)
+(*RES OLD HLP 32
+= A 8
+= B 0
+= C 34
+= F 35
+= R 33
+= W 36
+{B}Help: Selection Rules: Syntax{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+This is a simplification of the full specification language.  See
+the TACT Guide for a more complete description.
+
+All TACT selection criteria specifications start with some type
+of initial selection called a {B}source{N}.  Some also contain
+{B}refinements{N} or {B}filters{N} that modify the initial selection.
+The general form is:
+
+{B}<sources> [ ; <refinements> ]{N}
+
+Note that the refinement section is optional, but, if used, must
+be preceded by a semicolon.
+
+
+                        {B}Selection Sources{N}
+
+The <source> can consist of several selection items separated by
+commas:
+
+<source 1> , <source 2> , ...
+
+The following are legal sources:
+
+    o  {B}Vocabulary Words{N}: Any vocabulary word can be given.  If
+       the word is reserved within TACT, precede it with an
+       (unmatched) '"', e.g. {B}"when{N}.  To manually select words
+       from the vocabulary list specify {B}"?{N} as the source.
+
+    o  {B}Regular Expressions{N}: For more information about Regular
+       Expression syntax, type "{B}R{N}" now.
+
+    o  {B}Category{N}: To enter a category type "@" followed by the
+       category name, e.g.: "{B}@tobe{N}".  You can select a category
+       by a list by typing "{B}@?{N}" as a source.
+
+    o  {B}Frequency{N}: The {B}FREQ{N} selection criteria can be used as a
+       source or a refinement to select words according to
+       frequency of occurrence.  For more information about it
+       type "{B}F{N}" now.
+
+    o  {B}Current Selected List{N}: The current selected list can be
+       "fed into" the autoselection as a source by including a {B}@{N}
+       by itself (not following it by a category name).
+
+    o  {B}SIMIL{N}: The SIMIL selector selects word types based on
+       their similarity to a given pattern, e.g.: "{B}SIMIL love{N}
+       {B}70%{N}".  This selects words with letter sequences that are
+       more than 70% similar to "love".
+
+    o  {B}Phrase Selection{N}: Any of the above selection tools can be
+       combined into phrases by joining them with the "{B}|{N}"
+       operator, e.g. "{B}my | lov.*{N}" chooses phrases beginning with
+       the word "my" and followed immediately by any word
+       starting with "lov".  The "{B}>{N}" character can be used to
+       select positions other than the first word in the phrase:
+       e.g. "{B}my | > lov.*{N}" will save the "lov" words.  The ">"
+       character may be placed by itself before or after the
+       phrase: "{B}> | my | lov.*{N}" chooses all word immediately
+       before the phrase; "{B}my | > | lov.*{N}" chooses all phrases
+       beginning with the word "my", followed by any word, and
+       then followed by a "lov" word.  The middle, unspecified,
+       word is saved in the resulting list.
+
+    o  {B}Co-occurrence Selection{N}: Any of the above selection tools
+       can be combined into expressions involving the co-
+       occurrence operators "{B}&{N}", "{B}~{N}".  For more information about
+       the co-occurrence syntax, type "{B}C{N}" now.
+
+    o  {B}Exclusion{N}: Similarly, the "{B}-{N}" operator can be used:
+       <source 1> - <source 2> produces a list of items that are
+       in <source 1> but are not in <source 2>.
+
+                      {B}Selection Refinements{N}
+
+A refinement can follow any source or source group.  It begins
+with a semicolon.  More than one refinement can be given -- in
+which case separate each by a semi-colon:
+
+<sources> ; <refinement> [; <refinement> ...] )
+
+There are several different refinement operators to choose from.
+All refinement operators begin with a name, and some are followed
+by some further specification information.
+
+    o  {B}FREQ{N}: The FREQ operator can be used as a refinement.  For
+       more information about it, type "{B}F{N}" now.
+
+    o  {B}POS{N}: The POS operator needs no further specification
+       information.  It transforms each word (type) entry it is
+       given into a list of positions where that word occurs:
+       e.g: "{B}earth; pos{N}"
+
+    o  {B}REGEXP{N}: Regular expressions can be used as a refinement,
+       e.g.: "{B}@goldtheme;  REGEXP a.*{N}" chooses all positions in
+       category GoldTheme that are assigned to words beginning
+       with the letter "a".  For more information on regular
+       expression syntax, type "{B}R{N}" now.
+
+    o  {B}WHEN{N}: Can be used to select positions based on structural
+       information in the text.  For more information, type "{B}W{N}"
+       now.
+
+    o  {B}SIMIL{N}: The SIMIL operator (described above) can also act
+       as a refinement, e.g.: "{B}l.*; simil love 75%{N}" will select
+       all words beginning with "l" that are more than 75%
+       similar to "love".
+
+    o  {B}SPAN{N}: The SPAN operator creates a resulting list that
+       consists of all word tokens "near" to the given inputted
+       positions ("near" is defined by the AutoSelection Dialog
+       Box's "Config Context").  If the configuration context was
+       5 words on either side, for example, the selection "{B}love;{N}
+       {B}span{N}" would select all words that occur within 5 words of
+       "love" in the text.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+AutoSelection Dialog Box. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Co-occurrence Syntax. . . . . . . . . . . . . . . . . . . . . . C
+FREQ Selection. . . . . . . . . . . . . . . . . . . . . . . . . F
+Regular Expression Syntax . . . . . . . . . . . . . . . . . . . R
+WHEN refinement . . . . . . . . . . . . . . . . . . . . . . . . W
+*)
+(*RES OLD HLP 33
+= A 8
+= B 0
+= S 32
+{B}Help: Regular Expression Syntax{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Regular Expressions can be specified (a) as a source in a
+selection criteria statement, (b) as a refinement, or (c) as a
+part of a WHEN selection.  In the first two instances it selects
+word types in the last case it selects values for structural
+references.
+
+Format is a string of letters or diacritics with special
+characters that have special meanings interspersed.  In the
+following, the term "word letter" means letter or diacritic.
+Special characters are:
+
+    o  {B}"."{N}: Means "any word letter"
+
+    o  {B}"[...]"{N}: Means "any one of the word letters between the
+       brackets": e.g. "[aeiou]" means "any vowel".  If an
+       alphabetically consecutive set of letters is desired, use
+       the range selector {B}":"{N} -- [a:e] means all letters between
+       "a" and "e".
+
+
+    o  {B}"[~...]"{N}: Means "any word letter BUT the word letters
+       between the brackets": e.g. "[~aeiou]" means "any letter
+       BUT a vowel".
+
+    o  {B}"*"{N}: Means "zero or more occurrences of the PRECEDING word
+       letter".  e.g. "e*" means "zero or more occurrences of the
+       word letter 'e'", ".*" means "zero or more occurrences of
+       any word letter", "[ae]*" means "zero or more occurrences
+       of either the letter "e" or "a".
+
+    o  {B}"\"{N}: Means "treat the following character as a letter or
+       diacritic in a regular expression."
+
+Some examples:
+
+{B}b.t{N}            Any three-letter word beginning with the letter
+               "b" and ending with the letter "t".
+
+{B}b.*t{N}           Any word of any length beginning with the letter
+               "b" and ending with "t".
+
+{B}ba...{N}          Any five letter word beginning with the sequence
+               "ba".
+
+{B}.[bt].{N}         Any three-letter word containing, as the middle
+               letter, the letter "b" or "t".
+
+{B}.[~bt].{N}        Any three-letter word containing, as the middle
+               letter, any letter BUT the letters "b" or "t".
+
+{B}.*b.*{N}          Any word containing the letter "b" in any
+               position.
+
+{B}.*ing{N}          Any word ending with the letter sequence "ing".
+
+{B}.*lov.*{N}        Any word containing the letter sequence "lov".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+AutoSelection Dialog Box. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Selection Rules: Syntax . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 34
+= A 8
+= B 0
+= S 32
+{B}Help: Co-occurrence Syntax{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use the co-occurrence operators when you wish to select positions
+where two or more words happen near to each other.  Co-occurrence
+operators always produce a list of positions in the text -- they
+can never generate a list of words.
+
+There are three co-occurrence operators.  To use, replace
+"<item1>" and "<item2>" with a subordinate rule (such as a
+regular expression).
+
+    o  {B}<item1> & <item2>{N}
+       The resulting list will contain positions where item1
+       occurs that also have an occurrence of item2 within the
+       range of text controlled by the context.  The context is
+       specified in the "Config Context" section of the
+       Autosection rule window (see below).  This is the {B}and{N}
+       operation.
+
+    o  {B}<item1> ~ <item2>{N}
+       The resulting list will contain positions where item1
+       occur that {B}do not{N} have an occurrence of item2 within the
+       range of text controlled by the context.  The context is
+       specified in the "Config Context" section of the
+       Autosection rule window (see below).  This is the
+       {B}exclusion{N} operation.
+
+Items within the list can be a word from the vocabulary, a
+regular expression, a category name, or many other basic
+selection rule types. In addition, an item may be any further
+subordinate co-occurrence selection criteria.  In this case, the
+subordinate criteria must be surrounded by brackets "(" and ")".
+
+
+                            {B}Examples{N}
+
+Two simple examples:
+
+    o  {B}Metro.* ~ Toronto.*{N}
+       This rule will select positions in the text showing all
+       occurrences of the word beginning with the letters "METRO"
+       that doesn't have a word beginning with "TORONTO" nearby.
+
+    o  {B}a & the{N}
+       This rule will select all occurrences of "a" that occur
+       within the given Config context in association with
+       occurrences of "the".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+AutoSelection Dialog Box. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Selection Rules: Syntax . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 35
+= A 8
+= B 0
+= S 32
+{B}Help: FREQ Selection{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use the FREQ selection operator when you want to select words
+based on frequency of occurrence.  When used as a source (e.g.
+"{B}FREQ 5{N}"), FREQ selects words based on their frequency in the
+entire text.  When used as a refinement (e.g. "{B}l.* ; FREQ 5{N}",
+words are selected according to their number of occurrences in
+the given list.
+
+You give numbers to use as criteria for frequency selection.  The
+forms are:
+
+    o  You can give a single number, or number range: "{B}FREQ 5{N}" or
+       "{B}FREQ 5:8{N}".
+
+    o  You can use the "<", "<=", ">", or ">=" operators: "{B}FREQ{N}
+       {B}<= 6{N}".
+
+    o  If you enclose the specification in parentheses, you can
+       specify more than one condition, separating each by a
+       comma: "{B}FREQ (< 10, > 100){N}", "{B}FREQ (10:12, 50:58){N}".
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+AutoSelection Dialog Box. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Selection Rules: Syntax . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 36
+= A 8
+= B 0
+= S 32
+{B}Help: WHEN refinement{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The WHEN refinement allows you to select positions in the text
+where a particular structural condition is true, for example,
+when the speaker is Romeo.
+The following is a partial description of WHEN refinement syntax.
+For more information, refer to the TACT Guide.
+
+An example of WHEN refinement in use is:
+
+     lov.* ; when speaker = romeo
+
+
+                  {B}Simple WHEN Selection Format{N}
+
+The general format of the basic WHEN selection is:
+
+     {B}<choose from> ; WHEN <Ref ID> = <selection list>{N}
+
+The elements are:
+
+{B}<choose from>{N}  This is the specification for the primary list
+               from which the WHEN specification will choose in
+               order to create a secondary list.  The <choose
+               from> specification is often a word, word list, or
+               regular expression, but it can be created in other
+               ways.
+
+{B}<Ref ID>{N}       This is the name of the piece of structural
+               information we want to use as the basis of our
+               refinement selection.  To select from a list of
+               possible items for this database, enter a "?" in
+               the specification.
+
+{B}<selection list>{N}
+               This element tells TACT to include in the
+               resulting list a particular occurrence from the
+               <choose from> list when the occurrence is found in
+               a context that has the given value(s) for <Ref
+               ID>.  To select from a list of possible items for
+               this database, enter a "?" in the specification.
+               This will only work if the unit is not numeric.
+
+The selection list format can be:
+
+    o  A single name: ... ; WHEN speaker = {B}juliet{N}
+
+    o  A list of names (separated by commas): ... ; WHEN speaker
+       = {B}romeo, juliet{N}
+
+    o  A range of numbers (if reference is numeric): ... ; WHEN
+       chapter = {B}10:15{N}
+
+    o  If reference is numeric, you can use "<", ">", "<=" and
+       ">=": ... ; WHEN chapter {B}< 15{N}
+
+    o  A question mark (to choose from list -- if reference is
+       {B}not{N} numeric): ... ; WHEN speaker = {B}?{N}
+
+    o  A regular expression: ... ; WHEN speaker = {B}j.*{N}
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+AutoSelection Dialog Box. . . . . . . . . . . . . . . . . . . . A
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Selection Rules: Syntax . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 37
+= B 0
+= G 47
+= H 2
+= W 31
+{B}Help: TACT Licensing Terms{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+   {B}TACT Copyright (c) 1989 John Bradley, University of Toronto{N}
+                      {B}ALL RIGHTS RESERVED.{N}
+
+TACT is free, but it is a copyrighted work and may be distributed
+only pursuant to this license.
+
+Permission is hereby granted to reproduce and disseminate TACT so
+long as:
+
+
+   1.  No remuneration of any kind is received in exchange; and
+
+   2.  Distribution is without ANY modification to the contents
+       of TACT.EXE, MAKBAS.EXE, MAKBAS.OV1, TACT.RES and all
+       accompanying documentation and/or support files, including
+       the copyright notice and this license.
+
+No copy of TACT may be distributed without including a copy of
+this license.
+
+Any other use is prohibited without express, written permission
+in advance.
+
+We cannot be held financially responsible for problems that
+accrue in the use of TACT.
+
+For information on where to get copies of TACT and its manual
+type "{B}G{N}" now.
+
+     John Bradley
+     University of Toronto
+     Computing Services
+     Rm 201, 4 Bancroft Ave
+     Toronto, Ont.,
+     CANADA M5S 1A1
+
+     Telephone: (416) 978-3995
+     FAX: (416) 978-6620
+     E-Mail:
+       uucp:    bradley@gpu.utcs.utoronto.ca
+       BitNet:  BRADLEY@UTORVM
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT Distribution . . . . . . . . . . . . . . . . . . . . . . . G
+Intro to Help in TACT . . . . . . . . . . . . . . . . . . . . . H
+TACT Support: Who and Where . . . . . . . . . . . . . . . . . . W
+*)
+(*RES OLD HLP 38
+= B 0
+= C 39
+= D 12
+= I 14
+= K 16
+= L 9
+= T 18
+{B}Help: TACT's Displays{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The main reason to use TACT is to produce and examine displays
+based on selected positions in the text.  The selected positions
+are stored in a {B}selected list{N}.  This single list is used to drive
+all the displays.  Hence, one uses TACT essentially (1) by
+selecting items you want to look at, and then (2) by looking at
+the results with the TACT displays.  Since all displays run from
+the same selection, you can switch among the various displays
+without needing to recreate the list.
+
+For help on creating the selected list, look at Help item "TACT's
+Working Lists".  You can jump there now by pushing "{B}L{N}".
+
+TACT has 5 types of displays:
+
+    o  {B}KWIC Display{N}: shows the selected positions in the text in
+       context -- one or more lines surrounding.  For more
+       information on the KWIC Display, see Help item "TACT's
+       KWIC Display" (push "{B}K{N}" now).
+
+    o  {B}Text Display{N}: shows the selected positions in the body of
+       the text.  The text is shown as if you were browsing it
+       in, say, a word processor.  For more information on the
+       TEXT Display, see Help item "TACT's TEXT Display" (push
+       "{B}T{N}" now).
+
+    o  {B}Distribution Display{N}: displays distribution graphs showing
+       how the selected positions are scattered through the text,
+       or among various textual structural divisions.  For more
+       information on the Distribution Display, see Help item
+       "TACT's Distribution Display" (push "{B}D{N}" now).
+
+    o  {B}Index Display{N}: generates an index of the positions -- each
+       index entry is 1 line.    For more information on the
+       Index Display, see Help item "TACT's Index Display" (push
+       "{B}I{N}" now).
+
+    o  {B}Collocate Display{N}: generates a list of words near to the
+       selected positions.  For more information on the Collocate
+       Display, see Help item "TACT's Collocate Display" (push
+       "{B}C{N}" now).
+
+The basic way to select a display to look at is to choose it from
+the "{B}Current{N}" menu on the action bar.  Once you have selected the
+display you can modify some aspects of it by pushing {B}F4{N} and
+changing the settings you'll then see.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Collocate Display. . . . . . . . . . . . . . . . . . . . C
+TACT's Distribution Display . . . . . . . . . . . . . . . . . . D
+TACT's Index Display. . . . . . . . . . . . . . . . . . . . . . I
+TACT's KWIC Display . . . . . . . . . . . . . . . . . . . . . . K
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+TACT's Text Display . . . . . . . . . . . . . . . . . . . . . . T
+*)
+(*RES OLD HLP 39
+= B 0
+= D 38
+= L 9
+= K 10
+= O 40
+{B}Help: TACT's Collocate Display{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+The Collocate display produces a list of collocates for each word
+or word-pattern sorted into descending order by their z-scores (a
+measure of the attraction of the collocate to the word or word-
+pattern, based on a comparison of the expected number of co-
+occurrences (assuming a random distribution through the text) to
+the actual number of co-occurrences within the span.
+
+    -  {B}To move about in the display{N}: use the Home, End, PgUp,
+       PgDn, Up, Down, or Left and Right cursor keys.  Moving the
+       selected node in the display will change the current
+       position in the text.
+
+    -  {B}To Change the type of display{N}: choose "Current" or "New"
+       from the Action Bar.  Other display types are KWIC, Index
+       and Text.
+
+    -  {B}To Change some option associated with the Collocate{N}
+       {B}Display{N}: push the F4 Key.
+
+The top line of the display contains the following information:
+
+    -  The reference information for the current position.
+
+    -  The number of words in the "mini-text": the text near to
+       the positions in the selected list from which the
+       collocates have been drawn.
+
+    -  The total number of words in the entire database.
+
+Following this are several columns of information.  The next two
+lines on the display are labels for the columns.  The display has
+two modes of operation, showing or suppressing intermediate
+results that are produced to calculate the Z-score.  In short
+form (suppressing intermediate results) the following data is
+displayed:
+
+    -  {B}Collocates:{N}  In this column are the collate word types
+       that TACT found.
+
+    -  {B}Sel. Node:{N}  This column is used to indicate the current
+       position in the selected list.  By pushing the Up and Down
+       arrow keys, or the PgUp and PgDn keys you can change the
+       current position (in the same way as you can for other
+       displays).  Pushing the Left and Right arrow keys will
+       move you between different occurrences of the current
+       collocate headword (if more than 1 occurrence is
+       represented in the display).
+
+    -  {B}Collocate Freq:{N}  This is the number of times the collocate
+       occurred in the mini-text.
+
+    -  {B}Type Freq:{N}  This is the number of times the word occurred
+       in the entire text.
+
+    -  {B}Z-score:{N}  This is the Z-score for the collocate.
+
+The remaining information only appears when intermediate results
+are being displayed:
+
+    -  {B}Type Prob.:{N} This is the probability calculated by taking
+       the total number of occurrences of the word throughout the
+       text and dividing it by the text size.
+    -  {B}Expected Observ.:{N} This is the number of observations of
+       the word you'd expect to find in the mini-text, based on
+       its probability (calculated above).
+
+    -  {B}Standard Dev.:{N} This is the standard deviation, calculated
+       for use within the Z-score.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Displays . . . . . . . . . . . . . . . . . . . . . . . . D
+TACT's Working Lists. . . . . . . . . . . . . . . . . . . . . . L
+Keyboard usage: Displays. . . . . . . . . . . . . . . . . . . . K
+Collocate Display Options . . . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 40
+= B 0
+= K 3
+= D 39
+{B}Help: Collocate Display Options{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Use this panel to change the options associated with the
+collocation display.  To confirm any changes you make to the
+fields associated with this display, push the RETURN/ENTER key.
+To cancel without making any changes, push the ESC key.
+
+{B}Refs{N}           Specify here the pattern that TACT is to use as
+               the reference display for the selected position.
+
+{B}Collocate Display Context{N}
+                 You can specify the range of text to be used to
+               look for collocates in this area of the screen.
+
+{B}Count Overlaps{N} Set this to yes if you want collocates in
+               overlapping parts of text to be counted twice.
+
+{B}Show Intermediate Results{N}
+               Set this option to "yes" to see the intermediate
+               calculations involved in computing the Z-score for
+               all collocates.
+
+The Collocate Display Context options are:
+
+{B}Unit{N}           Use this field to specify what structural unit
+               should be used to define the context for
+               collocation selection. To choose the unit from an
+               available list, leave the field blank, or type a
+               "?".
+
+{B}Context Before{N} Number of units (given above) that should precede
+               the unit containing the occurrence. *
+
+{B}Context After{N}  Number of units (given above) that should follow
+               the unit containing the occurrence. *
+
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+TACT's Collocate Display. . . . . . . . . . . . . . . . . . . . D
+*)
+(*RES OLD HLP 41
+= B 0
+= K 3
+{B}Help: Open Database Dialog Box{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+TACT works with its own databases, either "TDB" or "PDB".  Use
+this dialogue box to specify what database you want TACT to use.
+
+There are two fields in the dialog box:
+
+    o  {B}Database{N}:  Use this field to specify the name of the
+       database you want to use.  If left blank TACT will present
+       you with a list of all databases it finds in the current
+       directory, and will let you choose one.  You may specify a
+       name using DOS wildcard characters "*" and "?" if you wish
+       to restrict the list TACT generates, or if you wish to
+       look in a different directory.
+
+    o  {B}Create New PDB{N}:  Set this switch to "Yes" if you wish to
+       create a new PDB database.
+
+When finished filling in this dialog box, push the ENTER/RETURN
+key.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+*)
+(*RES OLD HLP 42
+= B 0
+= K 3
+= O 41
+{B}Help: TDB Open Error Box{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+This dialogue box appears when TACT has tryed to open a TDB that
+is associated with a PDB and did not succeed.
+
+It can fail for several reasons:
+
+    o  The file named in the PDB no longer exists.
+
+    o  The file named in the PDB is not the correct version.
+
+    o  The file named in the PDB is not a correct TDB file.
+
+The first three lines of the display will describe the problem
+TACT is having.
+
+In response, you have several choices:
+
+   1.  You can quit TACT by pushing F10
+
+   2.  If you wish to try a different PDB, push the ESC key.
+
+   3.  Edit or type in a new name of a TDB to try.  If you wish
+       you can give a wildcard specification (with DOS's "*" and
+       "?" characters).  If you do use wildcards, TACT will
+       generate a list of all TDBs that match, and let you choose
+       one.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Keyboard usage: Panels. . . . . . . . . . . . . . . . . . . . . K
+Open Database Dialog Box. . . . . . . . . . . . . . . . . . . . O
+*)
+(*RES OLD HLP 43
+{B}Help: Introduction to COLLGEN{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Welcome to COLLGEN for TACT system 1.2.
+
+The rest of this introduction message is a some information that
+will help to get you started using COLLGEN.  To read more than
+what shows on the screen, push the {B}PageDown{N} key.  To move "up" in
+this text, push the {B}PageUp{N} key.
+
+
+                        {B}What is COLLGEN?{N}
+
+COLLGEN is a part of the TACT system that can take a TDB file and
+produce a complete list of all phrases (where "phrase" simply
+means repeated word groups of 2 or more words) found in the TDB
+text.  The phrases COLLGEN found can be printed, written to a
+file, or stored as a "RUL" file for subsequent use within TACT.
+
+
+                       {B}What can I do now?{N}
+
+Before you can make COLLGEN do anything else, you must finish
+looking at Help.  Do this by pushing either the "Enter" or "ESC"
+key.
+
+After you've finished looking at this Help message you can do
+three things:
+
+   1.  You can stop COLLGEN immediately by pushing the F10 key.
+
+   2.  You can check over and alter if necessary the assumptions
+       COLLGEN will make about the text file it is about to work
+       on.
+
+   3.  When you're ready you can ask COLLGEN to proceed to create
+       the collocation lists by pushing the "Enter/Return" or
+       "F9" function keys.
+
+
+                       {B}On the Front Panel{N}
+
+The fields on the front panel provide COLLGEN with the following
+information:
+
+    o  {B}Input Database{N}: Give the name of the TDB database you want
+       to process here.
+
+    o  {B}Temporary FIle Area{N}: Optionally, specify a device and/or
+       path where you wish COLLGEN to put its temporary working
+       files.  Unless you have a special place to put temporary
+       files (such as a large RAM disk, for example) leave this
+       field blank.
+
+    o  {B}Span Context{N}: Specify the number of words you want to
+       consider for a phrase.  The default, "2 to 2 words",
+       indicates that all 2 word phrases are to be considered.
+       "2 to 3 words" would indicate all 2 or 3 word phrases.
+
+    o  {B}Number of repetitions to keep{N}: Specify how many times the
+       word phrase has to occur to be considered by COLLGEN.  The
+       default, "2 or more" indicates that a phrase will appear
+       in the output if it occurs 2 or more times in the text.
+
+
+    o  {B}Generate Collocations{N}: Choose one of the options: "To
+       Disk" means that the results will be put in a file.  "To
+       Printer" means that the results will be sent to your
+       printer.  "No" means that no printed output is desired.
+
+    o  {B}Output File Name{N}: If "To Disk" is chosen, you can specify
+       the name of a file to use for the output.  COLLGEN will
+       create a default name by taking the name of the TDB file
+       and replacing the given filename extension with ".COL".
+
+    o  {B}Generate Rule File{N}: Choose "Yes" to ask COLLGEN to
+       generate a RULE file for use within TACT.
+
+    o  {B}Rule File Name{N}: If a Rule File is requested, you can
+       specify the name of the rule file here.  COLLGEN will
+       create a default name by taking the name of the TDB file
+       and replacing the given filename extension with ".RUL".
+*)
+(*RES OLD HLP 44
+= B 0
+= C 46
+= T 45
+{B}Help: TACT's Script Files{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+By means of TACT's scripting files you can automatically copy a
+sequence of keystrokes during a TACT session, saving them in a
+file.  Then, at a future time they can be played back.
+
+Use the "{B}R{N}ecord" item from the Action Bar's "{B}F{N}ile" menu to begin
+recording your keystrokes.  Enter the name of a file to use as a
+Script file in the dialog box when asked.  To finish recording
+once you've started it, type {B}Alt-Esc{N}.  While you are recording
+your keystrokes TACT will remind you that you are doing so by
+showing "{B}REC{N}" near the right end of the action bar.
+
+To play back a script file use the "pl{B}a{N}y" item from the Action
+Bar's "{B}F{N}ile" menu.
+
+Three features are provided while you are recording keystrokes.
+These features are meant to make script files more suitable for
+teaching use.  For more information about these type "{B}T{N}".
+
+
+
+
+
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Scripts: Creating a Comment Window . . . . . . . . . . . C
+TACT's Scripts: Extended Features . . . . . . . . . . . . . . . T
+*)
+(*RES OLD HLP 45
+= B 0
+= C 46
+= S 44
+{B}Help: TACT's Scripts: Extended Features{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+While you are recording keystrokes to a script file you can use
+three special features that are provided to make script files
+more suitable for teaching purposes.  All these features put
+special codes in the Script file that will cause TACT to do
+something special while playing back the file.
+
+To indicate you want to use one of these features type {B}Ctrl-F10{N}.
+In response TACT will put up a special Script instruction window
+and wait for your response.
+
+Appropriate responses are:
+
+    o  {B}Esc{N}: Type "Esc" if you wish to get out of the special
+       feature mode without putting one in the script.
+
+    o  {B}P{N}ause: Type "P" to ask TACT stop while playing back the
+       script file and wait for the TACT user to type something
+       at the keyboard.  In this way the script user can study
+       the screen.
+
+    o  {B}D{N}elay: Type "D" to ask TACT to play back the keystrokes
+       from the script file at a slower (or faster rate).
+       Normally TACT will play the keystrokes as quickly as it
+       can.  If you type "D" TACT will ask you to specify a time
+       (in milli-seconds: 1/1000 of a second) that it is to wait
+       between keystrokes.  This will allow the script user time
+       to watch the script act.  Enter "0" to turn off the delay.
+       Legal values are from 100 milliseconds (1/10 second) to
+       10000 milliseconds (10 seconds) between keystrokes.
+
+    o  {B}W{N}indow: Type "W" to ask TACT to display a special comment
+       window into which you can put text to be displayed during
+       script playback.  If you type "W" TACT will put up an
+       empty message window into which you can type material you
+       want TACT to display on playback.  Use the {B}F5{N} and {B}Ctrl-F5{N}
+       keys to resize and move the window to where you want it to
+       be.  For more information about creating the text in this
+       display window type "{B}W{N}" now.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Scripts: Creating a Comment Window . . . . . . . . . . . C
+TACT's Script Files . . . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 46
+= B 0
+= T 45
+= S 44
+{B}Help: TACT's Scripts: Creating a Comment Window{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Type in the text you wish TACT to display during script playback
+into this comment window.  Although TACT does not provide you
+with a full word-processor in which to enter your text it gives
+you a few very basic facilities.  In addition to the field-
+editing features described elsewhere, the following keys are
+supported:
+
+    o  {B}Down Arrow{N}: will move you to the next line
+
+    o  {B}Up Arrow{N}: will move you to the previous line
+
+    o  {B}F5{N}: will allow you to resize the comment window
+
+    o  {B}Ctrl-F5{N}: will allow you to place the comment window on the
+       screen
+
+    o  {B}Home{N}: will move you to the first line
+
+    o  {B}End{N}: will move you to the last line
+
+    o  {B}Esc{N}: will make TACT remove the comment window without
+       creating it.
+
+    o  {B}Enter/Return{N}: will make TACT create the comment window you
+       have entered and put it in the script file.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+TACT's Scripts: Extended Features . . . . . . . . . . . . . . . T
+TACT's Script Files . . . . . . . . . . . . . . . . . . . . . . S
+*)
+(*RES OLD HLP 47
+= B 0
+= H 2
+= L 37
+= S 31
+{B}Help: TACT Distribution{N}
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+For copies of TACT and the TACT Guide please contact:
+
+     TACT Distribution,
+     Centre for Computing in the Humanities,
+     Robarts Library, Room 14297A
+     University of Toronto,
+     Toronto, Ontario M5S 1A5
+     CANADA
+
+     Telephone: (416) 978-4238
+     E-Mail: CCH@UTOREPAS.Bitnet
+
+TACT is shareware, for the terms of the licence type "{B}L{N}" now.
+The Centre for Computing in the Humanities does not provide
+support for TACT.  For information on this type "{B}S{N}" now.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                                  {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Intro to Help in TACT . . . . . . . . . . . . . . . . . . . . . H
+TACT Licensing Terms. . . . . . . . . . . . . . . . . . . . . . L
+TACT Support: Who and Where . . . . . . . . . . . . . . . . . . S
+*)

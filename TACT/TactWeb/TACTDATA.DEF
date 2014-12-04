@@ -1,0 +1,84 @@
+DEFINITION MODULE TACTDataServices;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM VirtMem IMPORT VirtAddr;
+FROM TACTListModule IMPORT TACTList;
+FROM TypeBase IMPORT
+  (* types *) HTypeHandle;
+FROM HyperBase IMPORT
+  (* TYPE *)  HRecPntr;
+FROM ListData IMPORT
+  (* types *) DataItemPntr ;
+
+(*
+EXPORT QUALIFIED
+  (* procs *) GetTokensForType, DisposeOccurs, ReleaseOccurs, AllocTypeData,
+              DisposeTypeData, GetTDBTokenData, DisposeTokenData, DisposeRefStrData,
+              DisposeRefNmeData, DisposeCatNameData, DisposeDataItem;
+*)
+
+PROCEDURE GetTokensForType(TypeRecVA:   VirtAddr);
+
+PROCEDURE AllocTypeData(DataPos:  HTypeHandle;
+                        FilePos:  HRecPntr;
+                        Pool:     CARDINAL;
+                    VAR VA:       VirtAddr;
+                    VAR Pntr:     DataItemPntr);
+
+PROCEDURE GetTDBTokenData(Pntr:     DataItemPntr);
+
+PROCEDURE InsertDataItemContentsInList(VA:  VirtAddr (* to DataItem *);
+                                       Li:  TACTList (* List to receive *) );
+
+(* ================================= *)
+
+(* procedures to move TACTList structures to and from virt storage *)
+
+(* This Procedure takes a TACTlist (stored in the VM -- using TACTListToVirt,
+and makes it accessible as a regular TACT list.  The list continues to
+exist in VM until destroyed by RemoveVirtTACTList *)
+
+PROCEDURE VirtToTACTList(VA:    VirtAddr;
+                     VAR TList: TACTList);
+
+(* This Procedure creates a new VM record for a TACT List so that it
+can be restored from the VM (using VirtToTACTList).  The list will last in VM
+until explicitly destroyed from there by RemoveVirtTACTList *)
+
+PROCEDURE TACTListToVirt(TList: TACTList;
+                         Pool:  CARDINAL;
+                     VAR VA:    VirtAddr);
+
+(* RemoveVirtTACTList removes a list entirely from the VM. *)
+
+PROCEDURE RemoveVirtTACTList(VAR VA:  VirtAddr);
+
+(* procedure to release Virtual DataItem Pointers, and free virtual
+   space (and associated material) if possible   *)
+
+PROCEDURE DisposeDataItem(VAR VA:    VirtAddr);
+
+(* standard selection window proecdures *)
+
+CONST
+(*RES OLD CHE 3
+"%0" is not a UseBase reference name.  Type "S" to select a
+reference name from a selection list, or "C" to indicate you wish
+to correct your given entry:
+=SC
+*)
+  NotRefNameRes = (*RES REM INS*) 3 ;
+
+END TACTDataServices.

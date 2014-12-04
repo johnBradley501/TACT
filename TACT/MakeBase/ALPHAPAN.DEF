@@ -1,0 +1,70 @@
+DEFINITION MODULE AlphaPanel ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*# data(const_in_code=>on) *)
+
+(* This is code for the front panel display and selection processing  *)
+(* for MAKBAS                                                         *)
+(*===============================================================================
+
+                 LETTERS, DIACRITICS, and CONTINUTATION Character
+
+Alphabet                              
+ _AlphaString[1]____________________________________________________________
+ _AlphaString[2]____________________________________________________________
+ _AlphaString[3]____________________________________________________________
+ _AlphaString[4]____________________________________________________________
+
+Diacritics Retained
+ _RetDiacStr[1]_____________________________________________________________
+ _RetDiacStr[2]_____________________________________________________________
+
+Diacritics NonRetained
+ _NonDiacStr[1]_____________________________________________________________
+ _NonDiacStr[2]_____________________________________________________________
+Continuation char _|ContinuationChar
+
+  To edit or add material, move to line using UP or DOWN arrow Keys & type.
+        You can move between categories using the PgUp and PgDn Keys.
+        When finished, push the ESC key.
+*)
+
+FROM GlobalDefs IMPORT StrAny;
+(*
+EXPORT QUALIFIED 
+  (* const *) NoAlphaLines, NoRetDiLines, NoNonDiLines,
+  (* vars  *) AlphaInfo,
+  (* procs *) GetAlphaPanel, DiscardAlphaMenu ;
+*)
+
+CONST
+      NoAlphaLines = 4;
+      NoRetDiLines = 2;
+      NoNonDiLines = 2;
+VAR
+  AlphaInfo: RECORD
+      AlphaString      : ARRAY [1..NoAlphaLines] OF StrAny;
+      RetDiacStr       : ARRAY [1..NoRetDiLines] OF StrAny;
+      NonDiacStr       : ARRAY [1..NoNonDiLines] OF StrAny;
+      ContinuationSeq  : ARRAY [0..7] OF CHAR ;
+  END;
+
+PROCEDURE InitCodeAlphaPanel ;  (* this is for OVERLAY mechanism *LP* *)
+
+PROCEDURE GetAlphaPanel(StartPos  : CARDINAL ) ;
+
+PROCEDURE DiscardAlphaMenu;
+
+END AlphaPanel .

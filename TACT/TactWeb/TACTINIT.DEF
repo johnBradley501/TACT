@@ -1,0 +1,32 @@
+DEFINITION MODULE TACTInit;
+(* copyright (c) 1989-96 John Bradley, Geoffrey Rockwell, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+VAR
+   PathTDBName:   ARRAY[0..14] OF CHAR;
+   GifDir:        ARRAY[0..50] OF CHAR;
+   DefDisplay:    ARRAY[0..20] OF CHAR;
+   TactPage:      ARRAY[0..80] OF CHAR;
+   DoBackingLink: BOOLEAN;
+   GetUnitName:   ARRAY[0..40] OF CHAR;
+   GetUnitID:     INTEGER;
+   GetBefore,
+   GetAfter:      CARDINAL;
+
+PROCEDURE GetParamData(VAR DataBaseName: ARRAY OF CHAR;
+                       VAR TemplateFileName: ARRAY OF CHAR);
+
+PROCEDURE InitializeDBs(DataBaseName: ARRAY OF CHAR);
+
+END TACTInit.

@@ -1,0 +1,62 @@
+Box Dimen 6.5 in, 4 in
+  [
+    pgm:      box dimen 18%,20%
+                  at (80%,30%)
+              <
+                  line {(0%,60%) (100%,60%)}
+                  area dimen 100%, 40%
+                  at (0%,60%)/tl
+                  {text size 10 pt 'Res Modules' }
+                  area dimen 100%, 60%
+                  at (0%,0%)/tl
+                  {text size 10 pt 'TACT/MAKBAS' }
+              >
+
+   resfile:   box dimen 13%,10%
+                  at (xc pgm,75%)
+                  < text size 10 pt 'RES File'>
+
+              arrow {resfile.ct pgm.cb}
+
+   resman:    box dimen 15%,12%
+                  at (60%,yc resfile)
+                  < text size 10 pt 'RESMAN'>
+
+              arrow {resman.cr resfile.cl}
+
+   modula:    box dimen 15%,12%
+                  at (60%,yc pgm)
+                  < text size 10 pt 'M2COMP' 'M2L'>
+
+              arrow {modula.cr pgm.cl}
+
+   standef:   box dimen 18%,10%
+                  at (40%,yc modula)
+                  < text size 10 pt 'STANDARD.DEF' >
+   stanmod:   box dimen 18%,10%
+                  at (xc modula,15%)
+                  < text size 10 pt 'STANDARD.MOD' >
+
+   arrow {standef.cr modula.cl}
+   arrow {stanmod.cb modula.ct}
+
+   stanrsi:   box dimen 18%,10%
+                  at (40%, yc resman)
+                  < text size 10 pt 'STANDARD.RSI' >
+
+   arrow {stanrsi.cr resman.cl}
+
+  BldChar:    box dimen 15%,12%
+                 at (xc Standef,50%)
+                 < text size 10 pt 'BLDCHAR' >
+
+  arrow {Bldchar.ct standef.cb}
+  arrow {Bldchar.cb stanrsi.ct}
+
+   stancdf:   box dimen 18%,10%
+                  at (15%, yc bldchar)
+                  < text size 10 pt 'STANDARD.CDF' >
+
+  arrow {stancdf.cr bldchar.cl}
+]
+

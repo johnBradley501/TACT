@@ -1,0 +1,77 @@
+(****************************************************************)
+(*		       DATABASE	TOOLBOX	4.0			*)
+(*     Copyright (c) 1984, 87 by Borland International,	Inc.	*)
+(*								*)
+(*		    TURBO LONG SORT UNIT			*)
+(*								*)
+(*  Purpose: Toolbox of	routines to implement a	general		*)
+(*	     purpose QuickSort for over	2 billion items.	*)
+(*								*)
+(*  Modified: By Lidio Presutti	 (March	1988)			*)
+(*    -	improve	basic QuickSort	algorithm by using Insertion	*)
+(*	sort for small partitions.				*)
+(*    -	allow multiple passes thru sorted results.		*)
+(*    -	use INC	& DEC as they are optimised by compiler	in loops*)
+(*    - Adapted for JPI Modula-2 (Oct. 1989)			*)
+(*								*)
+(****************************************************************)
+
+DEFINITION MODULE LongSort ;
+
+(* EXPORT QUALIFIED
+   LongSort
+   (* Procs *) LTurboSort, LSortRelease, LSortReturn, LSortEOS, LSortFreeUp,
+		LSortReset, LSortGetPos,
+   (* Types *) CompareProc, SortIOProc ;
+*)
+
+FROM SYSTEM IMPORT ADDRESS ;
+
+TYPE
+    CompareProc = PROCEDURE( ADDRESS, ADDRESS ) : BOOLEAN ;
+    SortIOProc	= PROCEDURE ;
+
+VAR
+    SpaceReserved : LONGINT ;
+
+(* InpProc, LessProc,  and OutProc are procedure pointers which hold the
+   address of the user input procedure, less function, and output procedure,
+   respectively.  ItemLength is the size of the item to be sorted (in bytes).
+   Use TSIZE(MyRec) to calculate this value. *)
+
+PROCEDURE LTurboSort(ItemLength: CARDINAL;
+		     InpProc	: SortIOProc ;
+		     LessProc	: CompareProc ;
+		     OutProc	: SortIOProc;
+		     TempDiskArea : ARRAY OF CHAR ) : CARDINAL;
+
+PROCEDURE LSortRelease(VAR ReleaseRecord: ADDRESS);
+   (* Called by the user's input routine to pass a record in to be sorted. *)
+
+
+PROCEDURE LSortReturn( VAR ReturnRecord: ADDRESS);
+   (* Called by the user's output routine to retrieve the next record from the sort. *)
+
+
+PROCEDURE LSortEOS(): BOOLEAN;
+   (* Called by the user's output routine, LSortEOS returns true if all
+      of the sorted records have been returned. *)
+
+
+(* *LP*
+	 - Allow multiple passes over sort file by setting LSortFree := FALSE and
+	   after read all, reset sort start counter by	call to	LSortReset.
+	   Once done, issue a call to LSortFreeUp to dispose of dynamic memory.
+   *)
+
+(* PROCEDURE LSortFreeUp; *)
+
+PROCEDURE LSortReset( NewStartPos : LONGINT ) ;
+   (* next call to LSortReturn will return record "NewStartPos" *)
+
+PROCEDURE LSortGetPos( VAR Pos : LONGINT ) ;
+   (* return current record in the sort file *)
+
+PROCEDURE SortAvail () : LONGINT ;
+
+END LongSort .

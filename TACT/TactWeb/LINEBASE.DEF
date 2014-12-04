@@ -1,0 +1,54 @@
+DEFINITION MODULE LineBase;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM HyperBase IMPORT HRecPntr;
+FROM VirtMem IMPORT VirtAddr;
+
+(*
+EXPORT QUALIFIED
+  (* type *) LineDataType,
+  (* procs*) GetLine, GetNextLine, GetPrevLine;
+*)
+
+TYPE
+    LineDataType = RECORD
+       Start:     HRecPntr;
+       End:       HRecPntr;
+    END;
+
+HandleTokenType = (DisplayStart, DisplayEnd, NoDisplay);
+
+PROCEDURE GetLine(LinePtr:    HRecPntr;
+              VAR Text:       ARRAY OF CHAR;
+              VAR Len:        CARDINAL;
+              VAR Offset:     CARDINAL;
+              VAR DataPtr:    LineDataType);
+
+PROCEDURE GetNextLine(VAR DataPtr:    LineDataType;
+                      VAR Text:       ARRAY OF CHAR;
+                      VAR Len:        CARDINAL): BOOLEAN;
+
+PROCEDURE GetPrevLine(VAR DataPtr:    LineDataType;
+                      VAR Text:       ARRAY OF CHAR;
+                      VAR Len:        CARDINAL): BOOLEAN;
+
+PROCEDURE DisplayContextLines(TokenVA:     VirtAddr;
+                              UnitID:      INTEGER;
+                              Before:      CARDINAL;
+                              After:       CARDINAL;
+                              HandleToken: HandleTokenType;
+                          VAR StartTPntr:  HRecPntr;
+                          VAR EndTPntr:    HRecPntr);
+END LineBase.

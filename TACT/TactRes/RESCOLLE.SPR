@@ -1,0 +1,53 @@
+R 65,T 5
+The Data Array resource (DTA type) is used to store a collectionof related data that a TACT program can collect and process allat once.
+
+@Section(An Example)
+For example, let's look at one collection in a DTA resource:containing bits of text that are displayed within the standardTACT message box:
+@begin(example)
+(*RES OLD DTA 1
+    'Error'
+    'Warning'
+    'Information'
+    'Prompt'
+    'Press any key to continue'
+    'Program terminated.'
+    'Not enough memory available to create new window.'
+    'Program initialising, please wait ... '
+*)
+@end(example)
+First, the resource itself is given the type "DTA", and RESMANhas assigned the number "1" to it.  On each line, surrounded byquotation marks, we find the values assigned to each item in thedata array collection.  Thus, there are 8 items -- in this verysimple case each of them are simple character strings.
+
+Of course, the way these strings are used is not explicit in theresource text itself.  As it turns out, This DTA collection isused by TACT programs when they are initializing the windowingsystem they are going to use.  One of the tasks is to create themessage window@foot{the message box is created now to ensurethat, when it is needed, it can be displayed without needing anymore memory -- a scarce resource that may be exhausted exactlywhen a TACT program would be trying to produce a message to theuser.}, and many of the items in this list are miscellaneouspieces of text needed for it.  The first string is used when aTACT program has to put up an "Error" message box -- the word"Error" appears in all Error message boxes, and this is wherethat word comes from.  Similarly, "Warning", "Information" and"Prompt" messages use the next three strings.  The remainingitems are used for different purposes, but all related to basicwindows processing within the TACT programs.
+
+@Section(Format of the DTA Resource data)
+We've seen in the above example one format of a DataArrayspecification.  This section discusses all the supported formats.
+
+As we've already mentioned, collection resource data is brokeninto smaller pieces called items.  In the RESMAN DTA format, eachitem is separated from it's neighbour by either a new line, or byat least one space.  Spaces outside of items are, essentially,entirely ignored in CHE resources.  Although the above exampledoesn't show it, the text for several items can appear on asingle line, as long as the text for each item is separated fromit's neighbour by spaces.  Thus the following would be equivalentto the first example:
+@begin(example)
+(*RES OLD DTA 1
+    'Error' 'Warning' 'Information' 'Prompt'
+    'Press any key to continue' 'Program terminated.'
+    'Not enough memory available to create new window.'
+    'Program initialising, please wait ... '
+*)
+@end(example)
+
+Each Item in a list can be coded in one of 3 ways:
+@begin(itemize)
+An Item (if it doesn't contain reserved characters listed below,and only contains printable ASCII characters orletters/diacritics) can simply be typed in directly, for example:
+@example{WordText++}
+	To be entered this way the first character should not be oneof the following:
+@example{'   "   !}
+
+If an item contains spaces it may be coded between single ordouble quotation marks, for example:
+@example{"Word Text"}
+
+If the item is not coded within quotation marks, it may containnon-printable characters.  This is because any character in anun-quoted item (including, of course non-printable characters)may be coded in Hexadecimal.  If Hexadecimal coding is used, thehex coding must be surrounded by the character "!" (unless a hexcharacter is the last character in the text.  In general, sincethe DTA resources you will be seeing consists only of textstrings, you will not need to use this form.
+
+	Actually, "!" acts like a toggle, switching betweenaccepting characters at face value, and interpreting them as hexcodes.  Thus, the sequence @t{!93!sIGMA2!00} begins with thecharacter with hex code value x"93", then is followed by thecharacter "s", followed by "I", "G", "M", "A", "2", and closingwith the null character x"00".  Another example, @t{!212100}defines an item with 3 characters -- the first and second withhex values of x"21", and the last being the null character.
+@end(itemize)
+
+Note that in many cases the same item could be coded in severaldifferent ways, depending on what is convenient.  The followingfour codes generate identical items:
+@begin(example)
+RECORD  "RECORD"   RE!434F52!D !5245434F5244
+@end(example)

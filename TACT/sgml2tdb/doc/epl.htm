@@ -1,0 +1,1022 @@
+<HTML>
+<HEAD>
+    <TITLE>The Element Program language</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H3>The Element Program language<HR></H3>
+The <I>epm</I> file usually contains a sequence of instructions that tell
+<I>sgml2tdb</I> what to do when certain elements begin or end. These instructions
+are written in a language called the &quot;element program language&quot;.
+This document describes how the language is designed and what you can do
+in it. The language is an example of a formal language and it is important
+to follow the details of its format exactly. <HR>
+<H4><CENTER>Table of Contents</CENTER>
+</H4>
+<UL>
+  <LI><A HREF="#anchor22317503">Language Basics</A> 
+  <UL>
+    <LI><A HREF="#anchor22319121">Elements, Attributes, TACTids and Variables</A>
+    <LI><A HREF="#anchor22324890">The Element Hierarchy and <I>sgml2tdb</I></A>
+  </UL>
+  <LI><A HREF="#anchor22343803">Overall Program Structure</A> 
+  <UL>
+    <LI><A HREF="#anchor22362678">Declaration Section</A> 
+    <LI><A HREF="#anchor22353302">Element Program Section</A> 
+  </UL>
+  <LI><A HREF="#Expressions">Expressions</A> 
+      <UL>
+         <LI><A HREF="#charexp">Character Expressions</a>
+         <LI><A HREF="#arithexp">Arithmetic Expressions</a>
+         <LI><A HREF="#logexp">Logical Expressions</a>
+      </UL>
+  <LI><A HREF="#ProgramStatements">Program Statements</A> 
+      <UL>
+         <LI><A HREF="#assignment">Assignment Statement</a>
+         <LI><A HREF="#incdec">Inc and Dec Statements</a>
+         <LI><a HREF="#popstack">The Pop and Stack Statements</a>
+         <LI><a HREF="#format">The Format Statement</a>
+         <LI><a HREF="#output">The Output Statement</a>
+         <LI><a HREF="#wordst">The Word Statement</a>
+         <LI><a HREF="#remark">The Remark and Error Statements</a>
+      </UL>
+  <LI><A HREF="#ControlStatements">Control Statements</A> 
+</UL>
+<HR>
+<H3>Language Basics<A NAME="anchor22317503"></A></H3>
+<H4>Elements and Programs</H4>
+The element program language specfies a sequence of operations-- a procedure
+-- that should be performed when an element is opened or closed. Here is
+a typical example: 
+<PRE>
+begin open $title
+   if in($titleStmt) then
+      output blines 2
+   else
+      output blines 0, &quot;Title: &quot;
+   end
+end
+</PRE>
+The procedure is announced with a &quot;begin&quot; statement. The statement
+announces that the following procedure is to be performed whenever a &quot;title&quot;
+element is opened. The procedure itself is enclosed within the first &quot;begin&quot;
+statement and the last &quot;end&quot; statement. It states that if the
+opening element is enclosed within the &quot;titleStmt&quot; element, <I>smgl2tdb</I>
+should output 2 blank lines into the text stream. Otherwise, <I>sgml2tdb
+</I>should start a new line (output no blank lines, however), and start
+the new line with the characters &quot;Title: &quot;. <BR>
+<BR>
+The following sections of this document describe the format of the element
+program language in detail. 
+<H4>Statements and Lines</H4>
+The <I>epm</I> file is an ASCII file which is broken into separate lines.
+<UL>
+  <LI>The language is made of up <I>statements</I>, and each statement must
+take up exactly one line in the file. Currently there is no way to continue
+a statement from one line to the next, although the line can be arbitrarily
+long. 
+  <LI>Blank lines are ignored and should be used to improve readability.
+</UL>
+<H4>Comments</H4>
+Element programs may contain comments which are useful to preserve information
+for a human reader but are ignored by <I>sgmltdb</I>. The character &quot;#&quot;
+marks the beginning of a comment on a line, and the rest of the line is
+then ignored by <I>sgml2tdb. </I>Here are two examples of lines with comments:
+<PRE>
+# Here is the beginning of the text segment
+begin open $title   # title element processing varies, see below.
+</PRE>
+In this example, the first line is entirely taken up by the comment. The
+second line begins with a statement in the element programming language,
+and is followed by a comment. The &quot;#&quot; sign separates the statement
+from the comment portion. 
+<H4>Reserved Words</H4>
+Certain words in the language have reserved meanings, and care should be
+taken if they are also used as element, variable or TACT ID names. The reserved
+words are: <BR>
+<BR>
+<TT>AND APPEND ARITH BACK BEGIN BLINES CENTRE CLOSE COLLECT COMPRESS DEC
+DECLARE DISPLAY ELSE END ERROR FILL FIND FOLD FOR FORMAT FRONT IF IN INC
+INDENT INDEX IS LENGTH LINENO MAX MIN NL NOT NUMBER OFF ON OPEN OR OUTPUT
+PAD POP PREPEND REMARK REPLACE STACK STRING SUBSTR TACTID TDB THEN THISGI
+TO UPPER VERIFY WHILE WORD</TT> <BR>
+<BR>
+In spite of the fact that these words have special functional meanings in
+an element program, it is sometimes useful to be able to code them as elements,
+variables and TACT ID names. See the next section for information on how
+to do this. 
+<H4>Constants in Element Programs</H4>
+<H5>Names</H5>
+The rule for what characters may appear in names in element programs is
+essentially the same as the SGML naming rules based on the standard concrete
+reference syntax. In this version of <I>sgml2tdb </I>there is no way to
+change the set of legal characters that are accepted. 
+<UL>
+  <LI>The first character in a name must be a letter. 
+  <LI>The second and subsequent characters may be letters, digits, the hyphen
+or the period. 
+</UL>
+The inclusion of the hyphen as a legal name character is unfortunate because
+element programs allow arithmetic subtraction, which is also represented
+by a hyphen. To avoid confusion between the two meanings for the hyphen,
+surround the hyphen-as-subtraction character with spaces. &quot;<TT>var1-var2</TT>&quot;
+will be considered to be one name, &quot;<TT>var1 - var2</TT>&quot; will
+be considered a subtraction operation on the values associated with the
+given names. <BR>
+<BR>
+In some situations it may be useful to include other characters in names
+-- particularly for TACT IDs. Other characters may be used in names as long
+as they are preceded with the &quot;\&quot; character to warn <I>sgml2tdb</I>
+that the character that immediately follows is a non-standard character
+which is to be included in a name. 
+<H5>Strings</H5>
+Strings of characters in element programs may be surrounded either by ASCII
+single or ASCII double quotes. Note that the same quote must be used both
+to start and end a string. Thus the following two strings are legal. 
+<PRE>
+&quot;ABCDE&quot;   'FGHIJ'
+</PRE>
+<H5>Numbers</H5>
+Number constants stored as 4 byte integers. Bear in mind however that if
+a number is to be assigned to a number type TACTid, it must be in the range
+of 0 to 65535. 
+<H4>Case</H4>
+In general, the element programming language is not case sensitive. Most
+words, including variables and keywords can be entered in upper, lower or
+mixed case: <TT>TACTID</TT>, <TT>tactid</TT> and <TT>TactID</TT> are all
+considered equivalent. The only place where case matters is within strings.
+<H3><A NAME="anchor22319121"></A>Elements, Attributes, TACTids and Variables</H3>
+Because of the nature of element programs, one has to be able to specify
+the names of <I>elements</I> and <I>attributes </I>in them. In addition,
+because <I>sgml2tdb</I> creates TACT TDBs one also has to be able to identify
+and name <I>TACT ids</I>. Finally, element programs can also reference <I>variables:</I>places
+where values can be temporarily stored during the execution of <I>sgml2tdb
+</I>. 
+<H4>Element Names</H4>
+Elements are identified by their SGML General Identifier -- their names.
+Within element programs, the character &quot;$&quot; can always be coded
+preceding the name, e.g. &quot;<TT>$titleStmt </TT>&quot;. Although this
+character is optional -- <I>sgml2tdb </I>will recognize a name as belonging
+to an element if it is being used for no other purpose -- it is recommended
+that the &quot;$&quot; be given whenever an element name needs to be specified.
+<H4>Attribute Names</H4>
+In SGML, attribute names are associated with elements. The at-sign (&quot;@&quot;)
+announces the presence of an attribute name in an element program. An attribute
+for a particular open element can be specified by coding first the element
+name, then an at-sign, and then the attribute name: &quot;<TT>$titleStmt@id</TT>&quot;.
+The element name can be omitted if the reference is within either an opening
+or closing program for that same element. Thus, in either the opening or
+closing program for <TT>$titleStmt</TT>the &quot;id&quot; attribute can
+be referred to simply as &quot; <TT>@id</TT>&quot;. <BR>
+<BR>
+Care must be taken in element programs to ensure that only attributes which
+have values at the time are used. Only attributes of currently open elements
+will have values. 
+<H4>Global, Local and TACT id Variables</H4>
+There are three kinds of Variables in <I>sgml2tdb.</I> 
+<UL>
+  <LI>TACT id Variables are assigned values by element programs and are
+also recorded in the resulting TACT TDB. Like COCOA markup objects, TACT
+ids always have values associated with them throughout the time the text
+is being processed. Changing the value of a TACT id in an element program
+places a new value in the TACT tdb at the current point in the text. 
+  <LI>Global Variables also have values associated with them throughout
+the time the text is being processed, and the value can be changed within
+any element program, but changing the value of a global variable does not
+directly affect the TACT tdb. Use Global Variables for housekeeping -- when
+you need to keep information around between different instances of elements.
+  <LI>Local Variables only exist during the execution of a particular element
+program. 
+</UL>
+Both TACT ids and variables must be <I>declared </I>before they are used
+in element programs. Global and TACT id variables are declared at the front
+of an <I>epm</I> file -- before all the element programs. Local variables
+are declared within the element program to which they belong. <BR>
+<BR>
+All three variables can exist in two types. &quot;string&quot; variables
+can hold any string of characters. &quot;numeric&quot; variables can hold
+4 byte integer numbers, but TACT id variables can only put values between
+0 to 65535 in a TACT TDB. <BR>
+<BR>
+Here is an example of a fragment of an <I>epm</I> file: 
+<PRE>
+TACTid page
+begin open $pb
+   page = @id
+end
+</PRE>
+The first line in the fragment is a &quot;TACT id&quot; declaration statement
+that names the variable &quot;page&quot; as a TACT id -- anytime the value
+of &quot;page&quot; is changed, that new value will be stored in the TACT
+tdb. The element program for the opening of the &quot;pb&quot; element will
+take the value of &quot;pb&quot;'s &quot;id&quot; attribute and store it
+in the &quot;page&quot; TACTid variable. <BR>
+<BR>
+Generally, <I>sgml2tdb</I> will recognize a name as a variable if it has
+been declared as such. However, if the same name is either a reserved word
+or an element name, problems will result. If necessary, you can precede
+the name of a variable with the &quot;%&quot; sign to tell <I>sgml2tdb</I>
+that you are referring here to a variable. The &quot;%&quot; is optional
+in other circumstances. 
+<H4>The Element Hierarchy and <I>sgml2tdb</I><A NAME="anchor22324890"></A></H4>
+Because <I>sgml</I> is a highly hierarchial markup scheme, <I>sgml2tdb </I>is
+designed to respect that hierarchical paradigm in several ways. 
+<OL>
+  <LI>First, it is possible to change the way that text is formatted before
+it is put in the TDB. This is done by coding a <B>format </B>statement in
+an element program. Settings provided in a format statement will only apply
+to the text in an element for which the statement was associated, and with
+nested elements. When the element to which the format statement is associated
+completes, the formatting environment will automatically revert back to
+what it was before the element began. 
+  <LI>Second, it is possible to affect the way words are collected by <I>sgml2tdb</I>
+for preservation in the TDB. In a similar fashion to format options, options
+set that affect word collection will apply to the specified element and
+nested elements only. 
+  <LI>Finally, although it is not obligatory to do so, values for all global
+and TACTid variables can also be &quot;stacked&quot; -- it is possible to
+push a new value over top of an existing value. When this is done the previous
+value is retained, but hidden. Changes to the value of the variable will
+affect only the currently &quot;top&quot; value. At any time, the current
+top value can be &quot;popped of&quot;, revealing the previous value again.
+Unlike the format and word collection options, this stacking does not automatically
+happen with global and TACTid variables, although it can be requested by
+the element programmer using the <B>stack </B>and <B>pop</B> statements.
+</OL>
+<H2><A NAME="anchor22343803"></A>Overall Program Structure</H2>
+<I>epm</I> files can contain other components than just element program
+data. See the description of them below. In this section we will focus on
+the element procedures component, which contains the element programs and
+which always begins with the label &quot; <TT>[ElemProcs]</TT>&quot; <BR>
+<BR>
+The general format of the element procedures component is: 
+<PRE>
+<I>&lt;declaraction segment&gt;
+&lt;element section&gt;
+</I></PRE>
+The element procedures component is divided into two parts. First is the
+Declaration Section which contains one or more declaraction statements for
+the TACT ID and Global variables. Following the declaration section is the
+procedure section which contains procedures for one or more elements. 
+<H2><A NAME="anchor22362678"></A>Declaration Section</H2>
+The Declaration section, in turn, divides into two sections. First is the
+TACTID group of statements which declare all the TACTID variables. At least
+one TACT ID must be declared, so there must always be at least one TACTID
+statement. <BR>
+<BR>
+It is not essential to have any global variables. However, if you do, they
+should be declared immediately following the group of TACTID declaractions.
+<H4>Declaring Variables</H4>
+TACTID variables are declared in the TACTID statement. Global and Local
+variables are declared in the DECLARE statement: 
+<PRE>
+TACTID &lt;list of TACT ID Variables&gt;
+DECLARE &lt;list of Global Variables&gt;
+</PRE>
+If the DECLARE statement appears in the initial declaration section, the
+list of variables will be global. If it appears in element programs, the
+list of variables in it will be local only to that element program. TACTID
+variables can only be global and must be fully declared in the initial section.
+<H4>Format of the TACTID statement</H4>
+The format of the TACTID statement is most fully specified in the following
+BNF notation: 
+<PRE>
+   10 &lt;TACT DECL&gt; ::= TACTID &lt;TACTID ITEMS&gt; 
+   11 &lt;TACTID ITEMS&gt; ::= &lt;TACTID ITEMS&gt; , &lt;TACTID ITEM&gt; 
+   12                | &lt;TACTID ITEM&gt; 
+   13 &lt;TACTID ITEM&gt; ::= &lt;TACTID TYPE&gt; &lt;TACTID NAMES&gt; 
+   14 &lt;TACTID TYPE&gt; ::= 
+   15               | &lt;STANDARD TYPES&gt; 
+   16               | LINENO 
+   17               | WORD 
+   18 &lt;STANDARD TYPES&gt; ::= STRING 
+   19                  | NUMBER 
+   20 &lt;TACTID NAMES&gt; ::= &lt;MAIN NAME&gt; 
+   21                | &lt;MAIN NAME&gt; ( &lt;ALT NAME LIST&gt; ) 
+   22 &lt;MAIN NAME&gt; ::= &lt;NAME&gt; 
+   23 &lt;ALT NAME LIST&gt; ::= &lt;ALT NAME LIST&gt; , &lt;NAME&gt; 
+   24                 | &lt;NAME&gt;
+</PRE>
+<UL>
+  <LI>The TACTID statement begins with the keyword TACTID 
+  <LI>This is followed by one or more <I>&lt;TACTID ITEMS&gt;</I>. 
+  <LI>Each TACTID ITEM consists of an optional <I>&lt;TACTID TYPE&gt; </I>followed
+by the <I>&lt;TACTID NAMES&gt;</I> 
+  <LI>The TACTID Types include the standard types of STRING and NUMBER.
+If no Type is given, the variable will be assumed to be of the STRING type.
+In addition, names for the builtin TACT IDs of LINENO and WORD can be specified.
+These builtin ids must be present in all TACT TDBs. If no LINENO or WORD
+names are given, <I>sgml2tdb</I> will use the names &quot;LINE&quot; and
+&quot;WORD&quot;. 
+  <LI>The TACTID NAMES section contains a <I>&lt;MAIN NAME&gt;</I>followed
+by, in parantheses, an <I>&lt;ALT NAME LIST&gt;</I>. The ALT Name list option
+is provided because more than one name can be provided within a TACT TDB
+for any particular markup item. Usually the alternate names contain things
+like plural forms of the main name. 
+  <LI>The MAIN NAME is used for two purposes: it is put in the TACT TDB
+and can be used within other TACT programs such as <I>usebase </I>, and
+is used within element programs to refer to this variable. It can be any
+string of up to 8 ASCII letters and digits. The name is not case sensitive.
+  <LI>The names in the ALT Name list are separated by commas. They can be
+also up to 8 ASCII letters and digits long, and the names are also not case
+sensitive. Like the MAIN NAME, ALT NAMEs are also both usable within other
+TACT programs, and within element programs. 
+</UL>
+An example of a TACTID statement: 
+<PRE>
+tactid para, page (pages), number linenumb
+</PRE>
+The <TT>para</TT> TACTID variable is of the &quot;string&quot; type. The
+variable <TT>page</TT> is also of the &quot;string&quot; type, and has one
+alternative name of <TT>pages.</TT> The variable <TT>linenumb</TT> is <I>not</I>
+an example of the &quot;LINENO&quot; type. Instead, it could be used to
+preserve the line numbers explicitly given in the input text. It is declared
+as a &quot;number&quot; type. 
+<H4>Format of the DECLARE statement</H4>
+The format of the DECLARE statement is similar to, but less complex than,
+the TACTID statement. The following BNF notation defines it: 
+<PRE>
+   25 &lt;VARIABLE DECL&gt; ::= DECLARE &lt;DECLARE ITEMS&gt; 
+   26 &lt;DECLARE ITEMS&gt; ::= &lt;DECLARE ITEM&gt; 
+   27                 | &lt;DECLARE ITEMS&gt; , &lt;DECLARE ITEM&gt; 
+   28 &lt;DECLARE ITEM&gt; ::= &lt;DECLARE TYPE&gt; &lt;DECLARE NAME&gt; 
+   29 &lt;DECLARE TYPE&gt; ::= 
+   30                | &lt;STANDARD TYPES&gt; 
+   18 &lt;STANDARD TYPES&gt; ::= STRING 
+   19                  | NUMBER 
+   31 &lt;DECLARE NAME&gt; ::= &lt;NAME&gt; 
+</PRE>
+<UL>
+  <LI>The DECLARE statement starts with the DECLARE keyword. 
+  <LI>It is followed by one or more <I>&lt;DECLARE ITEM&gt;</I>s, separated
+by commas. 
+  <LI>Each DECLARE ITEM consists of an option <I>&lt;DECLARE TYPE&gt; </I>,
+followed by a <I>&lt;DECLARE NAME&gt;</I>. 
+  <LI>Global variables may be of the STRING or NUMBER type. If no type is
+given, the variable is assumed to be STRING. 
+  <LI>The DECLARE NAME is used is used within element programs to refer
+to this variable. It can be any string of up to 8 ASCII letters and digits.
+The name is not case sensitive. 
+</UL>
+<H2><A NAME="anchor22353302"></A>Element Program Section</H2>
+The Element Program Section follows the Declaration Section and contains
+the various element programs. Each element program is structured as an <I>element
+program block.</I> 
+<H3>Element Program Blocks</H3>
+Element program blocks always begin with the <TT>BEGIN</TT> statement and
+end with an <TT>END</TT> statement: 
+<PRE>
+BEGIN ...
+   &lt;element program statements&gt;
+END
+</PRE>
+The END statement consists of the word &quot;END&quot; only, and always
+appears on a line by itself. 
+<H4>The BEGIN statement</H4>
+The BNF for the BEGIN statement is: 
+<PRE>
+   33 &lt;ACTION OPENER&gt; ::= BEGIN &lt;SEGMENT ID&gt; &lt;STATEMENT END&gt; 
+   34 &lt;SEGMENT ID&gt; ::= &lt;SEGMENT TYPE&gt; &lt;ELEMENT LIST&gt; 
+   35 &lt;SEGMENT TYPE&gt; ::= OPEN 
+   36                | CLOSE 
+   37 &lt;ELEMENT LIST&gt; ::= &lt;ELEMENT NAME&gt; 
+   38                | &lt;ELEMENT LIST&gt; , &lt;ELEMENT NAME&gt; 
+</PRE>
+<UL>
+  <LI>The BEGIN statement starts with the keyword &quot;BEGIN&quot; 
+  <LI>Immediately following the BEGIN keyword is the <I>&lt;SEGMENT TYPE&gt;</I>
+which must be one of the keywords &quot;OPEN&quot; or &quot;CLOSE&quot;.
+The SEGMENT TYPE indicates whether the procedure is to be executed when
+an element is opened, or when it is closed. 
+  <LI>Following the SEGMENT TYPE is a list of <I>&lt;ELEMENT NAME&gt; </I>s,
+separated by commas. Element names may be simply specified, or may be preceeded
+by the element name identifier character &quot;$&quot;. Although the &quot;$&quot;
+is usually optional, it is recommended that it always be provided. If the
+element name is the same as a keyword it is required. 
+</UL>
+An example of a BEGIN statement: 
+<PRE>
+begin open $div, $div0, $div1, $div2, $div3, $div4, $div5, $div6
+</PRE>
+<H3><A NAME="Expressions"></A>Expressions</H3>
+Expressions are important in many element program statements. We describe
+them all here. There are three types: arithmetic, character and logical.
+Conversions between the character and arithmetic values happens more or
+less automatically. 
+<a name="charexp"><H4>Character expressions</H4></a>
+The following BNF notation defines what is allowed: 
+<PRE>
+   83 &lt;CHAR EXPRESSION&gt; ::= &lt;CHAR EXPRESSION&gt; | &lt;CHAR ITEM&gt; 
+   84                   | &lt;CHAR ITEM&gt; 
+   85 &lt;CHAR ITEM&gt; ::= &lt;STRING&gt; 
+   85a            | &lt;STRING VARIABLE&gt;
+   85b            | &lt;ELEMENT ATTRIBUTE&gt;
+   88             | &lt;ARITH VALUE&gt; 
+   86             | NL 
+   87             | THISGI 
+   89             | SUBSTR ( &lt;SUB OPERANDS&gt; ) 
+   89a            | PAD ( &lt;PAD OPERANDS&gt; ) 
+   90             | UPPER ( &lt;CHAR EXPRESSION&gt; ) 
+  102 &lt;ARITH VALUE&gt; ::= &lt;ARITH EXPRESSION&gt; 
+</PRE>
+<UL>
+  <LI>A Character expressions (in the BNF called <I>&lt;CHAR EXPRESSION&gt;
+</I>) consists of more or more <I>&lt;CHAR ITEM&gt;</I>s. If there are more
+than one items they are separated by the character &quot;|&quot; which represents
+concatenation. 
+  <LI>Each CHAR ITEM is either a string, a string variable, element attribute,
+an arithmetic expression (which will, in this context, be converted to a
+character string), or a number of built-in special functions. 
+  <LI>The &quot;NL&quot; keyword as a CHAR ITEM represents a &quot;new line&quot;
+character. 
+  <LI>The &quot;THISGI&quot; keyword will contain the name of the current
+element that is being opened or closed. 
+  <LI>The &quot;SUBSTR&quot; keyword is used to select a portion of a character
+string -- an operation called &quot;substringing&quot;. See its description
+below. 
+  <LI>The &quot;PAD&quot; keyword is used to pad a string with additional
+characters. See its description below. 
+  <LI>The &quot;UPPER&quot; keyword is followed by another CHAR expression
+in parantheses, and causes the given string to be converted to ASCII capital
+letters. 
+</UL>
+<H5>Substringing and the SUBSTR Keyword</H5>
+The SUBSTR keyword is followed by several operands that specify the nature
+of the substringing operation. It is easiest to understand the SUBSTR keyword
+by first looking at two examples. In this example, assume that the variable
+&quot;NAME&quot; contains the characters &quot;<TT>DSM-42</TT>&quot;. <BR>
+<BR>
+<TT>SUBSTR(NAME, 5)</TT>: will produce the sequence &quot;<TT>42 </TT>&quot;:
+the characters in NAME that begin in position &quot;5&quot;, through to
+the end. Programmers should note that the number is &quot;1-based&quot;
+-- the first character position is numbered &quot;1&quot;. <BR>
+<BR>
+<TT>SUBSTR(NAME, 1, 3)</TT>: will produce the sequence &quot; <TT>DSM</TT>&quot;:
+the characters in NAME that being in position 1, and continue for 3 characters.
+<BR>
+<BR>
+The formal BNF for the SUBSTR keyword's operands is: 
+<PRE>
+   91 &lt;SUB OPERANDS&gt; ::= &lt;SUB ITEM&gt; , &lt;START NUMB&gt; , &lt;LEN NUMB&gt;
+   92                | &lt;SUB ITEM&gt; , &lt;START NUMB&gt;
+   93 &lt;SUB ITEM&gt; ::= &lt;CHAR EXPRESSION&gt; 
+   94 &lt;START NUMB&gt; ::= &lt;ARITH EXPRESSION&gt; 
+   95 &lt;LEN NUMB&gt; ::= &lt;ARITH EXPRESSION&gt; 
+</PRE>
+<UL>
+  <LI>The SUBSTR operands consist of 2 or 3 items. 
+  <LI>The first item is a character expression that is to be substringed.
+  <LI>The second item is an arithmetic expressions that evaluates to the
+starting position within the character position from which to start the
+substringing. 
+  <LI>The third item, if present, is the length of the substring that is
+desired. If this item is absent, the substringing operation should proceed
+from the given starting position to the end of the string. 
+</UL>
+<H5>The Padding Function</H5>
+The Padding keyword is followed by several operands that specify the nature
+of the padding operation. The padding operation will add padding characters
+(blanks, or some other sequence) onto either the front or rear of a given
+string. If, for example the string variable &quot;<TT>str</TT>&quot; contains
+the character sequence &quot;<TT>123</TT>&quot; then: 
+<UL>
+  <LI><TT>PAD(str,5)</TT> will add blanks on the end to produce the resulting
+5 character string &quot;<TT>123 </TT>&quot;. 
+  <LI><TT>PAD(front, str, 5)</TT> will add blanks to the front, resulting
+in &quot;<TT> 123</TT>&quot;. 
+  <LI><TT>PAD(str,5,&quot;-&quot;)</TT> will add hypens to the end, resulting
+in &quot;<TT>123--</TT>&quot;. 
+  <LI><TT>PAD(str,7,&quot;-+&quot;)</TT> shows that the padding sequence
+can be longer than 1 character. This results in &quot; <TT>123-+-+ </TT>&quot;.
+</UL>
+The BNF for the Padding function is: 
+<PRE>
+   97 &lt;PAD OPERANDS&gt; ::= &lt;PAD POSITION&gt; &lt;PAD ITEM&gt; , &lt;PAD LENGTH&gt; &lt;PAD PATTERN&gt; 
+   98 &lt;PAD ITEM&gt; ::= &lt;CHAR EXPRESSION&gt; 
+   99 &lt;PAD LENGTH&gt; ::= &lt;ARITH EXPRESSION&gt; 
+  100 &lt;PAD PATTERN&gt; ::= 
+  101               | , &lt;CHAR EXPRESSION&gt; 
+  102 &lt;PAD POSITION&gt; ::= 
+  103                | FRONT , 
+  104                | BACK , 
+</PRE>
+<UL>
+  <LI>The first parameter is optional, and indicates whether the padding
+should happen on the front or back of the given string. 
+  <LI>Following the padding position, if present, is a character expression
+which resolves to be the string that is to be padded. 
+  <LI>Following this is an arithmetic expression which resolves to the desired
+length of the resultant string. 
+  <LI>Optionally following this is a characater expression that resolves
+to the padding pattern to be used. If this is missing, the input string
+is padded with blanks. 
+</UL>
+<a name="arithexp"><H4>Arithmetic Expressions</H4></a>
+The BNF for Arithmetic expressions is: 
+<PRE>
+  103 &lt;ARITH EXPRESSION&gt; ::= &lt;SIGNED TERM&gt; 
+  104                    | &lt;ARITH EXPRESSION&gt; + &lt;ARITH TERM&gt; 
+  105                    | &lt;ARITH EXPRESSION&gt; - &lt;ARITH TERM&gt; 
+  106 &lt;SIGNED TERM&gt; ::= &lt;ARITH TERM&gt; 
+  107               | - &lt;ARITH TERM&gt; 
+  108               | + &lt;ARITH TERM&gt; 
+  109 &lt;ARITH TERM&gt; ::= &lt;ARITH PRIMARY&gt; 
+  110              | &lt;ARITH TERM&gt; * &lt;ARITH PRIMARY&gt; 
+  111              | &lt;ARITH TERM&gt; / &lt;ARITH PRIMARY&gt; 
+  112 &lt;ARITH PRIMARY&gt; ::= &lt;ARITH ITEM&gt; 
+  113                 | ( &lt;ARITH EXPRESSION&gt; ) 
+  114 &lt;ARITH ITEM&gt; ::= &lt;NUMBER&gt; 
+  115              | &lt;NAME OR ATTRIB&gt; 
+  116              | ARITH ( &lt;CHAR EXPRESSION&gt; ) 
+  119              | MAX ( &lt;ARITH EXPRESSION&gt; , &lt;ARITH EXPRESSION&gt; ) 
+  120              | MIN ( &lt;ARITH EXPRESSION&gt; , &lt;ARITH EXPRESSION&gt; ) 
+  118              | FIND ( &lt;CHAR EXPRESSION&gt; , &lt;CHAR EXPRESSION&gt; ) 
+  122              | LENGTH ( &lt;CHAR EXPRESSION&gt; ) 
+  123 &lt;NAME OR ATTRIB&gt; ::= &lt;VAR NAME&gt; 
+  124                  | &lt;ATTRIBUTE&gt; 
+</PRE>
+<UL>
+  <LI>Arithmetic expressions consist of the standard basic arithmetic operations,
+and a extended by a few specialized functions. 
+  <LI>The standard addition, subtraction, multiplication and division operations
+are given the normal precedence: <TT>A * B + C * D </TT>is evaluated by
+first multiplying A and B, then multiplying C and D, and adding the two
+results. 
+  <LI>As with standard arithmetic notation, the order of the operations
+can be modified by parentheses: <TT>A * (B + C) * D</TT> would first add
+B and C, then multiply the results by A, then multiply the result by D.
+  <LI>The arithmetic items between the standard arithmetic operations include
+numbers (between 0 and 65535), variable names or element attribute values.
+If necessary, variables and element attributes are first converted from
+character strings to a numeric value. 
+  <LI>Arithmetic items can be a number of specialized operators. The ARITH
+operator explicitly converts an character expression into a numeric value.
+The MAX and MIN operator finds the largest (or smallest) of the values represented
+by the arithmetic expressions found inside it. 
+  <LI>The FIND operator finds the second string in the first string, and
+returns a pointer to the character in the first string that starts the substring.
+If the second string is not found, it returns &quot;0&quot;. 
+  <LI>The LENGTH operator returns the number of characters in the given
+character expressions. 
+</UL>
+<A NAME="logexp"><H4>Logical Expressions</H4></a>
+Logical expressions resolve themselves to the values &quot;ON&quot; (or
+<I>true</I>) and &quot;OFF&quot; (or <I>false</I>&quot;). The BNF for the
+logical expressions is: 
+<PRE>
+  145 &lt;LOGICAL EXPRESSION&gt; ::= &lt;LOGICAL TERM&gt; 
+  146                      | &lt;LOGICAL EXPRESSION&gt; OR &lt;LOGICAL TERM&gt; 
+  147 &lt;LOGICAL TERM&gt; ::= &lt;SIGNED LOGICAL TERM&gt; 
+  148                | &lt;LOGICAL TERM&gt; AND &lt;SIGNED LOGICAL TERM&gt; 
+  149 &lt;SIGNED LOGICAL TERM&gt; ::= &lt;LOGICAL PRIMARY&gt; 
+  150                       | NOT &lt;LOGICAL PRIMARY&gt; 
+  151 &lt;LOGICAL PRIMARY&gt; ::= &lt;COMPARE&gt; 
+  152                   | &lt;ELE FUNCTION&gt; 
+  153                   | ON 
+  154                   | OFF 
+  155                   | ( &lt;LOGICAL EXPRESSION&gt; )
+  156 &lt;COMPARE&gt; ::= &lt;EXP 1&gt; = &lt;EXP 2&gt; 
+  157           | &lt;EXP 1&gt; ~= &lt;EXP 2&gt; 
+  158           | &lt;EXP 1&gt; &gt; &lt;EXP 2&gt; 
+  159           | &lt;EXP 1&gt; &lt; &lt;EXP 2&gt; 
+  160           | &lt;EXP 1&gt; &gt;= &lt;EXP 2&gt; 
+  161           | &lt;EXP 1&gt; &lt;= &lt;EXP 2&gt; 
+  162 &lt;EXP 1&gt; ::= &lt;CHAR OR NUMERIC EXPRESSION&gt; 
+  163 &lt;EXP 2&gt; ::= &lt;CHAR OR NUMERIC EXPRESSION&gt; 
+  164 &lt;ELE FUNCTION&gt; ::= IN ( &lt;IN FUNCT ELEM&gt; ) 
+  165                | IS ( &lt;IS FUNCT ELEM&gt; ) 
+  166 &lt;IN FUNCT ELEM&gt; ::= &lt;ELEMENT NAME&gt; 
+  167 &lt;IS FUNCT ELEM&gt; ::= &lt;ELEMENT NAME&gt; 
+</PRE>
+<UL>
+  <LI>A logical expression can consist of the basic logical value &quot;ON&quot;
+(which can also be considered to represent <I>true </I>), or &quot;OFF&quot;
+(which can also represent <I>false</I>). 
+  <LI>Logical subexpressions that could resolve themselves to <I>true </I>or
+<I>false</I> may be combined using the boolean operators &quot;OR&quot;,
+&quot;AND&quot; and &quot;NOT&quot;. &quot;NOT&quot; has the highest precedence,
+followed by &quot;AND&quot;, followed by &quot;OR&quot;. Thus, the expression
+&quot;<TT>A AND B OR NOT C AND D</TT>&quot; will be evaluated by first calculating
+the logical result of A AND B, then the logical result of NOT C when ANDed
+to D, and finally ORing the two results together. 
+  <LI>Parentheses can be used to change the natural precedence. 
+  <LI>In addition to &quot;ON&quot; and &quot;OFF&quot;, a collection of
+COMPARE and ELE FUNCTIONs can are used as logical primaries. 
+  <LI>The COMPARE operators compare two character or numeric expressions.
+Comparisons are &quot;=&quot; for &quot;equal&quot;, &quot;~=&quot; for
+&quot;not equal&quot;, &quot;&gt;&quot; for &quot;greater than&quot;, &quot;&lt;&quot;
+for &quot;less than&quot;, &quot;&gt;=&quot; for &quot;greater than or equal
+to&quot; and &quot;&lt;=&quot; for &quot;less than or equal to&quot;. 
+</UL>
+<H4>Data Conversion</H4>
+Conversions can be made in two directions: 
+<UL>
+  <LI>From any character strings that represent numbers to numbers 
+  <LI>From any number to a character string. 
+</UL>
+Conversions from a number to a character string happen automatically, depending
+upon the context. Thus, if any operand (say, for example, the concatenation
+operator &quot;|&quot;) is applied to a number, it is first converted to
+a character string before the concatenation is done. <BR>
+<BR>
+Conversion from a character string variable to a number will also be automatic
+if the operations to be performed are arithmetic. Thus, the expression &quot;<TT>ABC
++ 5</TT>&quot; will be legal even if ABC is a string variable. However,
+if the character string variable contains a string of characters that cannot
+be interpreted as a number when the operation is actually attempted during
+the processing of the SGML text, the conversion will result in an error.
+<BR>
+<BR>
+Conversion from a character string expression to a number must be explicitly
+requested using the &quot;ARITH&quot;, e.g. <TT>ARITH (SUBSTR(VAR,4) )</TT>
+<H3><A NAME="ProgramStatements"></A>Program Statements</H3>
+Element Programs are performed at the beginning or ending of SGML elements.
+They have direct access to the following pieces of data: 
+<UL>
+  <LI>Attributes of open elements, 
+  <LI>TACT id variables, and 
+  <LI>Global variables. 
+</UL>
+and can affect the values of TACT id and Global variables. They can also
+affect some aspects of how the text that the element contains is to be formatted
+and processed for words -- although normally they do not have access to
+the text itself (the text within a element can be made available to an element
+program using the <B>to</B> option of the <B>format</B> statement -- see
+its description below). <BR>
+<BR>
+One uses and affects these things by using the several different types of
+statements that are available within element programs. <BR>
+<BR>
+The values of TACT id and Global (and local) variables can be affected by
+<UL>
+  <LI>the assignment statement. 
+  <LI>the <B>inc</B> and <B>dec</B> statements. 
+  <LI>and the <B>stack</B> and <B>pop</B> statements. 
+</UL>
+The form of the text that appears in the TACT TDB can be controlled by 
+<UL>
+  <LI>the <B>format</B> statement 
+  <LI>and the <B>output</B> statement. 
+</UL>
+The way words are collected is controlled by the <B>word</B> statement.
+<BR>
+<BR>
+Finally, diagnostic and informational messages can be written to the program
+user using the <B>remark</B> and <B>error</B> statements. <BR>
+<BR>
+More information about each of these statements follows below. 
+<A NAME="assignment"><H4>the Assignment Statement</H4></a>
+The BNF format of the Assignment is very simple: 
+<PRE>
+   80 &lt;ASSIGNMENT STATEMENT&gt; ::= &lt;DESTINATION&gt; = &lt;ASGN EXPRESSION&gt; 
+   81 &lt;DESTINATION&gt; ::= &lt;VAR NAME&gt; 
+   82 &lt;ASGN EXPRESSION&gt; ::= &lt;CHARACTER EXPRESSION&gt; 
+   82a                  | &lt;ARITHMETIC EXPRESSION&gt; 
+</PRE>
+<UL>
+  <LI>The <I>&lt;DESTINATION&gt;</I> can be a TACT id, Global or local variable
+name, and represents the name of the variable whose value is to be changed.
+If a TACT id variable is changed, then the value of the TACT id variable
+in the TDB will also be affected. 
+  <LI>The Destination variable is followed by an equal sign (&quot;=&quot;),
+and then by the assignment expression. 
+  <LI>The assignmnt expression may be either a character expression or an
+arithmetic expression. If the type of the destination variable is different
+from the type of the expression, an automatic conversion will be attempted.
+</UL>
+Two examples: <BR>
+<BR>
+<TT>page = pg@n</TT>: If &quot;page&quot; was a TACT id variable, this would
+assign it to the value of the attribute &quot;n&quot; in a currently open
+&quot;pg&quot; element. <BR>
+<BR>
+<TT>segno = segnobase | &quot;.&quot; | curno</TT>: This takes the values
+of &quot;segnobase&quot; and concatenates a period and the value of &quot;curno&quot;
+to it, assigning the result to a variable &quot;segno&quot;. 
+
+<A name="incdec"><H4>the Inc and Dec Statements</H4></a>
+It is frequently useful to be able to increment or decrement the value of
+a TACT id, global or local variable. Although this can be done using the
+assignment statement (e.g. &quot;<TT>A = A + 1</TT>&quot;), it is an important
+enough operation that two special statements have been created to do it.
+<BR>
+<BR>
+The BNF format is also very simple: 
+<PRE>
+   52 &lt;INC OR DEC STATEMENTS&gt; ::= INC &lt;DECLARED NAME&gt; 
+   53                         | DEC &lt;DECLARED NAME&gt; 
+</PRE>
+The statements betwen with the <B>inc</B> or <B>dec</B> keyword and is followed
+by the name of the variable to be incremented or decremented. 
+
+<a name="popstack"><H4>the Pop and Stack Statements</H4></a>
+The hierarchical nature of SGML means that is often useful to be able to
+&quot;stack&quot; and &quot;pop&quot; values for variables. Suppose that
+a variable &quot;var&quot; currently has the value 5. When a &quot;stack&quot;
+operation is performed on &quot;var&quot; the value 5 is stored and a new
+copy of the current value 5 is pushed on top. When the value of &quot;var&quot;
+is changed (using the assignment, Inc or Dec) statements this second copy
+is changed, and the original &quot;5&quot; is untouched. At some point the
+variable can be &quot;popped&quot;. When this happens the &quot;top&quot;
+value is discarded and the original value of 5 reappears. <BR>
+<BR>
+Why is stacking and popping variables useful? It is useful mainly because
+SGML dtd's often permit similar elements to be nested. For example, the
+variable &quot;divno&quot; might used to store a number for divisions such
+as &quot;1.5.2&quot; -- meaning textual division 2 inside division 5 inside
+division 1. Each time a new sub-division starts (say &quot;1.5.2.1&quot;),
+the old value of &quot;1.5.2&quot; must be kept so that when the sub-division
+ends the nesting division numbering can resume. Stacking and popping of
+variables such as &quot;divno&quot; makes this possible. <BR>
+<BR>
+The BNF for the <B>pop</B> and <B>stack</B> statements is: 
+<PRE>
+   54 &lt;POP AND STACK STATEMENT&gt; ::= &lt;POPSTACK WHICH&gt; &lt;POPSTACK ITEM LIST&gt; 
+   55 &lt;POPSTACK WHICH&gt; ::= POP 
+   56                  | STACK 
+   57 &lt;POPSTACK ITEM LIST&gt; ::= &lt;POPSTACK ITEM LIST&gt; , &lt;PS ITEM&gt; 
+   58                      | &lt;PS ITEM&gt; 
+   59 &lt;PS ITEM&gt; ::= &lt;VAR NAME&gt;
+</PRE>
+Although values for a variable are only stacked on request via the <B>stack</B>
+statement, they will be automatically popped when the element in which a
+particular stacking occurred is exited. 
+
+<a name="format"><H4>The Format Statement</H4></a>
+The Format statement has two functions: 
+<UL>
+  <LI>It is mainly used to control how the element text will be formatted
+when included in the TDB. 
+  <LI>It can also be used to capture element text in a global variable for
+subsequent processing by an element program. 
+</UL>
+The format statement affects formatting of the text only for the immediate
+element it is associated with and for enclosed elements. When the element
+<I>sgml2tdb</I> was starting when the format statement is performed is finishing,
+<I>sgml2tdb </I>reverts back to the format specifications given for the
+enclosing elements. Thus, the format statement is usually used in a procedure
+that opens an element. <BR>
+<BR>
+The BNF for it is: 
+<PRE>
+   49 &lt;FORMAT STATEMENT&gt; ::= FORMAT &lt;FORMAT OPTIONS&gt; 
+   70 &lt;FORMAT OPTIONS&gt; ::= &lt;FORMAT OPTION&gt; 
+   71                  | &lt;FORMAT OPTIONS&gt; , &lt;FORMAT OPTION&gt; 
+   72 &lt;FORMAT OPTION&gt; ::= COMPRESS &lt;LOGICAL EXPRESSION&gt; 
+   73                 | CENTRE &lt;LOGICAL EXPRESSION&gt; 
+   74                 | DISPLAY &lt;LOGICAL EXPRESSION&gt; 
+   75                 | FILL &lt;LOGICAL EXPRESSION&gt; 
+   76                 | FOLD &lt;ARITH EXPRESSION&gt; 
+   77                 | INDENT &lt;ARITH EXPRESSION&gt; 
+   78                 | TO &lt;VAR NAME&gt; 
+   79                 | TO TDB 
+</PRE>
+The Format statement begins with the keyword <I>format</I> and is followed
+by a one or more options, each separated by a comma. 
+<UL>
+  <LI>The <B>compress</B> keyword is followed by a logical expression. If
+the expression resolves to &quot;ON&quot; (or <I>true)</I>then sequences
+of more than one blank (or new line characters if the <B>fill</B> option
+is on) in the element text that follows will be reduced to a single blank
+character before being put in the TDB. 
+  <LI>The <B>centre</B> keyword (note the spelling of the word!) is followed
+by a logical expression. If the expression resolves to &quot;ON&quot; (or
+<I>true</I>), then the element text that follows will be centred before
+being put in the TDB. 
+  <LI>The <B>display</B> keyword is followed by a logical expression. If
+the expression resolves to &quot;ON&quot; (or <I>true</I>), then the element
+text that follows will be putt in the TDB. If the expression is &quot;OFF&quot;
+(or <I>false</I>), the element text that follows will <I>not</I> be put
+in the TDB. Text that does not go into the TDB can also not be processed
+for word collection. 
+  <LI>The <B>fill</B> keyword is followed by a logical expression and determines
+how new line characters are to be handled when the text is formatted for
+the TDB. If the expression resolves to &quot;ON&quot; (or <I>true</I>),
+then new line characters in the element text are replaced by blanks. If
+the expression resolves to &quot;OFF&quot;, then a new line character in
+the text will result in a newline in the TDB text as well. 
+  <LI>The <B>fold</B> keyword is followed by an arithmetic expression and
+specifies how long the line of text in the TDB is to be. The maximum value
+for the keyword is 78. Anytime an output line of text is getting longer
+than the fold value, the nearest preceding space is replaced by a newline
+character. 
+  <LI>The <B>indent</B> keyword is followed by an arithmetic expression
+and specifies (in characters) how much the TDB formatted text is to be indented.
+  <LI>The <B>to &lt;var name&gt; </B>keyword specifies that the element
+text following is to be not written to the TDB but instead stored in the
+named global variable. Text generated as a result of the output statement
+will also go to the named global variable. Note that the formatting options
+above will not control the appearance of the text in the global variable,
+and the output <I>blines </I>item also has no effect. 
+  <LI>The <B>to tdb</B> operand specifies that text is to be written to
+the TDB. It cancels the effect of the <B>to &lt;var name&gt; </B>option.
+</UL>
+<I>sgml2tdb</I> starts off with default values for the <I>format </I>command.
+The starting values are: 
+<PRE>
+FORMAT DISPLAY ON, FILL OFF, COMPRESS OFF, CENTRE OFF, FOLD 72, INDENT 0, TO TDB
+</PRE>
+<H5>Using the &quot;format to&quot; option</H5>
+It is not uncommon in SGML markup to find element text which should also
+be preserved as structural. This is particularly common in plays, where
+the text editor may have identified the name of the speaker in the text
+from the text the speaker says, but did not identify the speaker as an attribute.
+Here is an excerpt from text like this (from the University of Michigan
+Humanities Text Initiative): 
+<PRE>
+&lt;SP&gt;&lt;SPEAKER&gt;Socrates&lt;/SPEAKER&gt;&lt;P&gt;  What is the exact time?   &lt;/P&gt;&lt;/SP&gt;
+&lt;SP&gt;&lt;SPEAKER&gt;Crito&lt;/SPEAKER&gt;&lt;P&gt;  The dawn is breaking.   &lt;/P&gt;&lt;/SP&gt;
+&lt;SP&gt;&lt;SPEAKER&gt;Socrates&lt;/SPEAKER&gt;&lt;P&gt;  I wonder the keeper of the prison would let you in.   &lt;/P&gt;&lt;/SP&gt;
+&lt;SP&gt;&lt;SPEAKER&gt;Crito&lt;/SPEAKER&gt;&lt;P&gt;  He knows me because I often come, Socrates; moreover, 
+ I have done him a kindness.   &lt;/P&gt;&lt;/SP&gt;
+</PRE>
+Here, the name of the speaker is recorded only as text in the element &lt;speaker&gt;.
+Here is a fragement of the .epm file that controls the processing: 
+<PRE>
+begin open $speaker
+   format to sphold
+end
+begin close $speaker
+   format to tdb, indent 0
+   output blines 1,sphold, blines 0
+   %speaker = sphold
+end
+</PRE>
+When the <I>speaker</I> element is opened, the element text is redirected
+to global variable <I>sphold</I>. The text (in the fragment shown above
+either &quot;Socrates&quot; or &quot;Crito&quot;) is directed to the specified
+variable instead of being put out to the TDB. When the <I>speaker</I> element
+is finished, the statement &quot;<TT>format to tdb</TT>&quot; causes subsequent
+output to be directed to the TDB again. The <B>output</B> statement (described
+below) inserts a blank line, followed by the text in <I>sphold </I>, followed
+by a new line. Then an assignment statement take the same text in <I>sphold</I>
+and assigns it to a TACTid variable called <I>speaker.</I> 
+<a name="output"><H4>the Output Statement</H4></a>
+The <B>output</B> statement puts text into the TDB that did not come from
+the element text in the SGML file. It can also be used to insert one or
+more new line characters into the TDB. Its BNF is: 
+<PRE>
+   46 &lt;OUTPUT STATEMENT&gt; ::= OUTPUT &lt;OUTPUT ITEMS&gt; 
+   60 &lt;OUTPUT ITEMS&gt; ::= &lt;OUTPUT ITEM&gt; 
+   61                | &lt;OUTPUT ITEMS&gt; , &lt;OUTPUT ITEM&gt; 
+   62 &lt;OUTPUT ITEM&gt; ::= &lt;CHAR EXPRESSION&gt; 
+   63               | BLINES &lt;ARITH EXPRESSION&gt; 
+</PRE>
+<UL>
+  <LI>The <I>&lt;output statement&gt;</I> begins with the keyword <I>output</I>
+and is followed by one or more <I>&lt;output items&gt; </I>separated by
+commas. 
+  <LI>There are two types of output items. One simply appears as a character
+expression which, when interpreted, will represent a stream of characters
+to write to the TDB file. 
+  <LI>The <I>blines</I> item takes one arithmetic expression that, when
+evaluated, will result in a number which indicates the number of blank lines
+to be inserted in the TDB at this point. Note that the construction &quot;<TT>output
+blines 0</TT>&quot; will cause <I>sgml2tdb </I>to start a new line in the
+TDB file, but leave no lines blank. 
+  <LI>The <I>blines</I> item has a special significance if more than one
+occurs in a row between other text (either from the output statement or
+from intervening element text. If there are several <I>bline</I> items in
+a row, the number of blank lines inserted is based on the largest number
+requested. Thus, if the end of one element procedure contains an &quot;<TT>output
+blines 1</TT>&quot; output item, but the beginning of the procedure for
+very next element contains a &quot;<TT>output blines 2</TT>&quot; output
+item, the actual number of blank lines inserted will be the larger of the
+two values: 2 -- not their sum. 
+</UL>
+Here is a typical example of an &quot;output&quot; statements: 
+<PRE>
+output blines 1, &quot;Source Description&quot;, blines 0
+</PRE>
+If this was placed in the element program that occurred when the <I>sourceDesc</I>
+elemnet was started, it would cause <I>sgml2tdb </I>to first insert into
+the TDB a blank line, then the text &quot;Source Description&quot;, and
+then start a new line before inserting the element text. 
+
+<a name="wordst"><H4>the Word Statement</H4></a>
+The <B>word</B> statement can be used to control several aspects of how
+<I>sgml2tdb</I> will control the collection of words. Normally, words are
+collected from all text that goes into the TDB file -- either element text
+or text that has been inserted through the <B>output</B> statement. The
+<B>word</B> statement can control this, and can also affect exactly what
+words are collected. Like the <B>format</B> statement, settings from the
+<B>word</B> command are local only to the current element text, or any enclosed
+elements. When the element which contained the program which referenced
+the <B>word</B> command ends, the setting revert back to those set in the
+enclosing element. The BNF for the Word statement is: 
+<PRE>
+   50 &lt;WORD STATEMENT&gt; ::= WORD &lt;WORD OPS&gt; 
+   64 &lt;WORD OPS&gt; ::= &lt;WORD OPS&gt; , &lt;WORD OP&gt; 
+   65            | &lt;WORD OP&gt; 
+   66 &lt;WORD OP&gt; ::= COLLECT &lt;LOGICAL EXPRESSION&gt; 
+   67           | APPEND &lt;CHAR EXPRESSION&gt; 
+   68           | PREPEND &lt;CHAR EXPRESSION&gt; 
+   69           | REPLACE &lt;CHAR EXPRESSION&gt; 
+</PRE>
+<UL>
+  <LI>The <B>word</B> statement begins with the keyword <I>word </I>. 
+  <LI>Following the initial keyword is a sequence of one or more <I>&lt;word
+op&gt;</I>s. 
+  <LI>The word op <I>collect</I> indicates whether or not words are to be
+collected for the TDB word list in the element or not. 
+  <LI>The second word op <I>append </I>specifies a sequence of characters
+that are to be appended to each word that is found in the element text before
+it is processed to be put in the TDB word list. 
+  <LI>The word op <I>prepend</I> specifies a sequence of characters that
+are to prepended to each word that is found in the element text before it
+is processed to be put in the TDB word list. 
+  <LI>The word op <I>replace</I> specifies a sequence of characters that
+are to replace each word that is found in the element text before it is
+processed to be put in the TDB word list. 
+</UL>
+The <I>append, prepend</I> and <I>replace</I> options are useful when SGML
+tagging contains attribute information that refers to the words in the element
+text; for example language or other grammatical information. If, for example,
+a &quot;lang&quot; attribute was coded in a text, the command &quot;<TT>word
+append @lang</TT>&quot; could be used to append the language code to all
+words found in the element with that attribute. By adding the language code
+to the headwords, you would preserve the language code information with
+all the words in the TDB word list that were from that language. 
+
+<a name="remark"><H4>the Remark and Error Statements</H4></a>
+The <B>remark</B> and <B>error</B> statements provide a way for an element
+program to display a diagnostic message to the program user. The BNF for
+these statements is: 
+<PRE>
+   47 &lt;ERROR STATEMENT&gt; ::= ERROR &lt;CHAR EXPRESSION&gt; 
+   48 &lt;REMARK STATEMENT&gt; ::= REMARK &lt;CHAR EXPRESSION&gt; 
+</PRE>
+The character expression given after the <I>error</I> or <I>remark </I>keywords
+is evaluated and the resulting string is displayed to the program user.
+The string is prepended with information about the file and the line number
+that <I>sgml2tdb</I> was processing at the time. <BR>
+<BR>
+For an remark, <I>sgml2tdb</I> continues to process text after the message
+has been printed. For an error, <I>sgml2tdb</I> stops after printing the
+message. 
+<H3><A NAME="ControlStatements"></A>Control Statements</H3>
+Normally element program statements are performed one after the other in
+the order they are given. Two language constructs permit this order to be
+altered depending upon conditions found while the program is running. 
+<H4>the If statement construct</H4>
+The<B> if</B> statement construct comes in several forms. Its simplest form
+is: 
+<PRE>
+if &lt;logical expression&gt; then
+<I>   &lt;one or more statements&gt;
+</I>end
+</PRE>
+Here, the statements that appear between the initial <I>if</I>line and the
+ending <I>end</I> line are performed only if the <I>logical expression</I>
+given in the <I>if</I> line evaluates to true. <BR>
+<BR>
+An &quot;else&quot; form is also supported: 
+<PRE>
+if &lt;logical expression&gt; then
+<I>   &lt;first group of statements&gt;
+</I>else
+   <I>&lt;second group of statements&gt;
+</I>end
+</PRE>
+Here, the first group of enclosed statements is performed if the logical
+expression in the if line is true. Otherwise, the second group of enclosed
+statements is performed. <BR>
+<BR>
+An extended &quot;else&quot; form is also supported: 
+<PRE>
+if &lt;first logical expression&gt; then
+   &lt;first group of statements&gt;
+else if &lt;second logical expression&gt; then
+   <I>&lt;second group of statements&gt;
+</I>else
+   <I>&lt;third group of statements&gt;
+</I>end
+</PRE>
+Here, the first group of statements is performed if the first logical expression
+is true. If the first logical expression is false, the second logical expression
+is evaluated, and if it is true the second group of statements is performed.
+If both logical expressions are false the third group of statements is performed.
+<BR>
+<BR>
+In this last example, more than one <I>else if</I> construct may appear
+to provide third, fourth etc logical expressions and third, fourth etc groups
+of statements to be performed. In addition, the final <I>else</I> construct
+may be omitted. 
+<H4>the While statement construct</H4>
+The <B>while</B> construct allows a group of statement to be repeatedly
+performed based on the value of a logical expression: 
+<PRE>
+while <I>&lt;logical expression&gt;
+   &lt;group of one or more statements&gt;
+</I>end
+</PRE>
+<I>sgml2tdb</I> will handle this by first evaluating the given logical expression.
+If it is true, the group of one or more statements that follows is performed.
+<I>sgml2tdb</I> then evaluates the logical expression again. If it is still
+true, the group of statements is performed again. This is repreated until
+the logical expression turns out to be false. Clearly, care must be given
+to create a while construct where the given logical expression will eventually
+become false at some point! <HR>
+<P><CENTER><A HREF="main.htm">sgml2tdb home</A> | <A HREF="charset.htm">Character
+Sets in sgml2tdb</A>]</CENTER>
+</BODY>
+</HTML>

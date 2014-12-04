@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+    <TITLE>Character Sets in sgml2tdb</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H2>Character Sets in <I>sgml2tdb</I><HR></H2>
+The TACT system works internally in a private enriched character set which
+both allows for the proper handling of many languages that use the roman
+and greek character sets, but also permits TACT to represent its characters
+to the outside world (the screen, the printer, a file, the internet) in
+different ways depending upon the needs of the moment. Graphically, the
+process is shown below: <BR>
+<BR>
+<IMG SRC="xlate.gif" ALIGN="BOTTOM" WIDTH="396" HEIGHT="179" NATURALSIZEFLAG=
+"3"> <BR>
+<BR>
+The red box around the central box labelled &quot;TACT Programs&quot; represents
+TACT's translation layer, which mediates between the internal character
+set and the different needs of the outside world. <BR>
+<BR>
+<I>sgml2tdb</I> must produce TDBs that contain text encoded in the TACT
+internal character set. It uses a mechanism which is very similar to that
+used by other TACT programs, but adjusted somewhat for the particular needs
+of SGML-encoded data. In particular, unlike other parts of the TACT system,
+the translation between the outside world and the TACT internal character
+set occurs well along in the text processing, rather than at its very beginning.
+This is because the <I>sgmls</I> component works entirely within the text's
+external character representation. It is only after <I>sgmls</I> has entirely
+separated some text from its SGML surroundings that <I>sgml2tdb</I> will
+translate it into the internal representation. Indeed, all the text work
+within the epm programs is within the external character set. 
+<H3><I>sgml2tdb.xdt</I> and ISO Latin 1</H3>
+So, what <I>is</I> this external character set that <I>sgml2tdb </I>uses?
+The simple answer is that to some extent <I>sgml2tdb </I>doesn't really
+care. It is the job of the <I>sgml2tdb.xdt </I>file to specify the translation
+between the external character set and the TACT internal character set.
+In the <I>sgml2tdb.xdt </I>file we have provided we have assumed that the
+text in the SGML file is in the ISO Latin 1 character set. By changing the
+xdt file that <I>sgml2tdb</I> uses you can make it work with other character
+representations. This can be done in two ways: 
+<UL>
+  <LI>You can edit sgml2tdb.xdt, or, 
+  <LI>rename some other existing xdt file to sgml2tdb.xdt
+</UL>so that this default file contains the translation information
+necessary for your text. 
+
+<P>You can use the &quot;x&quot; option when invoking <I>sgml2tdb </I>to specify
+the name of a different xdt file to use. If you do this, do not code the
+filename extension (which must be &quot;.xdt&quot; in any event).
+
+<H3>System Data in sgml2tdb</H3>
+<P><i>sgml2tdb</i> supports SYSTEM data input.  SYSTEM data in <i>sgml2tdb</i> is a representation of the TACT internal character set.  SYSTEM data can be used when:
+<UL>
+  <LI>There is a way to express a character in the TACT internal character set, but,
+  <LI>There is no way to specify the character in the current input character set; (usually) ISO Latin 1.
+</UL>
+
+<P>Like in all places where the TACT internal character set is specified, the characters must be named in a style similar to that used in TACT .xdt files -- the characters to appear are named one after the other and each name is separated by spaces.  As an example, here is the definition for the entity &amp;aacute; as provided in the standard distribution of <i>sgml2tdb</i>.
+<PRE>
+&lt;!ENTITY aacute SDATA "#1 Acute a"&gt;
+</PRE>
+<UL>
+<LI>The sequence "SDATA" in the ENTITY definition specifies that the following string is to be interpreted as SYSTEM data -- in the context of <i>sgml2tdb</i>, as a representation of the internal character set.
+<LI>The string following starts with the sequence "#1".  This is a "display length" definition and is not always present.  If present, it represents the amount of space the internal character set sequence will take on the screen -- measured in characters.  The initial "#" sign announces the presence of the "display length" sequence, and is followed by a number that specifies the length -- in this case the number one ("1").
+<LI>The rest of the string specifies the sequence of characters in the TACT internal character set.  In the internal character set accents are represented as characters in their own right, and precede the letter to which they apply.  Thus, the sequence consists of, first, the character "Acute" followed by the character "a".
+</UL>
+
+<P>The standard definition of the ISOlatin 1 and ISOlatin 2 character sets, where they can be accomodated within the TACT internal character set, are all represented as SYSTEM data in the distributed ISOLAT1.VPE and ISOLAT2.VPE files.
+
+<HR>
+<P><CENTER>[<A HREF="main.htm">sgml2tdb home</A> | <A HREF="teilite.htm">TEIlite
+and sgml2tdb</A>]</CENTER>
+</BODY>
+</HTML>

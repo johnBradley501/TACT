@@ -1,0 +1,324 @@
+DEFINITION MODULE HyperDataModel ;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+(*--------------------------------------------------------------------------*)
+(* By:    Lidio Presutti                                                    *)
+(* Date:  Feb. 15, 1988                                                     *)
+(* Purpose: Global definitions of the "hyper-record" data format with       *)
+(*   associated constants/variables.                                        *)
+(*                                                                          *)
+(* History:                                                                 *)
+(*   15 Feb 88 - changed various array references to be "zero" based. *LP*  *)
+(*                                                                          *)
+(*   16 Aug 88 - major changes to format of occurrence and token data *JB*  *)
+(*               change in database version labelling conventions           *)
+(*                                                                          *)
+(*    3 Jun 91 - Added Compression  and modified HTypeData, HTypeList, *LP* *)
+(*               removed BeginOccur, HOccurList; TDBStringFormat            *)
+(*               New Procs: TDBTypeCompare & TDBStrCompare                  *)
+(*--------------------------------------------------------------------------*)
+
+FROM GlobalDefs IMPORT StrAny, FileNameType ;
+IMPORT BitOps ;
+
+(*
+EXPORT QUALIFIED
+  (* Const *) HyperLength, PastHeader, HNoOccurs, HNoTokens, HNoDataPtrs,
+              HNoPDBWords, BaseHTypeLen, MaxDBTitleLength,
+              ThisTDBVersion, ThisPDBVersion, ThisCORVersion, HyperLengthM1,
+              OccurRecSize, MaxSpaceForOccursInRec,
+  (* Types *) HyperData, HTypePntr, HyperRType, HTypeData, HOccurData,
+              HTokenData, HLogDataType, HCompTokenData, TypeMaxDataPos,
+              TDBStringFormat, TDBStrPntr, TDBTypeData, TDBTypePntr,
+	      HCorHeader, CorRefNameTypes, CorRefNameTypeSet, HCorRefNameData,
+	      HCorRecIDList, HCorFileListRecord, TDBHeaderType, HRecPntr,
+	      CORStrPntr, CORStringFormat, HCorRefNamePntr, DBaseTitleType,
+	      TDBRefStringData, RefStringData, RefStrRecList, RefStrRecListPntr,
+	      TDBRefStrRecList, TDBRefStrRecListPntr,
+  (* Procs *) TDBTypeCompare, TDBStrCompare ;
+*)
+
+  CONST
+     ThisTDBVersion = 5;  (* New official numbers 1 Dec 91  **LP** *)
+     ThisPDBVersion = 6;  (* includes alloc for annotations **JB** *)
+     ThisCORVersion = 5;
+     HyperLength    = 1024 ;
+     HyperLengthM1  = HyperLength - 1 ;
+(*   --- use type defs to set constants; see below!!
+     PastHeader     = 88 ;  (* TSIZE(HyperData,HHeader)  *)
+     HNoOccurs      = 341 ; (* HyperLength / TSIZE(HOccurData) *)
+     OccurRecSize   = 3 ;   (* CARDINAL + CHAR = 2 + 1 *)
+     MaxSpaceForOccursInRec = (HyperLength DIV OccurRecSize) * OccurRecSize ; (* = 1023 *)
+*)
+     HNoDataPtrs    = 510 ; (* HyperLength / TSIZE(INTEGER) - TSIZE(CARDINAL) *)
+     HNoPDBWords    = 511 ;
+     HNoTokens      = 169 ; (* HyperLength / TSIZE(HTokenData) *)
+     BaseHTypeLen   = 3 ;   (*  2 + 1 [0C for  Word] *)
+     MaxDBTitleLength = 42;(* Maximum number of characters in DB Title *)
+     MaxNoLogData   = 376C ; (* (HyperLength - TSIZE(LONGCARD)) / TSIZE(HLogDataType) *)
+     TypeMaxDataPos = HyperLength - 2 * SIZE(CARDINAL) ; (* leave room for Prev + NextHRec pointers *)
+
+  TYPE
+    DBaseTitleType = ARRAY[0..MaxDBTitleLength-1] OF CHAR;
+    IDType     = ARRAY[0..3] OF CHAR;
+    HyperRType = ( HHeader, CorHeader, Htext, HLogList, HTypeList, HTokenList,
+    		   HDataPntr, PDBData ) ;
+
+    TDBStrPntr = POINTER TO TDBStringFormat ;
+    TDBStringFormat = RECORD
+		TotalWords : LONGCARD ;
+		TDBStr	   : BitOps.PackedStrType ;
+		(* where TDBStr is formed as follows:
+		   +-------------------------+---------------------------+
+		   |   BitPackedSortStr      |       IntStr              | not 0C terminated!
+		   +-------------------------+---------------------------+
+		   0                          TDBStr.PackedLen
+
+		   Notice difference from BitOps.PackedStrType type [we concatenate
+		   the internal string to it!
+		*)	
+	END ;
+
+   (* Note:
+	PackedStrType = RECORD
+		(* A length byte is required since the packed string may have
+		   a 0C in the middle of a result string *)
+		PackedLen	: SHORTCARD ;
+		PackedStr	: StrAny ;
+	END ;
+    *)
+	
+    TDBTypeData = RECORD
+                    NoOccur	: CARDINAL ;
+                    PackedWord	: BitOps.PackedStrType ;
+                 END ;
+    TDBTypePntr = POINTER TO TDBTypeData ;
+	
+    HTypeData = RECORD
+                    NoOccur	: CARDINAL ;
+                    Word	: StrAny ;  (* 0C terminated *)
+                 END ;
+    HTypePntr = POINTER TO HTypeData ;
+
+    HOccurData = RECORD			  (* Now, data follows HTypeData in HRecord *)
+                    TRecNo  : CARDINAL ;  (* Token pointer *)
+                    TRecPos : CHAR ; 	  (* used as 1-byte number *)
+                 END ;
+
+    HTokenData = RECORD
+                    HRecNo  : CARDINAL ;  (* Head word = Type pointer *)
+                    HRecPos : CHAR ;
+                    TRecNo  : CARDINAL ;  (* Text pointer *)
+                    TRecPos : CARDINAL ;
+                    LRecNo  : CARDINAL ;  (* Log Pointer *)
+                    LRecPos : CHAR ;
+                 END ;
+
+    HCompTokenData = RECORD
+                    HRecNo  : CARDINAL ;
+                    HRecPos : CHAR ;
+                    TOffset : CARDINAL ;
+                    LOffset : CHAR ; (* used as 1 byte number *)
+                 END ;
+
+    HLogDataType = RECORD
+                     StructID : SHORTINT ;
+                     TokenNoOffset : SHORTCARD ; (* successive relative offset *)
+                     CASE : CARDINAL OF
+                       1 : SRecPos : CHAR ;  (* Pos * 4 to real start of data *)
+                           SRecNo  : CHAR |  (* base index to Strings data    *)
+                       2 : Count   : CARDINAL ; (* note use of CARDINAL overlay *)
+                     END ;
+                   END ;
+
+    TDBRefStringData = RECORD
+	ID     : INTEGER;
+	SRec   : SHORTCARD;		(* Start position offset *)
+	SPos   : SHORTCARD;
+	ERec   : SHORTCARD;		(* End position *)
+	EPos   : SHORTCARD;
+    END;
+
+    RefStringData = RECORD
+	ID	: INTEGER;
+	SRec	: CARDINAL;		(* Actual DB Start position *)
+	SPos	: SHORTCARD;
+	ERec	: SHORTCARD;		(* End position *)
+	EPos	: SHORTCARD;
+    END;
+
+    (* allow a max of 170 = 1024 DIV SIZE(TDBRefStringData) = 1024 DIV 6 strings *)
+    TDBRefStrRecList     = ARRAY[1..170] OF TDBRefStringData;
+    TDBRefStrRecListPntr = POINTER TO TDBRefStrRecList;
+    RefStrRecList        = ARRAY[1..170] OF RefStringData;
+    RefStrRecListPntr    = POINTER TO RefStrRecList;
+
+    HCorHeader = RECORD
+                   CORID      : IDType;
+                   Title      : DBaseTitleType ;
+                   CORVersion : CARDINAL ;
+                   Year       : CARDINAL ;
+                   Month      : CARDINAL ;
+                   Day        : CARDINAL ;
+                   BeginType  : CARDINAL ;
+                   EndTypeRec : CARDINAL ;
+                   EndTypeIdx : CARDINAL ;
+                   NoTypes    : LONGCARD ;
+                   BeginStr   : CARDINAL ;
+                   EndStr     : CARDINAL ;
+                   BeginFile  : CARDINAL ;
+                   EndFileRec : CARDINAL ;
+                   EndFileIdx : CARDINAL ;
+                   NumbFiles  : CARDINAL ;
+                   BeginRefNm : CARDINAL ;
+                   EndRefNmRec: CARDINAL ;
+                   EndRefNmIdx: CARDINAL ;
+                   BeginRefID : CARDINAL ;
+                   NumbRefID  : CARDINAL ;
+                   TDBDir     : FileNameType ;
+                 END;
+
+    CorRefNameTypes = (CorPref, CorFileName, CorFileTitle);
+    CorRefNameTypeSet = SET OF CorRefNameTypes;
+    HCorRefNameData = RECORD
+       RecIDOutPos:    SHORTCARD;
+       Type:           CorRefNameTypeSet;
+       Name:           ARRAY [0..100] OF CHAR;
+    END;
+    HCorRefNamePntr = POINTER TO HCorRefNameData;
+
+    HCorRecIDList = POINTER TO ARRAY[0..255] OF SHORTINT;
+
+    HCorFileListRecord = RECORD
+        Year       : CARDINAL ;
+        Month      : CARDINAL ;
+        Day        : CARDINAL ;
+        FileNo     : SHORTCARD;
+        Names      : ARRAY[0..255] OF CHAR;
+    END;
+
+    CORStrPntr = POINTER TO CORStringFormat ;
+    CORStringFormat = RECORD
+		IntStrLen : SHORTCARD ;	(* = length of IntStr + 1 *)
+		CORStr	  : BitOps.PackedStrType ;
+		(* where CORStr is formed as follows:
+		   +-------------------------+---------------------------+
+		   |   BitPackedSortStr      |       IntStr              | not 0C terminated!
+		   +-------------------------+---------------------------+
+		   0                          CORStr.PackedLen
+
+		   Note: that IntStrLen + PackedLen = ADR of next data info
+		*)	
+	END ;
+(*
+Corpus file layout for Types and Reference Strings:
+
+Types:	
+	PackedWord	[as stored in TDB]
+	Present		[Bit vector for file presence]
+	NoOccurs	[CARDINAL for each present file]
+	TypePos		[HRecPntr for each present file]
+	
+Reference Strings:
+	CORStringFormat	[see above]
+	Present		[Bit vector for file presence]
+	TotalWords	[LONGCARD for each present file]
+	TypePos		[HRecPntr for each present file]
+*)
+
+    TDBHeaderType = RECORD
+                     TDBID      : IDType;
+                     Title      : DBaseTitleType ;
+                     TDBVersion : CARDINAL ;
+                     Year       : CARDINAL ;
+                     Month      : CARDINAL ;
+                     Day        : CARDINAL ;
+                     BeginType  : CARDINAL ;
+                     EndTypeRec : CARDINAL ;
+                     EndTypeIdx : CARDINAL ;
+                     NoTypes    : CARDINAL ;
+                     BeginStr   : CARDINAL ;
+                     EndStr     : CARDINAL ;
+                     BeginStrRec: CARDINAL ;
+                     NoStrRecs  : CARDINAL ;
+                     BeginLog   : CARDINAL ;
+                     EndLog     : CARDINAL ;
+                     BeginToken : CARDINAL ;
+                     BeginText  : CARDINAL ;
+                     EndTextRec : CARDINAL ;
+                     EndTextIdx : CARDINAL ;
+                     EndTokenRec : CARDINAL ;
+                     EndTokenIdx : CARDINAL ;
+		  END;
+
+   HRecPntr = RECORD
+      Rec: CARDINAL;
+      Idx: CARDINAL;
+   END;
+
+    HyperData = RECORD
+                   CASE : HyperRType OF
+                      HHeader :
+                         TDBHeader: TDBHeaderType |
+                      CorHeader:
+                         CHeaderData: HCorHeader |
+                      Htext :
+                         TextData : ARRAY[0..HyperLengthM1] OF CHAR  |
+                      HLogList :
+			 BaseTokenNo : LONGCARD ;
+                         LogData : ARRAY[0C..MaxNoLogData] OF HLogDataType  |
+                      HTypeList :
+			 (* Overlay TypeData with DataPntr for easy of common code access *)
+			 (* value range 0..170 = (1024-1) DIV (pntr+NoOccurs+Word+0C) = 1023 DIV (2+2+1+1) *)
+			 typeFiller	: ARRAY[0..509] OF CARDINAL; (* value range 0..1023 *)
+			 PrevHRec	: CARDINAL ; (* where prev Type data resides *)
+			 NextHRec	: CARDINAL ; (* where next Type data resides *) |
+                      HDataPntr :
+                         NoDataPtrsUsed : CARDINAL ;
+                         DataPntr : ARRAY[0..HNoDataPtrs] OF CARDINAL   |
+                      HTokenList :
+                         BaseTextRec:  CARDINAL;
+                         BaseTextPos:  CARDINAL;
+                         BaseLogRec:   CARDINAL;
+                         BaseLogPos:   CARDINAL;
+                         TokenData : ARRAY[0..HNoTokens-1] OF HCompTokenData  |
+                      PDBData :
+                         FirstFree   : CARDINAL ;
+                         PDBCardinal : ARRAY[1..HNoPDBWords] OF CARDINAL
+                   END  (* CASE HyperRType OF *)
+                END ;
+
+CONST
+     PastHeader  = SIZE(TDBHeaderType) ;	(* 88 *)
+     OccurRecSize= SIZE( HOccurData ) ;   (* CARDINAL + CHAR = 2 + 1 *)
+     HNoOccurs   = (TypeMaxDataPos - SIZE(CARDINAL)) DIV OccurRecSize;	(* 339 (was 341) *)
+     MaxSpaceForOccursInRec = HNoOccurs * OccurRecSize ; (* = 1017 (was 1023) *)
+
+VAR
+    TDBIDModel:    IDType;
+    PDBIDModel:    IDType;
+    CORIDModel:    IDType;
+
+PROCEDURE TDBStrCompare( TDBStrPtr1, TDBStrPtr2 : TDBStrPntr ) : INTEGER;
+(* Returns:	 0  if two TDB (sort) strings are equal
+		-1  if Str1 is less than Str2
+		 1  if Str1 is greater than Str2		*)
+
+PROCEDURE TDBTypeCompare( TDBTypePtr1, TDBTypePtr2 : TDBTypePntr ) : INTEGER;
+(* Returns:	 0  if two TDB Type strings are equal
+		-1  if Type1 is less than Type2
+		 1  if Type1 is greater than Type2		*)
+
+END HyperDataModel .

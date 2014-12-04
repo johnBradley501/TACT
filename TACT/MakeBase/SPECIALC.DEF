@@ -1,0 +1,80 @@
+DEFINITION MODULE SpecialCharacters ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM SYSTEM IMPORT ADDRESS;
+FROM TWB  IMPORT  WinType;
+FROM Lists      IMPORT ListPointer ;
+
+(*
+EXPORT QUALIFIED
+  (* type   *) SpecialCharType, SpecialCharDataType, SpecialCharDataPntr,
+  (* vars   *) SCList,
+  (* proc   *) MakeSCMenus, DestroySCMenus,
+               ShowSCMenu, GetSCMenu, ShowSCTitleMenu, NewSCData,
+               DeleteSCData, InitSCList, DeleteSCList, IsSCDataEmpty;
+*)
+
+TYPE
+   SpecialCharType = ( NoSCType, EmptySCType, IgnoreSCType, ReferenceSCType,
+                       WordSepSCType );
+   SpecialCharDataType = RECORD
+                   TypeOfSpecialChar:    SpecialCharType;
+                   CASE : BOOLEAN OF
+                      TRUE :
+                         WordSepSeq   : ARRAY[0..7] OF CHAR |
+                      FALSE :
+                         OpenBracket  : ARRAY[0..7] OF CHAR;
+                         CloseBracket : ARRAY[0..7] OF CHAR;
+                         SuppressText : BOOLEAN;
+                         WordSep      : BOOLEAN;
+                   END ;
+                END ;
+   SpecialCharDataPntr = POINTER TO SpecialCharDataType;
+
+VAR
+      SCList           : ListPointer ;
+
+PROCEDURE MakeSCMenus;
+
+PROCEDURE DestroySCMenus;
+
+PROCEDURE ShowSCMenu(WindowRec:   WinType;
+                     OffX,OffY:   CARDINAL;
+                     Dta:         ADDRESS);
+
+PROCEDURE GetSCMenu(WindowRec:  WinType;
+                    OffX,OfY:      CARDINAL;
+                    Term:          ARRAY OF CHAR;
+                    FunctTerm:     ARRAY OF CHAR;
+                VAR Dta:           ADDRESS;
+                VAR ItemNumb:      CARDINAL;
+                VAR TC:            CHAR;
+                VAR FunctKey:      BOOLEAN );
+
+PROCEDURE ShowSCTitleMenu(WindowRec:  WinType;
+                          OffX,OffY:  CARDINAL);
+
+PROCEDURE NewSCData(VAR Dta:  ADDRESS);
+
+PROCEDURE DeleteSCData(VAR Dta: ADDRESS);
+
+PROCEDURE InitSCList() ;
+
+PROCEDURE DeleteSCList() ;
+
+PROCEDURE IsSCDataEmpty(Dta: ADDRESS) : BOOLEAN;
+
+END  SpecialCharacters .

@@ -1,0 +1,37 @@
+(* HANDLES.DEF *)
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+Description: Allows Modula-2 programmers to use more than the 20
+             files provided by DOS.  Requires DOS 3.0 or higher,
+             TopSpeed or others Modula-2. No procedures exported,
+             installs automatically.
+
+Author:      Marc Scheuner
+             Alisys
+             CH-3400 Burgdorf, Switzerland
+             modified by John Bradley to perform check of DOS
+             version.
+
+Date:        June 3, 1989
+*)
+
+DEFINITION MODULE Handles;
+
+CONST MaxNrOfFiles = 255;
+
+VAR NrOfFilesAvailable:   SHORTCARD;
+
+END Handles.

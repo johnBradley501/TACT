@@ -1,0 +1,145 @@
+DEFINITION MODULE DataLinkModule;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+  (* types *) DataLink, DataLinkType, DataLinkPROC, DisposeDataProc,
+  (* procs *) InitLink, InitAndDefineAsList, DisposeLink,
+              OpenForSending, OpenForReceiving, SendData, ReceiveData,
+              CloseForSending, CloseForReceiving, GetTACTList, PutTACTList,
+              BuildProcessData, DummyDisposeDataProc, LaunchProcesses,
+              DisposeProcessData, SetDataLinkEmpty;
+
+*)
+
+(* This module provides a set of procedures that implement a
+   datalink between searching processes.  The link can be either
+   (1) dynamic with data exchanged between processes by temporarily
+   storing results in memory (called a "DirectLink"), or (2) can
+   be a TACTlist (called a "ListLink").  In case (2) all the data
+   is put by the sending process in the list before the receiving
+   process receives any.  By virtue of going through a TACTList,
+   case (2) always puts results in the standard TACTList order.  In case
+   (1) the receiving process will receive data in the same order that it
+   was given to the link by the sending process.
+
+   The Procedures are used by (a) having the main process which sets
+   everything up calling "InitLink" or "InitAndDefineAsList", and
+   then (b) having the sending and receiving processes use the link that
+   has been provided.  The initiator, the sendor and receiving processes
+   all get a chance to say what type of link they want (or that they
+   "DontCare").  If any of the three processes says it wants a ListLink
+   then that is what it will be.  Otherwise, it will be a "DirectLink".
+
+   The sending process can work in either of two ways: (1) it can use
+   "OpenForSending" to setup the link for use, and then use "SendData"
+   to send DataItemPntrs to the receiver.  When finished it must call
+   "CloseForReceiving".  (2) alternatively, if it is most convenient to
+   create a list first and then send the whole thing then it should
+   create the entire list and call PutTACTList (without calling anything
+   else) once to send the entire list.  If PutTACTList is used the list
+   ownership is passed to the receiving process who must take responsibility
+   for disposing of it.
+
+   The receiving process can also work in two similar ways: (1) it can
+   use OpenForReceiving", use ReceiveData to get DataItemPntrs, and
+   when finished called "CloseForReceiving".  Althernatively, it can call
+   GetTACTList to get an entire list from the sender.  If GetTACTList
+   is used the receiver must take responsibility for disposing of the list.
+
+   The initializing process should use "InitLink" when it wants to
+   create a link that can be used to pass data between two processes.
+   If it has a list it wants to provide as a source for the link it
+   should use InitAndDefineAsList.  If InitAndDefintAsList is used
+   ownership of the list is passed to the link who takes responsibility
+   for disposing of it (either by disposing of it itself, or passing
+   the list onto the receiver, who must dispose of it).
+ j.b. *)
+
+FROM SYSTEM IMPORT ADDRESS;
+
+FROM TACTListModule IMPORT
+  (* types *) TACTList;
+
+FROM VirtMem IMPORT VirtAddr; (* for DataItem *)
+
+TYPE
+   DataLink;
+(* kludge change to allow new JPI compiler to work!!   j.b.
+   DataLink = POINTER TO DataLinkRecord; *)
+   DataLinkType = (DontCare, DirectLink, ListLink);
+   DataLinkArrayPntr = POINTER TO ARRAY[0..400] OF DataLink;
+   DataLinkPROC = PROCEDURE(DataLinkArrayPntr, CARDINAL, DataLink, ADDRESS);
+   DisposeDataProcType = PROCEDURE(VAR ADDRESS);
+
+PROCEDURE InitLink(VAR Link:  DataLink;
+                       Type:  DataLinkType);
+
+PROCEDURE SetDataLinkEmpty( VAR Link:  DataLink ) ;	(* *LP* *)
+
+PROCEDURE InitAndDefineAsList(VAR Link:                DataLink;
+                                  List:                TACTList;
+                                  DisposeListWhenDone: BOOLEAN);
+
+PROCEDURE DisposeLink(VAR Link: DataLink);
+
+PROCEDURE OpenForSending(VAR Link: DataLink;
+                             Type: DataLinkType);
+
+PROCEDURE OpenForReceiving(VAR Link: DataLink;
+                               Type: DataLinkType);
+
+(* When SendData returns FALSE receiver has shut down -- don't
+   bother sending any more   j.b. *)
+
+PROCEDURE SendData(VAR Link: DataLink;
+                       Data: VirtAddr (* to DataItem *) ): BOOLEAN;
+
+PROCEDURE CloseForSending(VAR Link: DataLink);
+
+PROCEDURE ReceiveData(VAR Link: DataLink;
+                      VAR Data: VirtAddr (* to DataItem *) ): BOOLEAN;
+
+PROCEDURE CloseForReceiving(VAR Link: DataLink);
+
+(* The following two procedures are called when the sending or
+   receiving process want to handle a TACTList.  Note that
+   The single call >replaces< OpenForSending, SendData, and
+   CloseForSending, or OpenForReceiving, ReceiveData, and
+   Close for Receiving   j.b. *)
+
+PROCEDURE GetTACTList(VAR Link: DataLink;
+                          Pool: CARDINAL; (* suggested Pool # for List  j.b. *)
+                      VAR List: TACTList);
+
+PROCEDURE PutTACTList(VAR Link:  DataLink; (* this disposes of it *)
+                          OList: TACTList);
+
+ (* ============================================================= *)
+
+PROCEDURE BuildProcessData(DataIn:          ARRAY OF DataLink;
+                           NumbDataIns:     CARDINAL;
+                           DataOut:         DataLink;
+                           Pgm:             DataLinkPROC;
+                           DisposeDataProc: DisposeDataProcType;
+                           PgmData:         ADDRESS);
+
+PROCEDURE DummyDisposeDataProc(VAR address: ADDRESS);
+
+PROCEDURE LaunchProcesses;
+
+PROCEDURE DisposeProcessData;
+
+PROCEDURE InitDataLinks;
+END DataLinkModule.

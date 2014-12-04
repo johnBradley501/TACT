@@ -1,0 +1,69 @@
+DEFINITION MODULE ResArray;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM ResBase IMPORT FilePos;
+
+(*
+EXPORT QUALIFIED
+   (*type*) ResDataType,ResourceArray,ResourceArrayPntr,
+            ResArrayError,ScanActionProcedure,
+   (*var*)  ResourcePntrs,ResourceName,
+   (*proc*) FindFirst,FindResource,ScanResources;
+*)
+
+TYPE
+(* WARNING: Leave MessageResource as first, NumberArrayResource as last
+                --- j.bradley *)
+   ResDataType = (MessageResource, DataArrayResource,
+                  MenuResource, HelpResource, ChoiceResource,
+                  NumberArrayResource);
+   ResourceArray = RECORD
+      NextArray:       FilePos;
+      ArraySize:       CARDINAL;
+      Locations:       ARRAY[0..3000] OF FilePos;
+   END;
+   ResourceArrayPntr = POINTER TO ResourceArray;
+   ResArrayError = (RAOK, RANotOpen, RATooHigh, RANotUsed,
+                    RAActionError);
+   ScanActionProcedure = PROCEDURE(ResDataType,     (* Type Of Resource *)
+                                   CARDINAL,        (* Item Number *)
+                                   FilePos,         (* Resource Position *)
+                               VAR ResArrayError    (* Error Return*)  );
+
+VAR
+   ResourcePntrs:     ARRAY [MessageResource..NumberArrayResource]
+                      OF FilePos;
+   ResourceName:      ARRAY [MessageResource..NumberArrayResource]
+                      OF ARRAY[0..2] OF CHAR;
+
+PROCEDURE FindFirst(ResType:      ResDataType;
+                    ItemNo:       CARDINAL;
+                VAR Error:        ResArrayError;
+                VAR LocPntr:      ResourceArrayPntr;
+                VAR pos:          CARDINAL;
+                VAR fpos:         FilePos;
+                VAR size:         CARDINAL): BOOLEAN;
+
+PROCEDURE FindResource(ResType:    ResDataType;
+                       ItemNo:     CARDINAL;
+                   VAR Location:   FilePos;
+                   VAR Error:      ResArrayError): BOOLEAN;
+
+PROCEDURE ScanResources(ResType:     ResDataType;
+                        First, Last: CARDINAL;
+                        Action:      ScanActionProcedure;
+                    VAR Error:       ResArrayError): BOOLEAN;
+
+END ResArray.

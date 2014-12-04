@@ -1,0 +1,90 @@
+DEFINITION MODULE  SatHash ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+(*
+Title:    Virtual Hashing - to improve Word find with Balanced Tree
+LastEdit: June 1, 1988
+Author:   Lidio Presutti
+System:   LOGITECH MODULA-2/86
+*)
+
+FROM VirtualMemory IMPORT
+  (* Type *) VirtualAddrType ;
+
+FROM SYSTEM IMPORT TSIZE ;
+(*
+EXPORT QUALIFIED
+  (* Procs *) InsertHash, SearchHashTable, FreeHashMemory ;
+*)
+
+
+CONST
+        SegmentSize = 1024 ;     (* VirtualPageSize div TSIZE(VirtualAddrType) *)
+        DirectorySize = 64 ;
+
+   TYPE (* LineType = ARRAY [0..150] OF CHAR ; *)
+        DictPtr = POINTER TO DictList ;
+        DictList = RECORD
+           KEY : ARRAY [0..80] OF CHAR ;
+           POS  : ARRAY [0..80] OF CHAR ;
+           TAG : ARRAY [0..80] OF CHAR ;
+           NoOccurs : CARDINAL ;
+           Next    : VirtualAddrType ;
+        END ;
+(*        WordPosPtr = POINTER TO WordPosEntry ;
+        WordPosEntry = RECORD
+           WordPosition : CARDINAL ;
+           Next : VirtualAddrType ;
+        END ;
+*)
+        Segment = ARRAY[0..SegmentSize-1] OF VirtualAddrType (* DictDataPtr *) ;
+        SegmentPtr = POINTER TO Segment ;
+        HashTable = RECORD
+		p 		: CARDINAL ;	(* next bucket to split *)
+		MaxP 		: CARDINAL ;	(* Upper bound on p during this expansion *)
+		KeyCount 	: CARDINAL ;	(* number of records in table *)
+		CurrentSize 	: CARDINAL ;	(* current number of buckets  *)
+		MaxLoadFactor 	: CARDINAL ;	(* upper bound on load factor *)
+		Directory	: ARRAY[0..DirectorySize-1] OF VirtualAddrType ;
+	    END ;
+
+VAR
+  T : HashTable ;
+
+CONST
+        DictListSize = TSIZE( DictList ) ;
+(*        WordPosSize  = TSIZE( WordPosEntry ) ; *)
+
+VAR
+  VDataUnusedSpace  : VirtualAddrType ;
+
+(* Usage: first check if Key is Hash table with SearchHashTable, if absent
+	  use the HashId calculated from Key to insert into Hash table	*)
+
+PROCEDURE InsertHash( Key: ARRAY OF CHAR ;
+                      POS: ARRAY OF CHAR ;
+                      TAG: ARRAY OF CHAR ) ;
+
+PROCEDURE SearchHash( Key: ARRAY OF CHAR ;  POS: ARRAY OF CHAR ;
+                      VAR NewPOS: ARRAY OF CHAR ):  BOOLEAN ;
+
+PROCEDURE FreeHashMemory ;
+
+PROCEDURE InitVirtHash;
+
+PROCEDURE DumpHash ;
+
+END SatHash .

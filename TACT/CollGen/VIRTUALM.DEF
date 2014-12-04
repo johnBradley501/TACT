@@ -1,0 +1,102 @@
+DEFINITION MODULE VirtualMemory ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM SYSTEM IMPORT ADDRESS, BYTE ;
+
+(*
+EXPORT QUALIFIED
+  (* Procs *) InitVirtualMemory, AllocateSpace, MakeReal, ReleasePage, MarkDirty,
+              MarkInUse, EndVirtualMemory, IsEqual, InitSpaceType, HasRealMem,
+              GetNoOfPageFualts, GetNoOfPageReferences, GetAmtOfPageFrag,
+              GetNoOfSwapPages, GetHexPageTableEntry, GetDumpVirtPage,
+  (* Const *) VirtualPageSize, VirtNil,
+  (* Type  *) VirtualAddrType, VirtPageStorePtr, VirtPageStorage ;
+*)
+
+CONST
+   VirtualPageSize = 4096 ; (* 4 K -- see details in VIRTUALM.MOD *)
+TYPE
+   VirtualAddrType = RECORD
+                       CASE : BOOLEAN OF
+                          TRUE :
+                             SEGMENTINDEX   : CHAR ;
+                             PAGETABLEINDEX : CHAR ;
+                             OFFSET         : CARDINAL ; |
+                          FALSE :
+                             VAddr : ADDRESS ;  (* for quicker IsEqual comparison *)
+                       END ;
+                    END ;
+
+   VirtPageStorage = ARRAY[0..VirtualPageSize-1] OF BYTE ;
+   VirtPageStorePtr = POINTER TO VirtPageStorage ;
+
+CONST
+   VirtNil = VirtualAddrType( TRUE, 377C, 377C, 0FFFFH ) ;
+
+(*
+   WITH VirtNil DO
+      SEGMENTINDEX   := 377C ;    (* = FF hex   *)
+      PAGETABLEINDEX := 377C ;
+      OFFSET	     := 0FFFFH ;  (* = FFFF hex *)
+   END ;
+*)
+
+PROCEDURE InitVirtualMemory ;
+
+PROCEDURE AllocateSpace( VAR VariablePtr : VirtualAddrType ;
+                         VAR RealAddress : ADDRESS ;
+                         VAR SpaceType   : VirtualAddrType ;
+                             Size        : CARDINAL ) ;
+   (* Note: SpaceType is a variable declared in the calling module and
+            initialised to greater that VirtualPageSize.  It records the amount
+            of free space still available for a particular data type.  *)
+
+(* PROCEDURE MarkInUse(    VirtualAddr : VirtualAddrType ) ; *)
+
+PROCEDURE MakeReal(     VirtualAddr : VirtualAddrType;
+                    VAR RealAddress : ADDRESS ) ;
+
+(* PROCEDURE ReleasePage(     VirtualAddr : VirtualAddrType;
+                       VAR RealAddress : ADDRESS ) ;
+
+PROCEDURE MarkDirty( VirtualAddr : VirtualAddrType ) ;
+*)
+
+PROCEDURE IsEqual( FirstVirtAddr, SecondVirtAddr : VirtualAddrType ) : BOOLEAN ;
+
+(* PROCEDURE HasRealMem( VirtualAddr : VirtualAddrType ) : BOOLEAN ; *)
+
+PROCEDURE InitSpaceType( VAR SpaceType : VirtualAddrType ) ;
+
+PROCEDURE EndVirtualMemory ;
+
+(* The following are for thrashing count/performance check *)
+(* PROCEDURE GetNoOfPageFualts() : LONGINT  ;
+
+PROCEDURE GetNoOfSwapPages() : LONGINT  ;
+
+PROCEDURE GetNoOfPageReferences() : LONGINT  ;
+*)
+PROCEDURE GetAmtOfPageFrag() : LONGINT  ;
+
+(* PROCEDURE GetHexPageTableEntry(     VirtualAddr : VirtualAddrType;
+                                VAR HexRep : ARRAY OF CHAR ) ;
+
+(* make sure to do a ReleasePage after each call to GetDumpVirtPage *)
+PROCEDURE GetDumpVirtPage(     VirtualAddr   : VirtualAddrType;
+                           VAR VirtPageStore : VirtPageStorePtr ) ;
+*)
+END VirtualMemory .

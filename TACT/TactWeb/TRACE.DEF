@@ -1,0 +1,61 @@
+DEFINITION MODULE Trace;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM SYSTEM IMPORT ADDRESS;
+
+(*
+EXPORT QUALIFIED
+  (* Vars  *) DoTrace, TFileName,
+  (* Procs *) TWriteLn, TWriteChar, TWriteString, TWriteInt, TWriteCard,
+              TWriteAddr, TWriteStrHex, CloseTFile;
+*)
+
+VAR
+   DoTrace : BOOLEAN ;
+   TFileName: ARRAY[0..25] OF CHAR;
+
+PROCEDURE TWriteLn;
+(*
+    same as: Write( ASCII.EOL )
+*)
+
+PROCEDURE TWriteChar(x: CHAR; n : CARDINAL);
+
+PROCEDURE TWriteString( s :ARRAY OF CHAR );
+(*
+    write the string out
+*)
+
+PROCEDURE TWriteStrHex( s :ARRAY OF CHAR );
+(*
+    write the string out as a Hex String
+*)
+
+PROCEDURE TWriteInt( x :INTEGER; n :CARDINAL );
+(*
+    write the INTEGER right justified in a field of at least n characters.
+*)
+
+PROCEDURE TWriteCard( x, n :CARDINAL );
+(*
+    write the CARDINAL right justified in a field of at least n characters.
+*)
+PROCEDURE TWriteAddr( x :ADDRESS );
+(*
+    write the CARDINAL right justified in a field of at least n characters.
+*)
+PROCEDURE CloseTFile;
+
+END Trace.

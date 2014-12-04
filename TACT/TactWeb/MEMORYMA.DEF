@@ -1,0 +1,112 @@
+DEFINITION MODULE MemoryManagement;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* const *) ParagraphSize, EMSPageSize, MaxNoEMSPages, MinMemAvail,
+  (* types *) HyperPageManagementRecord, HyperPageManagementPntr,
+              KiloInfo, RealStorageRecord, RealStoragePntr, HRecordPntr,
+              HRecordArrayPntr, EMSInfoPagePntr, RecordLocationType,
+              LocationRecord,
+  (* vars  *) EMSAvailable, EMSInfo, NoEMSPagesAvailable,
+  (* procs *) SetupMemoryManagement, RealReference, LocateEMSPage,
+              SegmentToReal, GetRealHyperPage, GetNewEMSPage, EMSToReal,
+              RealToEMS, ReleaseRealPage, ReleaseEMSPage, SetShowBusyWindow,
+              ShowBusy, ALLOCATE, DEALLOCATE;
+
+*)
+FROM HyperDataModel IMPORT HyperData;
+FROM SYSTEM IMPORT ADDRESS;
+
+CONST
+   ParagraphSize = 16;
+   EMSPageSize = 16 * 1024;
+   MinMemAvail = 256;    (* amount of storage in paragraphs when
+                            autofreeing of Managed storage ring
+                            kicks in.  256 paragraphs = 4K *)
+
+TYPE
+   RealStoragePntr = POINTER TO RealStorageRecord;
+
+   HyperPageManagementRecord = RECORD
+      RemoveFromReal:    PROCEDURE(RealStoragePntr);
+      RemoveFromEMS:     PROCEDURE(CARDINAL); (* EMS Page Number *)
+      DataArea:          ADDRESS;
+   END;
+   HyperPageManagementPntr = POINTER TO HyperPageManagementRecord;
+
+   KiloInfo = RECORD
+      Next, Prev:     CARDINAL; (* really: segment address *)
+      ManagementData: CARDINAL; (* really: HyperPageManagementPntr *)
+      RecordID:       CARDINAL;
+      Changed:        BOOLEAN;
+      UseCount:       SHORTCARD;
+   END;
+
+CONST
+   MaxNoEMSPages = (2*EMSPageSize-6 (* 3 CARDINALS *) ) DIV SIZE(KiloInfo);
+   (* Max no = 2 * 16 / 10 = approximately  3.2 MB of EMS *)
+
+TYPE
+   RealStorageRecord = RECORD
+      Data:     KiloInfo;
+      filler:   ARRAY[1..ParagraphSize - SIZE(KiloInfo)] OF BYTE;
+      HRecord:  HyperData;
+   END;
+
+   HRecordPntr = POINTER TO HyperData;
+   HRecordArrayPntr = POINTER TO ARRAY[0..15] OF HyperData;
+
+   EMSInfoPagePntr = POINTER TO RECORD
+      NoEMSInUse:    CARDINAL;
+      NoEMSAvail:    CARDINAL;
+      EMSPageList:   CARDINAL;
+      EMSPageInfo:   ARRAY[0..MaxNoEMSPages - 1] OF KiloInfo;
+   END;
+
+   RecordLocationType = (UndefinedLocation, OnDisk, InReal, InEMS);
+   LocationRecord = RECORD
+      Location:     RecordLocationType;
+      Position:     CARDINAL;
+   END;
+
+VAR
+   EMSAvailable:        BOOLEAN;
+   EMSInfo:             EMSInfoPagePntr;
+   NoEMSPagesAvailable: CARDINAL;
+
+PROCEDURE SetupMemoryManagement;
+
+(* Note: use of VAR is to pass by Ref and not by value, Data not modified in next proc *)
+PROCEDURE GetManagementDataPtr( VAR Data : KiloInfo ) : HyperPageManagementPntr;
+PROCEDURE SetManagementDataPtr( VAR Data : KiloInfo; MDPtr : HyperPageManagementPntr) ;
+
+PROCEDURE SegmentToReal(Segment: CARDINAL): RealStoragePntr;
+PROCEDURE RealReference(Segment: CARDINAL): RealStoragePntr;
+PROCEDURE LocateEMSPage(EMSPageNo: CARDINAL): HRecordPntr;
+
+PROCEDURE GetRealHyperPage(VAR Ptr: RealStoragePntr): CARDINAL; (* segment address *)
+PROCEDURE GetNewEMSPage(): CARDINAL; (* EMS Page Number *)
+
+PROCEDURE EMSToReal(EMSPageNo: CARDINAL): CARDINAL; (*segment address *)
+PROCEDURE RealToEMS(SegAddr: CARDINAL): CARDINAL; (* EMS Page Number *)
+
+PROCEDURE ReleaseRealPage(No: CARDINAL);
+PROCEDURE ReleaseEMSPage(No: CARDINAL);
+PROCEDURE MarkRealAsNotInUse(Ptr: RealStoragePntr);
+
+PROCEDURE ALLOCATE(VAR a: ADDRESS; size: CARDINAL);
+PROCEDURE DEALLOCATE(VAR a: ADDRESS; size: CARDINAL);
+
+END MemoryManagement.

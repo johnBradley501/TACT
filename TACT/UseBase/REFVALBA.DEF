@@ -1,0 +1,82 @@
+DEFINITION MODULE RefValBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(*
+EXPORT QUALIFIED
+  (* Vars  *) LastRefPat, LastEncodedRefPat, LastRefPatLen,
+  (* procs *) GetLogDataForToken, GetLogDataIntStr, GetLogDataSortStr,
+		EncodeRefPat, CreateRef;
+*)
+
+FROM VirtMem IMPORT VirtAddr;
+FROM HyperDataModel IMPORT HLogDataType;
+
+VAR
+   LastRefPat		: ARRAY[0..80] OF CHAR ;
+   LastEncodedRefPat	: ARRAY[0..80] OF CHAR ;
+   LastRefPatLen	: CARDINAL ;
+   LastDisplayWordCountWord : BOOLEAN ;  (* m.s. - used to specify whether $word
+                                          displays the word or word number *)
+
+(* GetLogDataForToken takes a text position (represented as
+   a particular Token-type DataItem pointed to by Token, and a particular
+   Structure ID (for any ID "except" the word type (ID 0), and
+   returns the corresponding Log entry *)
+
+PROCEDURE GetLogDataForToken(Token:    VirtAddr; (* to DataItem *)
+                             StructID: INTEGER;
+                         VAR LogData:  HLogDataType);
+
+
+(* GetLogDataIntStr is used for Ref data which is of the
+   string type: It takes a particular log entry (which contains a
+   structural ID and a string pointer), and extracts the particular
+   string value -- in the internal character set *)
+
+PROCEDURE GetLogDataIntStr(   LogData:  HLogDataType;
+                          VAR Display:  ARRAY OF CHAR;
+                          VAR DispLen:  CARDINAL );
+
+
+(* GetLogDataSortStr is used for Ref data which is of the
+   string type: It takes a particular log entry (which contains a
+   structural ID and a string pointer), and extracts the particular
+   string value -- in the sortable encoding *)
+
+PROCEDURE GetLogDataSortStr(   LogData:  HLogDataType;
+                           VAR Display:  ARRAY OF CHAR;
+                           VAR DispLen:  CARDINAL );
+
+
+(* EncodeRefPat takes a Reference pattern and tranlates it into
+   an encoded format that can be used efficiently by CreateRef *)
+
+PROCEDURE EncodeRefPat(VAR DisplayVersion: ARRAY OF CHAR;
+                       VAR EncodedVersion: ARRAY OF CHAR;
+                       VAR EncodedLen:	   CARDINAL ) : BOOLEAN ;
+
+
+(* CreateRef takes an encoded reference pattern (created
+   by EncodeRefPattern) and a particular position (represented by a
+   Token-Type DataItem), and creates the reference text for it *)
+
+PROCEDURE CreateRef(EncodedPattern: ARRAY OF CHAR;
+		    EncodedLen:	    CARDINAL;
+                    Token:          VirtAddr; (* to DataItem *)
+                VAR RefText:        ARRAY OF CHAR;
+                VAR RefLen:	    CARDINAL;
+                    DisplayWord: BOOLEAN );
+
+END RefValBase.

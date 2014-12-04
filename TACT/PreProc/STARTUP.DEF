@@ -1,0 +1,64 @@
+DEFINITION MODULE StartUp ;
+
+(* copyright (c) 1991-96 Ian Lancashire, Mike Stairs, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+IMPORT TWB;
+FROM GlobalDefs IMPORT FileNameType ;
+FROM Translations IMPORT XFileType ;
+FROM Utils IMPORT BFile ;
+FROM HyperDataModel IMPORT MaxDBTitleLength;
+
+(* startup derived from COLLGEN & MakBas by m.s. *)
+
+CONST
+   ListExtension = '.LST' ;
+   StrippedExtension = '.PRE' ;
+   RefExtension = '.REF';
+   TagExtension = '.TAG' ;
+
+TYPE
+   PreprocOutputType = ( NoOutput, OutToDisk, OutToPrinter ) ;
+   FileDataType = RECORD
+     InputFileName		: FileNameType;
+     TempDiskArea	: FileNameType;
+     SetupFileName	: FileNameType;
+     StrippedFileName   : FileNameType ;
+     ListFileName       : FileNameType ;
+     TagFileName        : FileNameType ;
+     RefFileName	: FileNameType ;
+     TempTagFileName    : FileNameType ;
+     DataBaseTitle  : ARRAY[0..MaxDBTitleLength-1] OF CHAR;
+     StartingRef    : ARRAY[0..40] OF CHAR;
+   END;
+
+(*   SymbolType = ( Alpha, Ret, NonRet, ContSeq, WordSep, IgnBrk, RefBrk, LabelOpenBracket,
+                  LabelCloseBracket, Label ) ;
+*)
+   WordAny      = ARRAY [0..50] OF CHAR ;
+VAR
+(*   CharArray    : ARRAY [CHR(0)..CHR(255)] OF SymbolType ; *)
+   FileData	: FileDataType;
+   StrippedFileID : XFileType ;
+   TagFileID      : XFileType ;
+   RefFileID      : XFileType ;
+   ListFileID     : XFileType ;
+   WantFolding    : BOOLEAN ;
+   ListMode	  : ARRAY[0..12] OF CHAR ;
+   StrippedMode	  : ARRAY[0..12] OF CHAR ;
+   RefMode   : ARRAY[0..12] OF CHAR ;  (* m.s. *)
+   TagMode   : ARRAY[0..12] OF CHAR ;  (* m.s. *)
+
+
+PROCEDURE DoStartUp ;
+
+END StartUp .

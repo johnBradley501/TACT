@@ -1,0 +1,255 @@
+R 79,T 5
+
+Copyright 1990 John Bradley, University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+                            >>> MERGEBAS <<<
+
+                      >>> MERGEBAS setup messages <<<
+
+================================================
+message for when MERGEBAS user pushes F10.
+================================================
+(*RES OLD MSG 94
+MERGEBAS has stopped, due to your request.
+*)
+
+================================================
+The famous MERGEBAS startup panel.
+
+Fields are (notice that 12 and 13 are first!)
+12: TACT system version number (from MSG 203 in BASE.RSI)
+13: TACT system version date (from MSG 203 as well)
+
+0:  name of output database
+10: name of title for output database
+11: starting ref template for output database
+
+1: save titles as (TACT ID in output database for DB titles in inputted
+
+Input Database 1:
+2: name of database
+3: title of database
+
+Input Database 2:
+4: name of database
+5: title of database
+
+Input Database 3:
+6 name of database
+7: title of database
+
+Input Database 4:
+8 name of database
+9: title of database
+================================================
+(*RES OLD MNU 29
+
+                    MERGEBAS Version %12_ %13___________________
+
+   Output Database: %0_______________________________________________
+                Output Title: %10_______________________________________
+                Starting Ref: %11___________________________________
+_____________________________________________________________________________
+
+   Input DataBases:                     Save Titles as: %1______________
+      1)  %2______________________________________
+                    DB Title: %3________________________________________
+      2)  %4______________________________________
+                    DB Title: %5________________________________________
+      3)  %6______________________________________
+                    DB Title: %7________________________________________
+      4)  %8______________________________________
+                    DB Title: %9________________________________________
+
+_____________________________________________________________________________
+F1:    Help                              F9:   RUN, merging databases
+                                         F10:  QUIT without merging
+
+*)
+
+================================================
+Message for when given input file %0 is not a TDB
+================================================
+(*RES OLD MSG 269
+File %0 is not a textual database file.
+*)
+
+================================================
+Generic IO error message for reading file %0, DOS error text in %1, text comesfrom MSG resources 0-23 (in BASE.RSI)
+================================================
+(*RES OLD MSG 270
+IO Error reading file "%0": %1
+*)
+
+================================================
+message for case when input TDB database (name %0) was given, but its versionis not correct (not currently possible, but will occur in future if TDBdatabase format has been changed).
+================================================
+(*RES OLD MSG 271
+%0 is not a TACT Textual Database of the correct version.
+*)
+
+================================================
+improper name given for TDB.  Name given is %0
+================================================
+(*RES OLD MSG 272
+Textual DataBase Name %0 is improper
+*)
+
+================================================
+no TDB exists of name %0
+================================================
+(*RES OLD MSG 273
+Textual DataBase file named %0 does not exist.
+*)
+
+================================================
+user has asked for MERGEBAS run without specifying name of TDB to create.
+================================================
+(*RES OLD MSG 274
+An output file name must be given.
+*)
+
+================================================
+name %0 cannot be used as an output TDB; see next message as well
+================================================
+(*RES OLD MSG 275
+"%0" cannot be used as the name of an output TDB Database file.
+*)
+
+================================================
+name %0 cannot be used as an output TDB, file already exists
+================================================
+(*RES OLD MSG 276
+Output TDB DataBase Name "%0" is already in use, please choose another.
+*)
+
+================================================
+improper parameter given on DOS command line when MAKBAS was started.  Badparameter is %0
+================================================
+(*RES OLD MSG 285
+Parameter "%0" cannot be specified for MERGEBAS.
+*)
+
+================================================
+DOS parameter %0 requires a value as well which was not given.
+================================================
+(*RES OLD MSG 286
+Parameter "%0" requires a parameter for MERGEBAS.
+*)
+
+================================================
+more than 4 input files were given on DOS command line
+================================================
+(*RES OLD MSG 287
+Too many input files were given as parameters to MERGEBAS
+*)
+
+================================================
+user tried to specify $? in new output starting reference template.  Thisconstruction only works in TACT.
+================================================
+(*RES OLD MSG 291
+Sorry, "$?" cannot be used in MERGEBAS
+*)
+
+================================================
+user asked for MERGEBAS run, but has given no input TDB file names
+================================================
+(*RES OLD MSG 277
+A collection of input files must be given.
+*)
+
+================================================
+user asked for MERGEBAS run, but has given only 1 input TDB file names
+================================================
+(*RES OLD MSG 278
+More than 1 input file must be given.
+*)
+
+================================================
+user is trying to merge databases that were created with different alphabets. The alphabets for the 2nd, 3rd and 4th input database are compared to thefirst, and %0 is the name of the first database found with a differentalphabset.
+================================================
+(*RES OLD MSG 279
+Alphabet for file %0 does not match the one in the first file.
+*)
+
+================================================
+MERGEBAS is comparing TACT IDs it finds in the various input databases, andfound incompatibilites in usage of the names between the various inputs.
+================================================
+(*RES OLD MSG 280
+Reference Names in file %0 are incompatible with ones from earlier files.
+*)
+
+================================================
+The given reference name to use for DB titles (field "Save Titles as:" %1) onstartup screen cannot be used because it is incompatible with its use in theinput databases.
+================================================
+(*RES OLD MSG 281
+"%0" as a reference name is incompatible with its use in the
+textual databases.
+*)
+
+================================================
+Yet another generic DOS error message message for writing out new database to%0, DOS error text in %1, text comes from MSG resources 0-23 (in BASE.RSI)
+================================================
+(*RES OLD MSG 282
+IO Error creating new text database file "%0": %1
+*)
+
+                           >>> MERGEBAS run phase <<<
+
+================================================
+During run phase user can push ESC to interrupt.  It generates the followingprompt message to confirm quiting.  Key choices are (1) continue runningMERGEBAS and (2) quit immediately.
+================================================
+(*RES OLD CHE 17
+Ending Options: C)ontinue, Q)uit:
+= C Q
+*)
+
+================================================
+Yet >>another<< generic DOS error message message for writing out new database,DOS error text in %0, text comes from MSG resources 0-23 (in BASE.RSI)
+================================================
+(*RES OLD MSG 268
+IO Error while writing textual database: %0
+*)
+
+================================================
+DOS error while MERGEBAS creating temporary files it uses to store informationbetween run phases.  Working file number is in %0.  DOS error in %1 from MSGs0-23
+================================================
+(*RES OLD MSG 283
+IO Error while writing working file no %0: %1
+*)
+
+================================================
+run status display.  %0 is phase number
+================================================
+(*RES OLD MNU 30
+           Status of TDB Merging: Current Phase: %0___ of 7 phases
+                        To interrupt type any key
+
+*)
+
+================================================
+DOS reports error while writing temp file for occurrence info.  report text isMSG 0-23.
+================================================
+(*RES OLD MSG 284
+IO Error while writing working file for occurrence data: %0
+*)
+
+================================================
+The earliest release of TACT (1.0) had a bug that created TDB databases thatcannot be correctly merged using MERGEBAS.  This message reports this problem. The offending database filename is %0.
+================================================
+(*RES OLD MSG 284
+Input database number %0 cannot be used within MERGEBAS.
+It was created by a version of MAKBAS that is too old.
+Please recreate.
+*)

@@ -1,0 +1,184 @@
+<HTML>
+<HEAD>
+<TITLE>TEIlite and sgml2tdb</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H2>TEIlite and <I>sgml2tdb</I></H2>
+<HR>
+<P>
+Like many programs that process SGML texts, <I>sgml2tdb</I> requires
+a modest collection of different files. Contained with the distribution
+is an example of a complete set of files that are needed to create
+a TDB from a text marked up using the TEIlite conventions. We've also included the basic set of SGML files for processing full TEI documents.  Hopefully,
+with the example in hand, and the documentation I've provided
+here, you can make <I>sgml2tdb</I> process your own files.
+<P>
+When you installed <I>sgml2tdb</I> you went to a particular directory
+where other TACT programs currently existed and unpacked the distribution
+ZIP file. In addition to installing <I>sgml2tdb</I> itself various
+directories and other files were placed in this directory. In
+the following discussion we are assuming that the TACT programs
+reside in the directory &quot;C:\TACT&quot;, and that you have
+also placed <I>sgml2tdb</I> and its associated files and directories
+there as well.
+<P>
+The text we've provided is Benjamin Jowett's famous English translation
+of Plato's <I>Crito</I>. The text is in the public domain, but
+comes from the Universtity of Michigan's <I>Humanities Text Initiative,
+</I>which is accessible via the World Wide Web at <A HREF="http://www.hti.umich.edu/" >http://www.hti.umich.edu/  
+</A>. It is encoded in TEIlite. The version we have given you
+was downloaded from the WWW site and then slightly edited -- in
+particular, the collection of entities that were in the original
+document entity instance I downloaded that used URL's to point
+to images (None of which turn out to be a part of this particular
+document, as it turns out) have been removed. Other than that,
+the document is in the same form as it was when we received it.
+<P>
+The document instance is in directory <TT>c:\tact\sample</TT> and
+is called <TT>crito.sgm</TT>.
+
+<P>
+It turns out that TEI SGML documents require an SGML declaration
+which is slightly modified from the default SGML declaration that <i>sgml2tdb</i> uses.
+This modified version of the SGML
+declaration is provided in a file &quot;<TT>teisgml.dec </TT>&quot;
+which resides, with other SGML files, in directory &quot;<TT>C:\TACT\SGML
+</TT>&quot;. This information must be given to <I>sgml2tdb</I>
+before the TEI document is to be processed.  We'll see how that is done in a moment.
+
+<P>The document instance we will be processing contains, in its first line the
+text:
+<PRE WIDTH=132>
+&lt;!DOCTYPE TEI.2 PUBLIC &quot;-//TEI//DTD Tei Lite 1.0//EN&quot; &quot;teilite.dtd&quot;&gt;
+</PRE WIDTH=132>
+
+<P>
+The <TT>DOCTYPE</TT> declaration indicates that the document is
+of type &quot;<TT>TEI.2</TT>&quot;, and that a definition for
+this document type is found in a file with the public identifier
+of &quot;<TT>-//TEI//DTD Tei Lite 1.0//EN</TT>&quot; and a system
+identifier of &quot;<TT>teilite.dtd</TT>&quot;. <I>sgml2tdb</I> will
+require a file called &quot;<TT>teilite.dtd</TT>&quot; in order
+to be able to correctly parse the document. How does it find this
+file? Like <i>sgmls</i>, the <A HREF="running.htm#anchor22476622"><I>sgml2tdb</I> entity manager</a>
+uses the information it finds in environment variable <i>sgml_path</i> to help it locate the SGML files it needs.
+
+<P>
+The batch file &quot;<TT>C:\TACT\MAKECRIT.BAT</TT>&quot; contains
+the lines that set up the required environment variable for <I>sgml2tdb
+</I>'s entity manager, and then invoke <I>sgml2tdb</I>, including the reference to the special TEI SGML declaration:
+<PRE>
+set sgml_path=sgml\%%S;sgml\%%N.%%X
+sgml2tdb sgml\teisgml.dec sample\crito.sgm
+</PRE>
+
+<P>
+When <I>sgml2tdb</I> is invoked it will first read the SGML declaration
+in <TT>teisgml.dec</TT>, then it will begin processing the document instance
+it finds in <TT>crito.sgm</TT>. The DOCTYPE declaration shown
+above, coupled with the <TT>sgml_path</TT> environment variable,
+will result in <I>sgml2tdb</I> reading the required document type
+definition file from a file called &quot;<TT>c:\tact\sgml\teilite.dtd
+</TT>&quot;.
+<P>
+The dtd in turn includes references to several external entities
+which reside in files also included in the directory &quot;sgml&quot;.
+<P>
+When it is finished with the dtd, it next needs information that
+tells it how to process the elements it is going to find in the
+document instance, and how to identify the words it will find
+there. <I>sgml2tdb</I> looks in two places for the &quot;epm&quot;
+file that will specify how the elements are to processed. First
+it looks for an epm file in the same place that the document instance
+was found -- in this case &quot;<TT>c:\tact\sample\crito.epm</TT>&quot;.
+If that fails it would look for the epm file in the same place
+where it found the dtd file, &quot;<TT>c:\tact\sgml\teilite.epm
+</TT>&quot;. In the example setup, the first file, <TT>crito.epm
+</TT>, will be found.  As it turns out, it is almost always necessary to have a special epm file for each document instance.
+<P>
+The first few lines in this file are:
+<PRE>
+[ElemProcs]
+tactid page, speaker
+declare sphold
+begin open $teiheader
+   format display off, compress on, fill on
+   word collect off
+end
+</PRE>
+
+<P>
+The first line announces that the following material is a part
+of the &quot;element procedure&quot; component of this file. As
+is typical of probably any epm files, this component takes up by far the
+largest part of the file.
+<P>
+The next line, the first line of this component, declare two TACT
+ids that are to be created, one called &quot;page&quot; and the
+other called &quot;speaker&quot;. The line following that declares
+a global variable called sphold that will be used to hold values
+during the running of <I>sgml2tdb</I>.
+<P>
+The first &quot;begin&quot; block follows, in this case specifying
+a procedure to be executed when the teiheader element is opened.
+It contains 2 element procedure statements. The &quot;format&quot;
+statement sets the &quot;display&quot; of text off so that, unless
+specifically reset for certain elements contained in the teiheader,
+the text in the teiheader will not be included in the TDB database.
+Similarly, for those elements for which contradictory instructions
+(to include it in the database) are specified, the text is to
+be compressed and filled. Similarly, the collection of words is
+to be suppressed in any text that is to be written to the TDB
+in the teiheader. The file continues to specify processing for
+a number of other TEI elements.
+<P>
+The very end of the epm file contains specifications for two
+other components:
+<PRE>
+[Title]
+  Plato Dialogue: Crito (Jowett Translation)
+[reftemplate]
+ $page,$line
+</PRE>
+
+<P>
+A TDB Title is given in the Title component, and a default reference
+template is given in the Reftemplate component.
+<P>
+In addition to needing the element program information, <I>sgml2tdb
+</I> also needs information about how symbols are combined into
+words.  This information is given to it through an alp file. 
+As for the epm file, <I>sgml2tdb</I> looks for the alp file in
+two places.  First it looks for a file in the same directory and
+with the same name (but with a different extension) as the document
+file: &quot;<TT>c:\tact\sample\crito.alp</TT>&quot;.  In this
+case it will not find it.  Then it looks for the file in the same
+directory and with the same name (but different extension) as
+the dtd file: &quot;<TT>c:\tact\sgml\teilite.alp</TT>&quot;, which
+it will find.  Here is its contents:
+<PRE>
+[Alpha]
+  a b c d e f g h i j k l m n o p q r s t u v w x y z
+  0 1 2 3 4 5 6 7 8 9
+[DiacRet]
+  - \Acute\ \Grave\ \Circumflex\ \Cedilla\ \Umlaut\ \Tilde\ &quot;'&quot;
+[WordSepSeq]
+  --
+</PRE>
+
+<P>
+Because this file is associated with the dtd which might be shared
+by many documents, this file acts as a fall back specification
+for those situations where there is not alp file that is specific
+to the particular text.
+<p>To see <I>sgml2tdb</i> run and create the sample database simply
+invoke the <tt>makecrit.bat</tt> file by typing:
+<PRE>
+C:\TACT> <B>makecrit</b>
+</PRE>
+<HR>
+<P><CENTER>[<A HREF="main.htm">sgml2tdb home</A>]</CENTER>
+</BODY>
+</HTML>

@@ -1,0 +1,62 @@
+DEFINITION MODULE DBFile ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM SYSTEM IMPORT BYTE ;
+FROM GlobalDefs IMPORT StrAny ;
+FROM HyperDataModel IMPORT
+  (* Types *) HyperData, HTypeData ;
+
+(*
+EXPORT QUALIFIED
+  (* Vars  *) HRecord, HRecNo, HRecPos,
+  (* Procs *) StartDBFile, WriteDBRec, FinishDBFile, AddTextToDB,
+              InitAddPtrDataToDB, AddPtrDataToDB, FinishAddPtrDataToDB,
+              InitTypeDataToDB, AddTypeDataToDB, FinishTypeDataToDB,
+              AddOccurToDB, AddTokenToDB ;
+*)
+
+  VAR
+     HRecord : HyperData ;
+     HRecNo  : CARDINAL ;
+     HRecPos : CARDINAL ;
+
+PROCEDURE StartDBFile ;
+
+PROCEDURE AddTextToDB( VAR IntLine : ARRAY OF BYTE ;
+                           Len     : CARDINAL ) ;
+
+PROCEDURE InitAddPtrDataToDB ;
+
+PROCEDURE AddPtrDataToDB( Data : ARRAY OF BYTE ; Len  : CARDINAL ) ;
+
+PROCEDURE FinishAddPtrDataToDB ;
+
+PROCEDURE AddTokenToDB( HRecNo : CARDINAL ; HRecPos : CHAR ;
+                        TRecNo : CARDINAL ; TRecPos : CARDINAL ;
+                        LRecNo : CARDINAL ; LRecPos : CHAR ) ;
+
+PROCEDURE AddOccurToDB( CRecNo, CRecPos : CARDINAL ) ;
+
+PROCEDURE InitTypeDataToDB ;
+
+PROCEDURE AddTypeDataToDB( Data : HTypeData ) ;
+
+PROCEDURE FinishTypeDataToDB ;
+
+PROCEDURE WriteDBRec ;
+
+PROCEDURE FinishDBFile ;
+
+END DBFile .

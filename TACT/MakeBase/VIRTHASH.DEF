@@ -1,0 +1,45 @@
+DEFINITION MODULE  VirtHash ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+(*
+Title:    Virtual Hashing - to improve Word find with Balanced Tree 
+LastEdit: June 1, 1988
+Author:   Lidio Presutti  
+System:   LOGITECH MODULA-2/86 
+*)
+
+FROM VirtualMemory IMPORT
+  (* Type *) VirtualAddrType ;
+  
+(*
+EXPORT QUALIFIED 
+  (* Procs *) InsertHash, SearchHashTable, FreeHashMemory ;
+*)
+
+(* Usage: first check if Key is Hash table with SearchHashTable, if absent
+	  use the HashId calculated from Key to insert into Hash table	*) 
+
+PROCEDURE InsertHash( HashId : LONGINT ;
+		      VBTnode : VirtualAddrType ) ;
+
+PROCEDURE SearchHashTable(     Key 	   : ARRAY OF CHAR ;
+			   VAR VThisType   : VirtualAddrType ;
+			   VAR HashId	   : LONGINT ) : BOOLEAN ;
+
+PROCEDURE FreeHashMemory ;
+
+PROCEDURE InitVirtHash;
+END VirtHash .

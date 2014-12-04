@@ -1,0 +1,135 @@
+R 65,T 5
+RESMAN is run by typing:
+@begin(example)
+RESMAN <name of RSI file> <name of resource file>
+@end(example)
+If no extension is given on the command file name, RESMAN willtry to read a file with extension '<name>.MOD', and if thatdoesn't exist, '<name>.RSI' ('RSI' standing for `ReSourceInput').  In your case, you don't have the .MOD files, but you dohave .RSI ones.  If no extension is given on the resource filename, RESMAN will assume an extension of `RES'.  In virtually allcases you will always name the resource file as TACT.RES.
+
+As discussed earlier, RESMAN copies, changes and renames files --creating backups by renaming the earlier version.  Both thecommand and resource files are changed.  The original inputtedform of the command file has it's name changed to `<name>.BAK'. The original inputted resource file has it's name changed to`<name>.RBK'.
+
+If command and resource file names are not given on the commandline, RESMAN will prompt you for them.
+
+RESMAN will then process your input file.  If it finds errors inthe file it will report them to you, but continue checking theinput file for possible other errors.  If errors were foundRESMAN will print the message:
+@begin(example)
+ResMan found errors: No changes in files produced
+@end(example)
+and will end @i(without) updating either the resource or commandfiles.  In this way you can correct the command file and run theentire thing again.
+
+If RESMAN was happy, and completed it's execution correctly, itwill display the message:
+@begin(example)
+ResMan completed normally
+@end(example)
+
+To run, RESMAN needs some other files that are not explicitlymentioned when RESMAN is started:
+
+BEGIN NUMBERED
+It gets some data it needs from the RES.DAT file.  It will findit by looking in the directories specified in the TACTPATHenvironment variable, or in the DOS PATH.
+
+It needs either FILE.XDT or XLATTABL.DAT to tell it how totranslate characters between the external character set shown inthe .RSI file into the internal character set used inside allTACT programs.  It will look for these in TACTPATH or PATH also.
+END NUMBERED
+
+If it cannot find these files RESMAN will not run.
+
+@Section(RESMAN commands and RSI files)
+As we've already mentioned, you can spot RESMAN commands withinthe RSI files -- they always begin with "@t{(*RES}" and end atthe following "@t{*)}".  RESMAN RSI command files can contain@i{any} other text outside of it's commands and RESMAN willsilently read and ignore this material entirely (except to copyit verbatim to the updated command file).  If the other materialis ignored by RESMAN, what's it there for?  Well, it's there foryour benefit.  Within the RSI files we've given you we'veincluded comments that are meant to tell you how the variousresources are used so you can, more easily, update them.
+
+Following the RES word in RESMAN commands is an indicator toRESMAN what type of command you are giving:
+@begin(description)
+@t{(*RES NEW}@\This indicates that you are asking RESMAN tocreate a new resource for you.  In general, this option is of nouse to you since you cannot add new resources that any of theTACT programs will ever use.  Don't code it.
+
+@t{(*RES UPD}@\This indicates that you are asking RESMAN tochange the contents of an existing resource for you.  This is themain command type you'll use.
+
+@t{(*RES DEL}@\This indicates that you are asking RESMAN todelete a particular resource for you.  Again, you should not usethis operator.
+
+@t{(*RES INS}@\This operator is only used in Modula-II files, andwe will not describe its use here.  Don't code it.
+
+@t{(*RES REM}@\This indicates that the rest of the RESMAN commandis a comment and can be ignored by RESMAN.  Don't code it.
+
+@t{(*RES OLD}@\This indicates that the rest of the RESMAN commanddescribes a resource that already exists in the current form, andis not to be changed.  This is very similar to a RESMAN commentcommand "REM".  How this is used will be made clearer below.
+@end(description)
+
+Note that RESMAN is case-sensitive.  The word "RES" and theoperator following (one of "UPD", "OLD", etc) must appear inupper-case.  RESMAN will not notice "@t{(*res}"!.
+
+Here is a little more information about the types of RESMANcommands that you'll be using:
+
+@SubSection(The RES UPD Command)
+The format of the RES UPD Command is:
+@begin(example)
+(*RES UPD <resource type> <resource number>
+<resource definition>
+*)
+@end(example)
+Following the keyword "UPD" you must specify what type ofresource you want RESMAN to update.  As discussed above, theresource type is one of: MSG, DTA, MNU, HLP, CHE or NAR -- caseis important for these also. Then you must give the numberassigned to the particular resource you want to update.
+
+Following this you include the new text that redefines theresource.  This @i{must} begin on a new line.  Following theresource definition you put the closing @t{*)} -- also,preferably, on a line by itself.
+
+In response, RESMAN will replace the old definition with the newone.  This is done by adding the new replacement definition(giving the new definition the same number and type as the one itis replacing, of course) onto the end of the resource file, andthen changing the access within TACT.RES for the particular typeand resource number to refer to the new definition.  The spaceoccupied by the old definition cannot be recovered by RESMAN andis then being wasted.  A resource utility program RESCOMP can berun to compact an entire resource file -- eliminating space takenup by old versions of resources.
+
+In the output file you will see that RESMAN will have changed thecommand to:
+@begin(example)
+(*RES OLD <resource type> <resource number>
+<resource definition>
+*)
+@end(example)
+
+@SubSection(The RES REM Command)
+The RES REM Command ("REM" for "Remark") has the format:
+@begin(example)
+(*RES REM <anything>
+<anything>
+*)
+@end(example)
+is a command that is totally ignored by RESMAN -- except to becopied to the output file.  I doubt you will find any use for itwhen editing the RSI files.  however, you can use it to commentout any RES command that, for some reason you don't want toactually delete from the file.
+
+@SubSection(The RES OLD Command)
+The format of the RES OLD Command is:
+@begin(example)
+(*RES OLD <resource type> <resource number>
+<resource definition>
+*)
+@end(example)
+Following the keyword "OLD" you must specify what type ofresource you are referring to.  As discussed above, the resourcetype is one of: MSG, DTA, MNU, HLP, CHE or NAR. Then you mustgive the number assigned to the particular resource you want torefer to, and following, on a new line, the resource definition.
+
+The RES OLD command is treated by RESMAN as a comment.  It's solefunction is as a place-holder in your file.  Note that if youneed to update the format of a resource you can edit the resourcecontents and then change the keyword "OLD" to "UPD", and run theresulting file through RESMAN.
+
+@Section(A Strategy for updating Resources)
+Although all the resources you are likely to want to change arelisted in the RSI files, you don't need to change them all atonce, and then run RESMAN once to correct them all in one "fellswoop".  Instead, we recommend that, especially at the beginning,you change only a few resources, update them in TACT.RES byrunning RESMAN, and then launch the TACT program that uses theresource you've changed to see the new version you hope you havesuccessfully created.  When editing the RSI file, be sure thatRESMAN can recognize the resources you've changed by changing the"OLD" operator to "UPD".
+
+@SubSection(Let's try one!)
+Find the following resource in MAKBAS.RSI:
+@begin(example)
+(*RES OLD CHE 16
+=Q C
+Do you really want to quit?  To quit type "Q", to continue type"C".
+*)
+@end(example)
+This is the resource MAKBAS uses when you push F10 to stop MAKBASexecution.  Change the message part of the resourceonly,@foot(we'll explain the purpose of the "@t{=Q C}" linebelow) for now leave the line containing the "=" alone.
+
+@begin(example)
+(*RES OLD CHE 16
+=Q C
+<new text> ...
+*)
+@end(example)
+
+Now, before saving the modified RSI file, change the first lineof the resource command -- change the "OLD" to "UPD".
+
+@begin(example)
+(*RES UPD CHE 16
+=Q C
+<new text> ...
+*)
+@end(example)
+
+Now run RESMAN:
+
+@begin(example)
+RESMAN MAKBAS.RSI TACT.RES
+@end(example)
+This command tells RESMAN to process the commands it finds inMAKBAS.RSI and to update the TACT.RES resource file.  At it runsRESMAN will tell you that it found, and updated CHE resourcenumber 16.
+
+Now, to see the changed message run MAKBAS, and immediately pushthe F10 key.  MAKBAS will use CHE resource # 16 as the source forthe prompt box it shows you.  Since you've just changed the textof the message for CHE # 16, MAKBAS will show you your new text.
+
+For now to stop MAKBAS you'll still have to type "Q".  As we'llsee shortly, the "=Q C" line controls what characters you'll typeat the keyboard.
+
+Finally, if you look at the MAKBAS.RSI file after RESMAN has beenrun, you'll see that it has changed the UPD command to the OLDcommand, to indicate that the resource has, indeed, been updated.

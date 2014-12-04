@@ -1,0 +1,59 @@
+DEFINITION MODULE RunPan ;
+
+(* copyright (c) 1991-96 Ian Lancashire, Lidio Presutti, Mike Stairs, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+(*
+EXPORT QUALIFIED
+  (* Procs *) SetupRunWindows, ShowRunScreen, PutRecordNumber, PutTokenCount,
+              PutTypeCount, CleanupRunWindows, WriteTextWindow, PutErrorCount,
+              PutRunStatus, PutPercentage ;
+*)
+
+(* This is code for displaying statistics on the run panel display in MAKBAS  *)
+(*RES OLD MNU 14
+                              RUN PHASE
+ For: Data Base: %0___________________________________________
+      Title:     %1___________________________________________
+
+ Input Record:   %2___________       Word Token Count: %3__________
+ Status: %5____________________________    Type Count: %4__________
+ Percentage Completed: %6_%          No. of Errors/Warnings: %7____
+
+ To interrupt execution, push ESC key.  To toggle ON/OFF text display push F2.
+*)
+
+PROCEDURE SetupRunWindows ;
+
+PROCEDURE CleanupRunWindows ;
+
+PROCEDURE ShowRunScreen ;
+
+PROCEDURE WriteTextWindow( TextLine : ARRAY OF CHAR ) ;
+
+PROCEDURE ClearAndWriteTextWindow(TextLine: ARRAY OF CHAR);
+
+PROCEDURE PutErrorCount( N : CARDINAL ) ;
+
+PROCEDURE PutRecordNumber( N : LONGCARD ) ;
+
+PROCEDURE PutTokenCount( N : LONGCARD ) ;
+
+PROCEDURE PutTypeCount( N : LONGCARD ) ;
+
+PROCEDURE PutRunStatus( ResID : CARDINAL);
+
+PROCEDURE PutPercentage( N : CARDINAL; update : BOOLEAN ) ;
+
+END RunPan .

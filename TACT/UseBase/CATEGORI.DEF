@@ -1,0 +1,63 @@
+DEFINITION MODULE Categories ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM VirtMem IMPORT VirtAddr;
+FROM TACTListModule IMPORT TACTList ;
+FROM ScannerSource IMPORT ItemDataType ;
+
+
+(*
+EXPORT QUALIFIED
+   (* const *) NoPDBRes,
+   (* Procs *) DoCatNameSelectWindow, DoCatNameDisplay, DoCatNameDelete,
+		DoCatListDisplay, DoCatNameCreate, DoCatNameModify,
+		DoCatContents, GetCatNameFromSelect, IsCatNamePresent ;
+*)
+
+(*RES OLD MSG 216
+You must have a .GIX File open to create Groups.
+*)
+CONST
+   NoPDBRes = (*RES REM INS*) 216 ;
+
+TYPE
+   CatWindowDataType = RECORD
+      CatName:    ARRAY[0..40] OF CHAR;
+   END;
+
+VAR
+   CatWindowData	: CatWindowDataType;
+
+PROCEDURE DoCatNameSelectWindow( VAR CatDataVA   : VirtAddr (* to DataItem *);
+				 VAR CatName	 : ARRAY OF CHAR ) : BOOLEAN;
+
+PROCEDURE DoCatNameDelete ;
+
+PROCEDURE DoCatNameModify ;
+
+PROCEDURE DoCatNameDisplay ;
+
+PROCEDURE DoCatListDisplay ;
+
+PROCEDURE DoCatNameCreate ;
+
+PROCEDURE DoCatContents( VAR CurrentList : TACTList; VAR Numb : CARDINAL ;
+			     CatName : ARRAY OF CHAR ) ;
+
+(* m.s. -  looks like it was moved to PARSERUL.mod PROCEDURE GetCatNameFromSelect( ItemData : ItemDataType ) : BOOLEAN ; *)
+
+PROCEDURE IsCatNamePresent(CatName : ARRAY OF CHAR; VAR SortCatName : ARRAY OF CHAR) : BOOLEAN ;
+
+END Categories .

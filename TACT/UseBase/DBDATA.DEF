@@ -1,0 +1,81 @@
+DEFINITION MODULE DBData;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM GlobalDefs IMPORT StrAny;
+FROM HyperBase IMPORT
+  (* TYPE *)  HyperFile;
+FROM TACTListModule IMPORT TACTList;
+FROM VirtMem IMPORT VirtAddr;
+
+(*
+EXPORT QUALIFIED
+    (* types *) IsFolioType,
+    (* vars  *) TDBFile, TDBFileName, TDBTitle, TDBYear, TDBMonth, TDBDay,
+                BeginStr, EndStr, BeginStrRec, NoStrRecs, BeginLog,
+                EndLog, BeginType, BeginToken, BeginText,
+                EndTextRec, EndTextIdx, EndTypeRec, EndTypeIdx,
+                EndTokenRec, EndTokenIdx, NoTypes, LastAlphChar,
+                NoTokensInDB, TDBDataInitialized,
+                PDBFileName, PDBOpen, MainCatList,
+*)
+
+VAR
+    PDBFileName: ARRAY[0..50] OF CHAR;
+    PDBOpen:     BOOLEAN;
+    MainCatList: TACTList;
+
+
+TYPE
+    IsFolioType = SET OF [1..127];
+
+VAR
+    TDBFile    : HyperFile;
+    TDBFileName: StrAny;
+
+    TDBTitle   : ARRAY [0..41] OF CHAR;
+    TDBYear    : CARDINAL;
+    TDBMonth   : CARDINAL;
+    TDBDay     : CARDINAL;
+    BeginStr   : CARDINAL ;
+    EndStr     : CARDINAL ;
+    BeginStrRec: CARDINAL ;
+    NoStrRecs  : CARDINAL ;
+    BeginLog   : CARDINAL ;
+    EndLog     : CARDINAL ;
+    BeginType  : CARDINAL ;
+    BeginToken : CARDINAL ;
+    BeginText  : CARDINAL ;
+    EndTextRec : CARDINAL ;
+    EndTextIdx : CARDINAL ;
+    EndTypeRec : CARDINAL ;
+    EndTypeIdx : CARDINAL ;
+    EndTokenRec : CARDINAL ;
+    EndTokenIdx : CARDINAL ;
+    NoTypes     : CARDINAL ;
+    NoTokensInDB : LONGINT ;
+    LastAlphChar : CHAR;
+    TDBDataInitialized:   BOOLEAN;
+
+    FolioID:   IsFolioType;
+
+(* procedures for managing Pool Numbers in PDB *)
+
+PROCEDURE SavePoolInfo(ValToSet: VirtAddr);     (* used by PDBInit only j.b.*)
+PROCEDURE InitPool(VAR PoolInfoAdr: VirtAddr);  (* used by PDBInit only j.b.*)
+
+PROCEDURE GetNewPoolNumber(): CARDINAL;
+PROCEDURE ReleasePoolNo(No: CARDINAL);
+
+END DBData.

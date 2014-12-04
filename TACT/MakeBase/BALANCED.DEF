@@ -1,0 +1,74 @@
+DEFINITION MODULE BalancedTrees;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+(*# data(const_in_code=>on) *)
+
+FROM VirtualMemory IMPORT
+  (* Type  *) VirtualAddrType;
+FROM GlobalDefs IMPORT
+  (* Type  *) StrAny ;
+
+(*
+EXPORT QUALIFIED
+   (* type *) BalTree, BalTreeItemProcess, BTData, BTDataPtr,
+   (* proc *) InitialBT, FindBTItem, AddBTItem, ProcessBT, AddListItem, MakeListItem ;
+*)
+
+TYPE
+    BalTree = VirtualAddrType;
+    BalTreeItemProcess = PROCEDURE(ARRAY OF CHAR, VirtualAddrType);
+    BTData = RECORD
+                LLink : VirtualAddrType;
+                RLink : VirtualAddrType;
+                Data  : VirtualAddrType;
+                Next  : VirtualAddrType ;  (* used by VirtHash module *)
+                B     : INTEGER;
+                Key   : StrAny;
+             END;
+    BTDataPtr = POINTER TO BTData;
+
+  PROCEDURE InitialBT( VAR Header    : BalTree;
+                       VAR SpaceType : VirtualAddrType ) ;
+
+  PROCEDURE FindBTItem(Header:      BalTree;
+                       KeyValue:    ARRAY OF CHAR;
+                   VAR DataPntr:    VirtualAddrType;
+                   VAR p, s, t:     VirtualAddrType): BOOLEAN;
+
+  PROCEDURE AddBTItem(Header:      BalTree;
+                      KeyValue:    ARRAY OF CHAR;
+                      DataPntr:    VirtualAddrType;
+                  VAR SpaceType:   VirtualAddrType;
+                  VAR p:           VirtualAddrType;
+                      s, t:        VirtualAddrType);
+
+  PROCEDURE ProcessBT(Header:   BalTree;
+                      DoItem:   BalTreeItemProcess);
+
+  (* MakeListItem -- allocates a binary tree node *)
+  PROCEDURE MakeListItem( VAR Header	: BalTree;
+			      KeyValue	: ARRAY OF CHAR;
+			      DataPntr	: VirtualAddrType;
+			  VAR SpaceType : VirtualAddrType;
+			  VAR p		:
+			  VirtualAddrType ) ;
+
+  (* AddListItem -- build a balanced binary tree from a linked list of all Type words *)
+  PROCEDURE AddListItem( Header : BalTree; KeyValue : ARRAY OF CHAR ;
+			 q	: VirtualAddrType ;
+			 VAR p  : VirtualAddrType ;
+			 s, t   : VirtualAddrType ) ;
+
+
+END BalancedTrees.

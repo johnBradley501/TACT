@@ -1,0 +1,62 @@
+DEFINITION MODULE StackWindows;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+FROM TWB IMPORT WinType;
+
+(*
+EXPORT QUALIFIED
+  (* types *) WindowType, WindowInfo, WindowInfoPtr,
+  (* procs *) PushNewWindow, PopWindow, MoveCurrentWindow, RollWindows,
+              ResizeCurrentWindow, GetCurrentPointer, MakeHighestPriority,
+              DummyInit, LayoutWindowsAsPanels, ZoomCurrentWindow;
+*)
+
+TYPE
+   WindowType = (Dialog, Active, ActBar, Message);
+
+   WindowInfoPtr = POINTER TO WindowInfo;
+   WindowInfo = RECORD
+      XPos, YPos:   CARDINAL;  (* position on monitor *)
+      XSize,YSize:  CARDINAL;  (* window size *)
+      MxYSize:      CARDINAL;  (* maximum length *)
+      Type:         WindowType;
+      AllowMove:    BOOLEAN;
+      AllowResize:  BOOLEAN;
+      IsTop:        BOOLEAN;
+   END;
+
+PROCEDURE DummyInit;
+
+PROCEDURE PushNewWindow(VAR Info: WindowInfo;
+                        VAR Ptr:  WinType;
+                            Init: PROC);
+
+PROCEDURE PopWindow;
+
+PROCEDURE GetCurrentPointer(VAR Ptr:  WindowInfoPtr);
+
+PROCEDURE RollWindows(VAR Ptr:  WindowInfoPtr);
+
+PROCEDURE MakeHighestPriority(Ptr:   WindowInfoPtr);
+
+PROCEDURE MoveCurrentWindow(VAR Extended:  BOOLEAN;
+                            VAR ch:        CHAR): BOOLEAN;
+
+PROCEDURE ResizeCurrentWindow(VAR Extended: BOOLEAN;
+                              VAR ch:       CHAR): BOOLEAN;
+
+PROCEDURE LayoutWindowsAsPanels;
+
+PROCEDURE ZoomCurrentWindow;
+END StackWindows.

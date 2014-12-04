@@ -1,0 +1,1251 @@
+Copyright 1990 John Bradley, University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+                        >>> MAKBAS Resources<<<
+
+This file contains all the resources that MAKBAS alone uses.
+
+                        >>> MAKBAS Setup phase <<<
+
+================================================
+This is the resource MAKBAS uses when the user has pushed F10 to
+stop MAKBAS execution.  The first key choice is the letter to
+confirm quitting, the second is the one to cancel the F10, and
+resume MAKBAS execution.
+================================================
+(*RES OLD CHE 16
+=Q C
+Do you really want to quit?  To quit type "Q", to continue type"C".
+*)
+
+================================================
+The following group of resources are used in front panel
+processing for MAKBAS.
+
+The first MNU 12 resource is the front panel dialog box.  Notice
+that the copywrite notice that appears on the MAKBAS front panel
+does not come from this resource text, but will always be
+superimposed by the MAKBAS program.
+
+Fields used:
+
+6:   Notice it is first: MAKBAS will insert its version number
+here: taken from resource MSG 203 -- listed in BASE.RSI
+7:   Notice also at the front: MAKBAS will insert the version
+date here: taken from resource MSG 203 -- listed in BASE.RSI
+
+0:   Name of the input source file.
+1:   Name of the input MKS file
+2:   Name of the database to create
+3:   Title of the database
+4:   Starting reference template for the database
+5:   device and/or directory for temporary work space.
+================================================
+
+(*RES OLD MNU 12
+
+
+
+                    MAKBAS Version %6__  %7___________________
+
+    Files:          Input File: %0___________________________________
+                    Setup File: %1___________________________________
+                    Database:   %2___________________________________
+                    DB Title: %3________________________________________
+                    Starting Ref: %4____________________________________
+
+                    Temporary File Area: %5___________________________________
+
+
+
+
+
+
+_____________________________________________________________________________
+F1:   Help
+F2:   Alphabet
+F3:   Special Characters                  F9:   RUN, creating a database
+F4:   Structural Information              F10:  QUIT without a run
+*)
+
+================================================
+The following resource is used to produce an error message if the
+MAKBAS user incorrectly provides a translation name with the
+database name file.  The incorrect translation specification will
+be inserted at %0.
+================================================
+(*RES OLD MSG 107
+A translation specification "%0" is not permitted for databasefile.
+It will be ignored.
+*)
+
+================================================
+This message appears if an incorrectly formatted name is given
+for the TDB database file to create.  The incorrect given name is
+shown in %0
+================================================
+(*RES OLD MSG 108
+"%0" cannot be used as the name of a TDB Database file.
+*)
+
+================================================
+MAKBAS will not automatically overwrite an existing TDB database
+file.  This message is used if the user gave as a name the name
+of an existing file.  The offending name appears as %0.
+================================================
+(*RES OLD MSG 178
+TDB DataBase Name "%0" is already in use, please choose another.
+*)
+
+================================================
+This message is used when an illegal filename is given somewhere
+else on the front panel.  The offending name appears at %0.
+================================================
+(*RES OLD MSG 104
+%0 cannot be used as the name of a file.
+*)
+
+================================================
+If other DOS error messages occur while a file is being
+processed, this template is used to display the error.  %0 will
+be the name of the file being processed.  %1 will be the DOS
+error message (text taken from one of MSG resources 0-23 -- in
+BASE.RSI).
+================================================
+(*RES OLD MSG 105
+File Name %0: %1
+*)
+
+================================================
+This message appears if the file named for reading (text or MKS
+file) does not, in fact, exist.  %0 is the offending filename.
+================================================
+(*RES OLD MSG 106
+Input File %0 does not exist.
+*)
+
+================================================
+This message appears if an the temporary disk space specification
+is incorrectly created.  %0 contains the illegal code.
+================================================
+(*RES OLD MSG 175
+Invalid Drive/Path specification for temporary disk space "%0".
+*)
+
+================================================
+This message appears if an incorrect parameter was given when
+MAKBAS was invoked from the DOS prompt.  The incorrect parameter
+is given at %0.
+================================================
+(*RES OLD MSG 112
+Parameter "%0" to MAKBAS are not acceptable
+*)
+
+================================================
+If the user pushes the Enter/Return key rather than F9 they are
+asking to move onto the Run phase.  This resource is used to
+confirm this choice.  The first letter in the key choice line is
+the one to type to confirm move to runphase, the second is to
+cancel the move.
+================================================
+(*RES OLD CHE 5
+Proceed to RUN phase now? Y)es N)o:
+=YN
+*)
+
+================================================
+This message is used if the user pushes the ESC key when seeing
+the front panel.  The first letter choice indicates that the user
+wants to stop MAKBAS, the second indicates not.
+================================================
+(*RES OLD CHE 9
+Do you wish to TERMINATE the program now? Y)es N)o:
+=YN
+*)
+
+================================================
+The following messages are shown if the user hasn't specified a
+necessary file when they want to go to the Run phase.
+================================================
+(*RES OLD MSG 109
+To Run, an Input File Must Be Given.
+*)
+
+(*RES OLD MSG 110
+To Run, a DataBase Name Must Be Given.
+*)
+
+================================================
+The following resources are used when processing an alphabetic
+specification within MAKBAS.
+
+This is the panel for the Alphabetical display.  The fields are
+obvious:
+0-3: 4 fields for alphabet lines
+4-5: 2 fields for retained diacritics
+6-7: 2 fields for nonretained diacritics
+8: 1 short field for the continuation sequence.
+================================================
+(*RES OLD MNU 13
+
+                 LETTERS, DIACRITICS, and CONTINUATION Character
+
+Alphabet
+ %0_________________________________________________________________________
+ %1_________________________________________________________________________
+ %2_________________________________________________________________________
+ %3_________________________________________________________________________
+Diacritics Retained
+ %4_________________________________________________________________________
+ %5_________________________________________________________________________
+Diacritics NonRetained
+ %6_________________________________________________________________________
+ %7_________________________________________________________________________
+Continuation Sequence:  %8_____
+
+  To edit or add material, move to line using UP or DOWN arrow Keys & type.
+        When finished, push the ENTER/RETURN key.
+
+*)
+
+================================================
+This MSG is the text that is displayed at the bottom of the
+Alphabetic window.
+================================================
+(*RES OLD MSG 206
+Letters and Word Symbols
+*)
+
+================================================
+
+================================================
+(*RES OLD DTA 6
+'a b c d e f g h i j k l m n o p q r s t u v w x y z'
+'0 1 2 3 4 5 6 7 8 9' !00 !00
+-!20!\Acute\!20!\Grave\!20!\Circumflex\!20!\Cedilla\!20!\Umlaut\!20!\Tilde\!20!"'"
+!00
+!00 !00
+!00
+*)
+
+================================================
+The next group or resources are used when handling the special
+characters submenu.
+
+The first provides the label that appears at the bottom of the
+special characters submenu.
+================================================
+(*RES OLD MSG 207
+Special Characters
+*)
+
+================================================
+This menu provides the first line of each submenu within the
+special characters submenu.  The marked positions are for a
+single switch that can take on 4 values:
+
+position 0: Empty: to thow away the current submenu
+position 1: to create a specification for ignore brackets
+position 2: to create a specification for COCOA-like reference
+brackets
+position 3: to create a specification for a word-separator
+sequence
+
+You >>>must<<< fit all choices on the first line!!!
+================================================
+
+(*RES OLD MNU 0
+         Type:  Empty: %|0  Ignore: %|1  Reference: %|2  Word Sep Seq: %|3
+
+
+
+
+*)
+================================================
+This is the lower part of the submenu when either ignore brackets
+or COCOA reference text is chosen.  The marked locations:
+
+%0:  for the open bracket
+%1:  for the close bracket
+%2:  "Yes" for the Suppress Text switch
+%3:  "No" for the suppress text switch
+%4:  "Yes" for the Word Separator switch
+%5:  "No" for the Word Separator switch
+================================================
+(*RES OLD MNU 1
+         Open Bracket: %0____          Close Bracket: %1____
+                Suppress Text:       Yes: %|2  No: %|3
+                Word Separator:      Yes: %|4  No: %|5
+*)
+
+================================================
+This is the lower part of the submenu when word separator
+sequence submenu is displayed.  Only one marked location, and it
+is the field for the sequence.
+================================================
+(*RES OLD MNU 2
+                Word Separator Sequence: %0_____
+ 
+ 
+*)
+
+================================================
+This is the special submenu that is displayed in the top part of
+the special submenu screen when you are looking at the very first
+item.  Although specified as a MNU resource, note that no fields
+are provided within the specification.
+================================================
+(*RES OLD MNU 3
+                      Special Characters Menu
+
+             To move between items, push PgUp or PgDn.
+             To return to the main menu, push the ENTER/RETURN Key
+             To terminate MAKBAS, push F10.
+*)
+
+================================================
+Now, some diagnostic messages to be used while the user fills in
+the special character sequence.  This one is produced when the
+Word Separator field is left empty.
+================================================
+(*RES OLD MSG 54
+A Word Separator Sequence must be given.
+*)
+
+================================================
+This is produced if no open bracket is given
+================================================
+(*RES OLD MSG 55
+An Opening Bracket must be given.
+*)
+
+================================================
+This is produced if no close bracket is given
+================================================
+(*RES OLD MSG 56
+A Closing Bracket must be given.
+*)
+
+================================================
+Now we have the series of resources used when processing the
+structural information submenu.
+
+First, the label that appears at the bottom of the window in
+which the structural information display is created.
+================================================
+(*RES OLD MSG 208
+Structural Information
+*)
+
+================================================
+Now the beginning of the subpanels for the structural information
+window.
+
+First, the MNU for the header screen -- similar to MNU 3 (above)
+================================================
+(*RES OLD MNU 4
+                   Structural Information Menu
+
+             To move between items, push PgUp or PgDn.
+             To return to the main menu, push ENTER/RETURN.
+             To terminate MAKBAS, push F10.
+*)
+
+================================================
+This menu provides the first line of each submenu within the
+special characters submenu.  The marked positions are for a
+single switch that can take on 4 values:
+
+position 0: Empty: to thow away the current submenu
+position 1: to create a specification for COCOA-like reference
+position 2: to create a specification for Label reference
+position 3: to create a specification for Counter
+position 4: to create a specification for BYU type marker
+
+You >>>must<<< fit all choices on the first line!!!  This is
+similar to MNU 0: described above.
+================================================
+(*RES OLD MNU 5
+   Type:    Empty: %|0  Reference: %|1  Label: %|2  Counter: %|3  BYU: %|4
+
+
+
+
+*)
+
+================================================
+This menu is used to provide information about COCOA-type
+references.  Fields are:
+
+0: TACT ID names
+1: Name in COCOA reference
+2: Numeric Switch value "No"
+3: Numeric Switch value "Yes"
+4: Number of characters to keep
+================================================
+(*RES OLD MNU 6
+      TACT ID: %0_________________________________________________________
+      Text ID: %1_____________       Numeric:  Yes: %|2 No: %|3
+      Number of characters to keep: %4__
+*)
+
+================================================
+This menu is used to provide information about Label-type
+references.  Fields are:
+
+0: TACT ID names
+1: Open bracket
+2: Close Bracket
+3: Switch to Suppress label text "Yes"
+4: Switch to suppress label text "No"
+5: Switch for Word Separator "Yes"
+6: Switch for Word Separator "No"
+7: Numeric Switch value "No"
+8: Numeric Switch value "Yes"
+9: Number of characters to keep
+================================================
+(*RES OLD MNU 7
+      TACT ID: %0________________________________________________________
+      Open Bracket: %1____                Close Bracket:  %2____
+      Suppress Text: Yes: %|3 No: %|4     Word Separator:  Yes: %|5 No: %|6
+      Numeric:  Yes: %|7 No: %|8          No of chars to keep:  %9____
+*)
+
+================================================
+This menu is used to provide information about counter-type
+references.  Fields are:
+
+0: TACT ID names
+1: string of objects to trigger the counter
+2: name of object to reset if this counter occurs
+3: value to set to at start, or when this counter is reset.
+4: Switch to Suppress counter text "Yes"
+5: Switch to suppress counter text "No"
+================================================
+(*RES OLD MNU 8
+      TACT ID:    %0_________________________________________________________ 
+      Counter ID: %1_________________________________________________________ 
+      Reset: %2_______________________________ 
+      Init:  %3______       Suppress Text: Yes: %|4 No: %|5
+*)
+
+================================================
+This menu is used to provide information about BYU-type
+references.  Fields are:
+
+0: TACT ID names
+1: BYU name: 1 character only.
+2: Switch for Numeric "Yes"
+3: Switch for Numeric "No"
+4: number of characters to keep
+================================================
+(*RES OLD MNU 9
+      TACT ID: %0__________________________________________________________ 
+      Text ID: %|1         Numeric:  Yes: %|2 No: %|3
+      No of chars to keep:  %4__
+*)
+
+================================================
+This menu is used to provide information about the word counter
+references.  Fields are:
+
+0: TACT ID names
+1: initial value
+================================================
+(*RES OLD MNU 10
+                              Word Counter
+
+      TACT ID: %0_________________________________________________________ 
+      Init:  %1___
+*)
+
+================================================
+This menu is used to provide information about the line counter
+references.  Fields are:
+
+0: TACT ID names
+1: names of counter objects to reset when it occurs
+2: Initial value
+================================================
+(*RES OLD MNU 11
+                              Line Counter 
+
+      TACT ID: %0________________________________________________________ 
+      Reset: %1__________________________________________________________ 
+      Init:  %2___
+*)
+
+================================================
+The following messages can be produced while the menu is being
+filled in.
+
+The first indicates that the number of characters to keep must be
+greater than 0.
+================================================
+(*RES OLD MSG 57
+Number of characters to keep must be greater than zero.
+*)
+
+================================================
+This one indicates that a TACT ID must be given for this object
+before the user finishes filling in the structure information
+subpanel.
+================================================
+(*RES OLD MSG 58
+A "TACT ID" must be given.
+*)
+
+================================================
+This one indicates that a reference ID must be given for this
+object before the user finishes filling in the structure
+information subpanel.
+================================================
+(*RES OLD MSG 59
+A Reference Identification must be given.
+*)
+
+================================================
+This one indicates that an opening bracket must be given for this
+object before the user finishes filling in the structure
+information subpanel.
+================================================
+(*RES OLD MSG 60
+An Opening Bracket must be given.
+*)
+
+================================================
+This one indicates that an closing bracket must be given for this
+object before the user finishes filling in the structure
+information subpanel.
+================================================
+(*RES OLD MSG 61
+A Closing Bracket must be given.
+*)
+
+================================================
+This one indicates that one or more counter ident must be given
+for this object before the user finishes filling in the structure
+information subpanel.
+================================================
+(*RES OLD MSG 62
+A Counter Identification must be given.
+*)
+
+================================================
+This one indicates that a BYU ID character must be given for this
+object before the user finishes filling in the structure
+information subpanel.
+================================================
+(*RES OLD MSG 63
+A BYU Identification must be given.
+*)
+
+================================================
+This message provides some default TACT IDs for the word
+counters.
+================================================
+(*RES OLD MSG 64
+WORD WORDS
+*)
+
+================================================
+This message provides some default TACT IDs for the line
+counters.
+================================================
+(*RES OLD MSG 65
+LINE LINES
+*)
+
+================================================
+The following messages are used while MAKBAS is verifying the MKS
+file information (both initially reading in, and then
+subsequently writing out)
+
+The first is a message template, similar to earlier ones you've
+seen.
+================================================
+(*RES OLD MSG 113
+File %0: %1
+*)
+
+================================================
+This DTA resource stores in one place the name of the various
+objects that can appear in a MKS file.  Look at a typical MKS
+file before reading this!
+
+The English names (for reference purposes) (in order!!) are:
+[Alpha]: announcing the section in the MKS file for the alphabet
+[DiacRet]: for retained diacritics
+[DiacNon]: for nonretained diacritics
+[Title]: for the DB title
+[Continuation]: for the continuation character sequence
+[WordSepSeq]: for a word separator sequence (from special
+character subpanel)
+[IgnoreBracket]: for ignore brackets (special character)
+[ReferenceBracket]: for COCOA reference (special characters)
+[WordCounter]: for word counter (structural info)
+[LineCounter]: for line counter (structural info)
+[Reference]: for COCOA reference (structural info)
+[Label]: for Label (structural info)
+[Counter]: for counter (structural info)
+[BYU]: for BYU reference (structural info)
+[RefTemplate]: for the default reference template
+!Illegal!: text displayed when when illegal sequence found in an
+MKS file.
+SupText: indicates text is to be suppressed for the object
+NoSupText: text not to be suppressed
+WordSep: indicates object is a word separator
+NoWordSep: not a word separator
+Numeric: indicates object is numeric
+NonNumeric: indicates not numeric
+================================================
+(*RES OLD DTA 7
+'[Alpha]' '[DiacRet]' '[DiacNon]' '[Title]' '[Continuation]'
+'[WordSepSeq]'
+'[IgnoreBracket]' '[ReferenceBracket]' '[WordCounter]'
+'[LineCounter]'
+'[Reference]' '[Label]' '[Counter]' '[BYU]' '[RefTemplate]'
+'!Illegal!'
+'SupText' 'NoSupText'
+'WordSep' 'NoWordSep'
+'Numeric' 'NonNumeric'
+*)
+
+================================================
+Problem in MKS file: expecting a correct SuppresText value (see
+resource DTA 7 (above), and found, instead %0.
+================================================
+(*RES OLD MSG 114
+Invalid option "%0" for SuppressText in SetupFile.
+*)
+
+================================================
+Problem in MKS file: expecting a correct WordSeparator value (see
+resource DTA 7 (above), and found, instead %0.
+================================================
+(*RES OLD MSG 115
+Invalid option "%0" for WordSeparator in SetupFile.
+*)
+
+================================================
+Problem in MKS file: expecting a correct Numeric value (see
+resource DTA 7 (above), and found, instead %0.
+================================================
+(*RES OLD MSG 116
+Invalid option "%0" for Numeric in SetupFile.
+*)
+
+================================================
+Problem in MKS file: expecting a numeric field in a particular
+spot in the file and found, instead %0.
+================================================
+(*RES OLD MSG 117
+Invalid number "%0" in SetupFile.
+*)
+
+================================================
+Problem in MKS file: expecting an option name (one of ones in DTA
+7) in setup file %1, and found, instead, %0.
+================================================
+(*RES OLD MSG 118
+Invalid option "%0" found in Setup File "%1".
+*)
+
+================================================
+If setup has been modified, MAKBAS will ask user if they want to
+rewrite the MKS file it read with this CHE resource.  The first
+key choice from the user indicates 'Yes, please rewrite the
+file", the second indicates 'No, don't rewrite'.
+================================================
+(*RES OLD CHE 2
+Rewrite "%0"? Y)es N)o: 
+= Y N
+*)
+
+================================================
+This message appears when a setup file could not be found.  The
+name of the file MAKBAS was looking for is in %0.
+================================================
+(*RES OLD MSG 190
+The default Setup File "%0" couldn't be found. Please check
+all setup options to make sure all the ones you need are
+properly included.
+*)
+
+================================================
+This resource is used when the setup file name given (%0) is not
+a correctly structured filename.
+================================================
+(*RES OLD MSG 119
+File Name %0 is improper.
+*)
+
+================================================
+This message occurs when MAKBAS has been given a setup file to
+use, but the setup file currently does not exist.  This indicates
+simply that if the user goes to the MAKBAS run phase, a file with
+the specified name %0 will be created.
+================================================
+(*RES OLD MSG 120
+Setup File %0 doesn't exist; may be created.
+*)
+
+                         >>> MAKBAS Run phase <<<
+
+The following messages are produced during MAKBAS run phase.
+
+================================================
+The first group of message are produced while MAKBAS is verifying
+the setup the user has specified during the setup phase.
+
+This message is displayed when the "reset" options within the
+counters refer back to themselves, forming a loop of resets. The
+counter at which the loop was detected by MAKBAS is named in %0.
+================================================
+(*RES OLD MSG 84
+A duplicate or infinite loop reset for "%0".
+*)
+
+================================================
+A counter reset limit is imposed by MAKBAS.  If it is encounted,
+the counter at which it was detected is named in %0, the current
+limit is shown as a number in %1.
+================================================
+(*RES OLD MSG 85
+Too many counter resets for "%0", limit is "%1".
+*)
+
+================================================
+This message occurs if the same counter %0 is incremented in two
+different ways.
+================================================
+(*RES OLD MSG 90
+Counter referred by "%0" is incremented twice.
+*)
+
+================================================
+This message occurs if the same text symbol %0 has been specified
+for two different purposes (say, as a counter and an opening
+bracket for a COCOA reference).
+================================================
+(*RES OLD MSG 66
+Symbol "%0" appears twice.
+*)
+
+================================================
+This message appears if the AlphaSeq specification occurs twice.
+================================================
+(*RES OLD MSG 68
+UnExpected Double Occurrence of AlphaSeq!!
+*)
+
+================================================
+This message occurs if the bracket (which has a special meaning
+within an alphabet specification) occurs twice nested -- which is
+illegal.
+================================================
+(*RES OLD MSG 69
+Nested Brackets in Alphabet
+*)
+
+================================================
+This message occurs if the given internal symbol name (between
+"\"s in the alphabet panel) contains too many characters.
+================================================
+(*RES OLD MSG 70
+Too Many Characters in Symbol
+*)
+
+================================================
+This message occurs if a quoted symbol is too long.
+================================================
+(*RES OLD MSG 71
+Too Many Characters in Quoted Symbol
+*)
+
+================================================
+This message occurs if an empty internal character set name
+was found.
+================================================
+(*RES OLD MSG 72
+Null Internal Name Sequence Found
+*)
+
+================================================
+This message occurs if a name was found that is supposed to be
+the name of a character in the internal character set, but isn't,
+in fact, one.  The name found is shown in %0.
+================================================
+(*RES OLD MSG 73
+Invalid Internal Name "%0" found.
+*)
+
+================================================
+The following message appears if the user has created a single
+symbol that results in too many characters in the Internal
+character set form.
+================================================
+(*RES OLD MSG 74
+Too Many Characters in Internal Symbol String
+*)
+
+================================================
+This message is created if the user is specifying a symbol using
+the Internal character set names (between "\"'s), and the program
+finds that the given internal name is too long to be legal.
+================================================
+(*RES OLD MSG 75
+Too Many Characters in Internal Name
+*)
+
+================================================
+This message is created if it looked like the user was trying to
+create a symbol using the Internal character set names (between
+"\"s, but in fact, no names were seen.  This usually occurs,
+somehow, two "\"'s occur with nothing between them in the
+specification, e.g.: "\ \"
+================================================
+(*RES OLD MSG 76
+Null Internal Name Sequence Found
+*)
+
+================================================
+An opening quote was found, but no closing one.  The expected
+quote is given in %0.
+================================================
+(*RES OLD MSG 77
+Missing Closing Quote: %0
+*)
+
+================================================
+This message is created if it looked like the user was trying to
+create a symbol using the Internal character set names (between
+"\"s, but forgot to put a closing "\".
+================================================
+(*RES OLD MSG 78
+Missing Closing "\" for end of Internal String Def
+*)
+
+================================================
+The user provided an opening "(" in an alphabet specification,
+but did not provide the matching ")".
+================================================
+(*RES OLD MSG 79
+Missing Closing Bracket in Alphabet
+*)
+
+================================================
+This message can only be produced when TACT detects a major
+problem handling the setup information the user has given.  It
+indicates a bug in TACT, and, should not be handled using RES
+tools!!  In short, we goofed!  This message will disappear from
+the RES file in future releases of TACT.
+================================================
+(*RES OLD MSG 80
+BuildSpecialCharXlate: invalid special character
+*)
+
+================================================
+This message appears when a TACT ID contains an invalid character
+(not part of the alphabet).  The offending character is shown in
+%0, the entire name is shown in %1.
+================================================
+(*RES OLD MSG 81
+Invalid character "%0" in name "%1".
+*)
+
+================================================
+This message appears when the same TACT ID is used for two
+different things.  The duplicated name is shown in %0.
+================================================
+(*RES OLD MSG 82
+Duplicate name "%0" found.
+*)
+
+================================================
+This message can occur in the rare case that a TACT ID name needs
+to be surrounded by quotation marks (usually so that a space can
+be included in the name), and the closing quote mark %0 is
+missing.
+================================================
+(*RES OLD MSG 83
+Missing closing quote in: %0
+*)
+
+================================================
+This message occurs when the user has asked to have a counter
+reset by giving the TACT ID name, but the object that TACT ID
+name refers to is not a counter.
+================================================
+(*RES OLD MSG 86
+The structure referred by "%0" does not have a counter to reset
+*)
+
+================================================
+This message occurs when a user has attempted to ask for a
+counter to be reset by giving a name which should be of another
+existing TACT ID, but there is no object with that name %0.
+================================================
+(*RES OLD MSG 87
+The structure referred by "%0" does not exist
+*)
+
+================================================
+A counter cannot be used to, also, increment another counter. 
+The offending counter's TACT ID is given in %0
+================================================
+(*RES OLD MSG 89
+The structure referred by "%0" can not be used to increment
+another counter.
+*)
+
+================================================
+A the same counter may not be incremented by two other objects
+simultaneously.  The offending name is %0
+================================================
+(*RES OLD MSG 90
+Counter referred by "%0" is incremented twice.
+*)
+
+================================================
+The user has asked for COCOA references, but has not defined any
+COCOA brackets.
+================================================
+(*RES OLD MSG 96
+A reference structure requires a "Ref Bracket" defined in
+Special Character menu
+*)
+
+================================================
+This message occurs when a user has attempted to ask for a
+counter to be reset by giving a name which should be of another
+existing TACT ID, but there is no object with that name %0.  It
+performs the same function as MSG 87.
+================================================
+(*RES OLD MSG 97
+The structure referred by "%0" does not exist.
+*)
+
+================================================
+The given starting reference template contains a TACT ID that
+does not, in fact, exist.  The offending name is in %0.
+================================================
+(*RES OLD MSG 289
+Reference Template contains bad reference name:"%0"
+*)
+
+================================================
+The user has tried to give $? within MAKBAS to get a list of all
+TACT IDs to choose from.  Unfortunately, this service is not
+available in TACT.
+================================================
+(*RES OLD MSG 290
+Sorry, "$?" cannot be used in MAKBAS
+*)
+
+================================================
+Yet another template for DOS IO error messages!!.  The file name
+DOS is complaining about is %0.  The message from DOS is in %1
+(text taken from one of MSG resources 0-23 -- in BASE.RSI).
+================================================
+(*RES OLD MSG 98
+File: %0 - %1
+*)
+================================================
+The top panel displayed during MAKBAS run processing.
+
+Fields:
+%0: Data Base file name
+%1: Data Base title
+%2: number of line in input text file currenting being processed
+%3: number of tokens currently found
+%4: number of word types currently found
+%5: what phase of run processing we are currently in (phase
+messages are from MSG resources defined below.
+%6: number of errors/warnings produced while running through the
+text.
+================================================
+
+(*RES OLD MNU 14
+                              RUN PHASE
+ For: Data Base: %0___________________________________________
+      Title:     %1___________________________________________
+
+ Input Record:   %2___________       Word Token Count: %3__________
+ Status: %5____________________________    Type Count: %4__________
+ Percentage Completed: %6_%          No. of Errors/Warnings: %7____
+
+ To interrupt execution, push ESC key.  To toggle ON/OFF text display push F2.
+*)
+================================================
+Text to display if user asks for program to stop.
+================================================
+(*RES OLD MSG 121
+Program terminating.
+*)
+
+================================================
+Run phase message for Status field in RUN PHASE panel MNU 14. 
+For writing out header information to DB file.
+================================================
+(*RES OLD MSG 99
+Initializing DB File
+*)
+
+================================================
+Run phase message for Status field in RUN PHASE panel MNU 14. 
+For reading of text phase.
+================================================
+(*RES OLD MSG 100
+Reading Source Text
+*)
+
+================================================
+The following resources are used when processing the input text
+-- most are messages about that text.
+
+Yet another template for DOS IO error messages!!.  The file name
+DOS is complaining about is %0.  The message from DOS is in %1
+(text taken from one of MSG resources 0-23 -- in BASE.RSI).
+================================================
+(*RES OLD MSG 101
+File: %0 - %1
+*)
+
+================================================
+While processing text MAKBAS has found a reference value %0 which
+is supposed to be a number, but isn't
+================================================
+(*RES OLD MSG 125
+"%0" cannot be converted to a number.
+*)
+
+================================================
+MAKBAS has found a reference with no value
+================================================
+(*RES OLD MSG 126
+Null field value for Reference.
+*)
+
+================================================
+A CHE resource for error messages produced during run time (such
+as the 2 above).  Gives user choice of actions.  The error
+message is substituted for %0.
+
+Choices in key list:
+key 1: continue running MAKBAS
+key 2: continue with no more error messages displayed
+key 3: stop running immediately without finishing database
+key 4: finish database with text processed up to now.
+================================================
+(*RES OLD CHE 0
+%0 Error Options: C)ontinue, S)ilent continue, A)bort,
+F)inish-Now:
+= C S A F
+*)
+
+================================================
+Error message template for log file.  Line number is in %0,
+message in %1.
+================================================
+(*RES OLD MSG 127
+Line: %0: "%1"
+*)
+
+================================================
+Warning message when MAKBAS has been asked to fold long lines --
+could not fold because a line contained more than 75 non-space
+characters in a row.
+================================================
+(*RES OLD MSG 266
+Warning unable to fold line -- contains a word longer than 75
+characters.
+*)
+
+================================================
+MAKBAS found a COCOA reference using an ID about which it has
+been told nothing during setup.  The offending COCOA ID it found
+was %0.
+================================================
+(*RES OLD MSG 128
+Reference Id "%0" was not found
+*)
+
+================================================
+MAKBAS found a BYU reference using an ID about which it has been
+told nothing during setup.  The offending COCOA ID it found was
+%0.
+================================================
+(*RES OLD MSG 129
+BYU Id "%0" was not found
+*)
+
+================================================
+A closing bracket %0 for a label or COCOA reference was found
+when no opening bracket had already been found.
+================================================
+(*RES OLD MSG 133
+Ending symbol "%0" was found unexpectedly.
+*)
+
+================================================
+A COCOA ref opening bracket was found, but it was not followed by
+a reference ID.
+================================================
+(*RES OLD MSG 134
+A Reference ID seems to be missing from the text.
+*)
+
+================================================
+Too many characters in a reference value to be handled.
+================================================
+(*RES OLD MSG 205
+Reference field for "%0" is too long.
+*)
+
+================================================
+Label brackets were found, but no value given between them
+================================================
+(*RES OLD MSG 130
+No value specified within Label.
+*)
+
+================================================
+Too many characters in a label to be handled.
+================================================
+(*RES OLD MSG 204
+Label field "%0" is too long.
+*)
+
+================================================
+the BYU "|" marker was found, but no BYU single-character ID was
+following.
+================================================
+(*RES OLD MSG 131
+An unexpected BYU Marker was found.
+*)
+
+================================================
+The BYU "|" and ID was found, but no value followed.
+================================================
+(*RES OLD MSG 132
+An empty BYU reference was found.
+*)
+
+================================================
+A reference was found that seemed to split itself over two or
+more lines.  This is not permitted.
+================================================
+(*RES OLD MSG 92
+A Reference seems to be split over more than one line.
+It was ignored.
+*)
+
+================================================
+A label was found that seemed to split itself over two or more
+lines.  This is not permitted.
+================================================
+(*RES OLD MSG 93
+A Label seems to be split over more than one line. It wasignored.
+*)
+
+================================================
+A rule for the text scrolling display in MAKBAS -- this shouldn't
+really be a resource!!
+================================================
+(*RES OLD MSG 173 
+------------------
+*)
+
+================================================
+Message to show in text display in MAKBAS when MAKBAS is not
+showing the text rolling by.
+================================================
+(*RES OLD MSG 174
+Display input text disabled.  Press F2 to restart display textagain.
+*)
+
+================================================
+Ending options for user when they push ESC during runtime
+processing.  Key options are:
+
+key 1: continue running
+key 2: stop immediately
+key 3: make database based on text processed up to now.
+================================================
+(*RES OLD CHE 1
+Ending Options: C)ontinue, A)bort, F)inish-Now:
+= C A F
+*)
+
+================================================
+A special version of the above message used only when MAKBAS is
+being debugged.
+
+define a 4th key and let us know what it is!
+================================================
+(*RES OLD CHE 6  
+Ending Options: C)ontinue, A)bort, F)inish-Now:
+= C A F T
+*)
+
+================================================
+Text for text scrolling window in MAKBAS to show when all text
+has been read.
+================================================
+(*RES OLD MSG 102
+*** End of Text ***
+*)
+
+================================================
+Run phase name -- sorting of types that were found in
+alphabetical order -- for display in "Status" field in RUN PHASE
+display, MNU 14.
+================================================
+(*RES OLD MSG 310
+Sorting Type Data
+*)
+
+================================================
+Run phase name -- preparing of pointers between different parts
+of the database -- for display in "Status" field in RUN PHASE
+display, MNU 14.
+================================================
+(*RES OLD MSG 103
+Preparing Index Pointers
+*)
+
+================================================
+Run phase name -- writing out the token information -- for
+display in "Status" field in RUN PHASE display, MNU 14.
+================================================
+(*RES OLD MSG 122
+Writing Token Data to DB
+*)
+
+================================================
+Run phase name -- writing out the occurrence information for
+types -- for display in "Status" field in RUN PHASE display, MNU
+14.
+================================================
+(*RES OLD MSG 123
+Writing Occurrence Data to DB
+*)
+
+================================================
+Run phase name -- writing out the type information for types --
+for display in "Status" field in RUN PHASE display, MNU 14.
+================================================
+(*RES OLD MSG 124
+Writing Type Data to DB
+*)

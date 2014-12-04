@@ -1,0 +1,96 @@
+DEFINITION MODULE DisplayDialog (* Window *) ;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+(*
+EXPORT QUALIFIED
+  (* type *) DisplayType, DisplayDataType, ColDataType,
+  (* vars *) DisplayData, CurrentDisplay,
+  (* proc *) CreateNewWindow, ChangeCurrentWindow,
+             CloseCurrentWindow, ModifyCurrentWindow,
+             SendInstructionToCurrent, InitializeAllActiveDisplays,
+             MoveToNextDisplayWindow, InitializeData,
+             TerminateAllActiveDisplays;
+*)
+
+TYPE
+   (* Note: keep Variable and Distribution in same relative loc in DisplayType *)
+   DisplayType = (None, Variable, Text, KWIC, Collocate, Distribution);
+
+   DistType = (DistByPos, DistByRef, DistByType, NormalizedDist);
+   DispOrg = (DispNatural, DispPosition, DispRef, DispType, DispTypeOnly );
+               (* DispRef not current used  j.b. *)
+
+   DistDataType = RECORD
+(*    MaxDistIDSize: CARDINAL; *)
+      CASE Type : DistType OF
+        DistByPos:
+          Start:   CARDINAL;
+          End:     CARDINAL;
+          ByValue: CARDINAL
+      | DistByRef, NormalizedDist:
+          DistRefName:  ARRAY[0..25] OF CHAR;
+          DistRefID:    INTEGER;
+          RefOrder:     BOOLEAN; (* m.s. *)
+      END;
+   END;
+
+   ColDataType = RECORD
+           ColBefore:	CARDINAL;
+           ColAfter:	CARDINAL;
+           ColUnitID:	INTEGER;
+           ColUnitName: ARRAY[0..25] OF CHAR;
+           ColOverLaps: BOOLEAN;
+           ColShowIntRslt: BOOLEAN;
+	END ;
+
+   DisplayDataType = RECORD
+(*     WindInfoSet:     BOOLEAN; *)
+(*     OnScreen:        BOOLEAN; *)
+       RefInfo:         ARRAY[0..100] OF CHAR;
+       EncodedRefInfo:	ARRAY[0..160] OF CHAR;
+       EncodedRefLen:	CARDINAL ;  (* note: EncodedRefInfo can contain 0C as StructIDs *)
+       CASE : DisplayType OF
+         Variable:
+           DispBefore:  CARDINAL;
+           DispAfter:   CARDINAL;
+           UnitID:      INTEGER;
+           ContextCount:CARDINAL;
+           UnitName:    ARRAY[0..25] OF CHAR;
+           VariableDispOrg: DispOrg;
+           ByPos:       BOOLEAN; (* transitional: to be removed j.b. *)
+       | Text:
+       | KWIC:
+           ShowText:    BOOLEAN;
+           KWICDispOrg:DispOrg;
+           DisplayBar  : BOOLEAN ;
+           HeadHiLite  : BOOLEAN ;
+           LineLength:  CARDINAL;
+           CitCentre:   CARDINAL;
+       | Distribution:
+           BlockChar:   CHAR;
+           DistData:    DistDataType
+       | Collocate:
+           ColData:  	ColDataType
+       | None:
+       END;
+   END;
+
+VAR
+  DisplayData:    ARRAY[Variable..Distribution] OF DisplayDataType;
+  CurrentDisplay: DisplayType;
+
+PROCEDURE InitializeData;
+
+END DisplayDialog.

@@ -1,0 +1,90 @@
+DEFINITION MODULE TDBBase;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+IMPORT FIO;
+FROM HyperDataModel IMPORT MaxDBTitleLength, IDType, HyperData, TDBTypeData,
+ (* type  *) HRecPntr, DBaseTitleType, TDBHeaderType, HOccurData ;
+FROM GlobalDefs IMPORT FileNameType, StrAny ;
+
+(*
+EXPORT QUALIFIED
+ (* const *) MaxNoMergeFiles,
+ (* vars  *) InFile, InFilePos, InFileIdx, InFileRec, InFilePres, InFileHeader,
+             NoInFiles, OutFile, OutFileName, OutHeader,
+ (* Procs *) WriteDBRec, InSeek GetRec, AddOccurToDB,
+		InitAddPtrDataToDB, AddPtrDataToDB, FinishAddPtrDataToDB,
+		InitAddTypeDataToDB, AddTypeDataToDB, FinishAddTypeDataToDB ;
+*)
+CONST
+   MaxNoMergeFiles = 4;
+
+TYPE
+   RefsNamePntr = POINTER TO RefsNameData;
+   RefsNameList = ARRAY[0..1000] OF RefsNamePntr;
+   RefsNameData = RECORD
+       Next:  RefsNamePntr;
+       ID:    INTEGER;
+       Pref:  CHAR;  (* used as 1 byte # *)
+       Name:  StrAny;
+   END;
+
+   InFileDataType = RECORD
+     FileID:   FIO.File;
+     Pos:      CARDINAL;
+     Idx:      CARDINAL;
+     RefIDN:   CARDINAL;
+     RefIDL:   POINTER TO RefsNameList;
+     Header:   TDBHeaderType;
+     Rec:      HyperData;
+   END;
+
+VAR
+  InFile:      ARRAY[0..MaxNoMergeFiles-1] OF InFileDataType;
+
+  NoInFiles:   CARDINAL;
+  OutFile:     FIO.File;
+  OutFileName: FileNameType ;
+  OutFileRec:  HyperData;
+  OutPos:      HRecPntr;
+  OutHeader:   TDBHeaderType ;
+  OutStartRef: ARRAY[0..40] OF CHAR;
+
+  RefsNames:   RefsNamePntr;
+  NoRefIDs:    CARDINAL;
+  FileNID:     INTEGER;
+
+PROCEDURE WriteDBRec;
+
+PROCEDURE InSeek(No:    CARDINAL; Rec:   CARDINAL);
+
+PROCEDURE GetRec(No:    CARDINAL);
+
+PROCEDURE InitAddPtrDataToDB() ;
+
+PROCEDURE AddPtrDataToDB( Data : ARRAY OF BYTE ; (* << changed j.b. (was CHAR) *)
+                          Len  : CARDINAL;
+                      VAR RPos : HRecPntr);
+
+PROCEDURE FinishAddPtrDataToDB() ;
+
+PROCEDURE InitAddTypeDataToDB() ;
+
+PROCEDURE AddTypeDataToDB( TDBData : TDBTypeData; VAR RPos : HRecPntr);
+
+PROCEDURE FinishAddTypeDataToDB() ;
+
+PROCEDURE AddOccurToDB( Data : HOccurData ) ;
+
+END TDBBase.

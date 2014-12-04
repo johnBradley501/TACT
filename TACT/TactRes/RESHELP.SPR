@@ -1,0 +1,72 @@
+R 65,T 5
+The HLP resource is used to provide the text for the TACTprograms' help facility.
+
+@Section(An Example)
+A typical example:
+
+R 76,T 5
+@begin(example,size= 9 pt)
+(*RES OLD HLP 47
+= B 0
+= H 2
+= L 37
+= S 31
+{B}Help: TACT Distribution{N}
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+For copies of TACT and the TACT Guide please contact:
+
+     TACT Distribution,
+     Centre for Computing in the Humanities,
+     Robarts Library, Room 14297A
+     University of Toronto,
+     Toronto, Ontario M5S 1A5
+     CANADA
+
+     Telephone: (416) 978-4238
+     E-Mail: CCH@@UTOREPAS.Bitnet
+
+TACT is shareware, for the terms of the licence type "{B}L{N}" now.
+The Centre for Computing in the Humanities does not provide
+support for TACT.  For information on this type "{B}S{N}" now.
+
+
+                          {B}For More Help{N}
+
+{B}For Help on{N}                                               {B}Type{N}
+TACT Basic Help . . . . . . . . . . . . . . . . . . . . . . . . B
+Intro to Help in TACT . . . . . . . . . . . . . . . . . . . . . H
+TACT Licensing Terms. . . . . . . . . . . . . . . . . . . . . . L
+TACT Support: Who and Where . . . . . . . . . . . . . . . . . . S
+*)
+@end(example)
+R 65,T 5
+
+@Section(HLP Resource Concepts)
+Help resources are usually much larger than the other resources,and are provided to you in a different RSI file called HELPS.RSI. The TACT developers actually created them in a different way thanthe way we are giving them to you -- using a special version ofthe SPRINT word processor that would allow us to freely work withthe text as we would with any word-processor document (usingword-wrap, for example).  Then, when the text was OK, the SPRINTversion could create suitable RSI files.  This proved to be thebest way to work with HLP resources, but is technically somewhatmore complex, and would require you to be familiar with SPRINT aswell.  If you are interested, please talk to us.
+
+In HLP resources, each line will appear as a different line inthe help item when it is actually displayed via the TACT programthat can use it -- both line endings and all spaces are importantin HLP resources.  Furthermore, you can have as many lines as youlike in the help resources.
+
+There are two types of lines -- the lines beginning "=" are "keyoption" lines (described shortly), and the other lines are "text"lines.
+
+When the resource is being used, text lines are simply displayedby the TACT program as is.  Unlike text lines in other resources,HLP lines can contain bolded text.  To indicate that a particularpart of a text line is to be bolded code "{B}" to start, (case ofthe "B" matters), and "{N}" to end.  The setting of bolding isforgotten at the end of each line, and so, if needed over severallines must be repeated on each one.  Note that, of course, the"{B}" and "{N}" sequences will take up space in the resourcedefinition, but will not take up any space when the line isactually displayed by the TACT program.  Remember this whencreating text to be centered in a line.  The actual symbols "{B}"and "{N}" can be changed to something else by providing suitablespecifications within the FILE.XDT or XLATTABL.DAT files thatRESMAN sees.  For more information about this, contact the TACTprogrammers.
+
+@Section(How Help Items Look)
+All TACT help items are formatted with the same general look --described as follows:
+
+BEGIN BULLETS
+Each line is generally a maximum of 75 characters.
+
+Each resource begins with text lines that name the help item, andare followed by a solid line.
+
+The body of the help follows.
+
+The end each help contains the section "For more Help", and isfollowed by a list showing what other helps are available, andwhat key to strike to get them.
+
+The "key action" lines (beginning with "=") actually tell theTACT program what other helps are immediately accessible, andwhat key to push to get them.  The TACT program user will not seeany of these lines -- you must be sure that the contents of the"For more Help" section accurately describes what's available,and how to get it.  The title of other accessible helps shouldmatch their names.
+END BULLETS
+
+@Section(Key Action Lines in HLP resources)
+Key action lines can appear anywhere in the resource text, and inany order.  They are never shown directly to the TACT user whenthe help resource is being displayed.  By convention only, theyalways appear first in each HLP resource in the HELPS.RSI file,but you can move them elsewhere when you modify the resource. The 4th key action line shown in our example ("@t{= S 31}") willtell the TACT program that when the user is viewing thisparticular help (item 47), that they can push the "S" key on thekeyboard, and, if they do, it should jump immediately to helpitem 31 (i.e., to HLP resource number 31).  Note the last line ofthe resource text.  Although the user will not see the key actionline displayed, they will see this one.  There the help item userwould notice that typing "S" will get them resource "TACTSupport: Who and Where".  The line "@t{= S 31}" will make TACT goto HLP resource 31 when the "S" key is pushed.  It is your job toensure that HLP resource 31 is the correct one -- the materialcalled "TACT Support: Who and Where".  It is also your job toensure that all the keys a user can type are described in thetext of the HLP resource -- because this is the only way the HLPuser has to know what choices are available.
+
+Like letters in the CHE resource, you are restricted to regularASCII characters -- no special characters or diacritics.  Similaras well is the fact that the letter the user types is alwaystranslated into capitals before used to choose a new help item.

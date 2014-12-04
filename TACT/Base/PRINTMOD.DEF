@@ -1,0 +1,60 @@
+DEFINITION MODULE PrintModule ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM Translations IMPORT XFileType;
+FROM KeyTranslation IMPORT TabInfo;
+
+(*
+EXPORT QUALIFIED
+   (* Type *) PrintActionType, AbortProc, PrintProcType, FileNameVerifyType,
+   (* Var  *) PrintDest, LinesPerPage,
+   (* Proc *) AbortForFileIO, AbortForPrinter, WriteWithTabs,
+              PrintMaster, InitialPrintModule ;
+*)
+
+TYPE
+   PrintActionType = ( ToDisk, ToPrinter ) ;
+   AbortProc = PROCEDURE(): BOOLEAN;
+   PrintProcType = PROCEDURE(VAR XFileType,AbortProc) ;
+   FileNameVerifyType = PROCEDURE(VAR ARRAY OF CHAR,(* file name *)
+                                  ARRAY OF CHAR,    (* extension *)
+                                  VAR BOOLEAN,      (* TRUE = redisplay field *)
+                                  VAR BOOLEAN);     (* TRUE = force re-edit *)
+VAR
+   LinesPerPage : CARDINAL ;
+   PrintDest    : PrintActionType ;
+
+PROCEDURE AbortForFileIO(): BOOLEAN;
+
+PROCEDURE AbortForPrinter(): BOOLEAN;
+
+PROCEDURE WriteWithTabs(VAR file:   XFileType;
+                            text:   ARRAY OF CHAR;
+                            Tabs:   ARRAY OF TabInfo): BOOLEAN;
+
+PROCEDURE PrintMaster( Destination : PrintActionType;
+                       DoPrint :     PrintProcType;
+                   VAR DoRead:       BOOLEAN;
+                   VAR ch:           CHAR;
+                   VAR FunctKey:     BOOLEAN);
+
+PROCEDURE InitialPrintModule(VAR FileNameModel: ARRAY OF CHAR; (* all read only *)
+                             VAR ExitList:      ARRAY OF CHAR;
+                             VAR TermList:      ARRAY OF CHAR;
+                                 VerifyProc:    FileNameVerifyType);
+
+PROCEDURE TerminatePrintModule;
+
+END PrintModule .

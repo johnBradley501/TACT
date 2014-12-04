@@ -1,0 +1,525 @@
+<HTML>
+<HEAD>
+    <TITLE>Running sgml2tdb</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<H3>Running sgml2tdb<HR></H3>
+<I>sgml2tdb</I> looks like a simple batch DOS program which is executed
+from the DOS command prompt. However, it uses the IBM PCs extended memory,
+and should be operational under DOS, Windows NT, Windows 3.1 (in a DOS window)
+and Windows 95. Depending upon the context in which <I>sgml2tdb</I> is operating,
+<I>smgl2tdb</I> may require access to RTM.EXE or DPMI16BI.OVL (distributed
+with <I>smgl2tdb) </I>and will automatically load them if needed<I>.</I>
+Simply ensure that these files are in the same directory as <I>sgml2tdb.exe
+</I>is. <BR>
+<BR>
+<I>sgml2tdb</I> is started from the DOS command line. The command line syntax
+is: <BR>
+<BR>
+<B>sgml2tdb </B>[<B>-degprsu</B>] [<B>-f file</B>] [<B>-i name </B>] [<B>-x
+translation</B>] [<I>filenames</I>] <BR>
+<BR>
+The SGML document entity to be processed is contained in the filename or
+filenames given on the command line. Note that the document entity may be
+spread amongst several files; for example, the SGML declaration, document
+type declaration and document instance set could each be in a separate file.
+If no filenames are specified, then <I>sgml2tdb</I> will read the document
+entity from the standard input. <BR>
+<BR>
+The following options are available (most are inherited into <I>sgml2tdb</I>
+from <I>sgmls</I>): 
+<UL>
+  <LI>-d: Warn about duplicate entity declarations. 
+  <LI>-e: Describe open entities in error messages. Error messages always
+include the position of the most recently opened external entity. 
+  <LI><B>-f file</B>: Redirect errors to file . 
+  <LI><B>-g</B>: Show the GI of open elements in error messages. 
+  <LI><B>-i name</B>: Pretend that &lt;!ENTITY % name &quot;INCLUDE&quot;&gt;
+occurs at the start of the document type declaration subset in the SGML
+document entity. Since repeated definitions of an entity are ignored, this
+definition will take precedence over any other definitions of this entity
+in the document type declaration. Multiple -I options are allowed. If the
+SGML declaration replaces the reserved name INCLUDE then the new reserved
+name will be the replacement text of the entity. Typically the document
+type declaration will contain &lt;!ENTITY % name &quot;IGNORE&quot;&gt;
+and will use % name ; in the status keyword specification of a marked section
+declaration. In this case the effect of the option will be to cause the
+marked section not to be ignored. 
+  <LI><B>-p</B>: Parse only the prolog. Sgml2tdb will exit after parsing
+the document type declaration. Implies -s. 
+  <LI><B>-r</B>:Warn about defaulted references. 
+  <LI><B>-s</B>: Suppress output. Error messages will still be printed.
+  <LI><B>-u</B>: Warn about undefined elements: elements used in the DTD
+but not defined. Also warn about undefined short reference maps. 
+</UL>
+<B>-x translation</B>: Use the translation specified to translate between
+the external character set used in the SGML document and the internal TACT
+character set instead of the default contained in the file &quot;sgml2tdb.xdt&quot;.
+If specified, the given translation name has the characters &quot;.xdt&quot;
+appended to it, and <I>sgml2tdb</I> attempts to open a file with the resultant
+name. This file will contain the translation information. 
+<H3><A NAME="anchor22476622"></A>The <I>sgml2tdb</I> Entity Manager</H3>
+The <I>sgml2tdb</I> entity manager is essentially the same as the one found
+in <I>sgmls</I>, and most of the text that follows that describes it comes
+from the documentation for <I>sgmls</I>. <BR>
+<BR>
+An external entity resides in one or more files. The entity manager component
+of <I>sgml2tdb</I> maps a sequence of files into an entity in three sequential
+stages: 
+<OL>
+  <LI>each carriage return character is turned into a non-SGML character;
+  <LI>each newline character is turned into a record end character, and
+at the same time a record start character is inserted at the beginning of
+each line; 
+  <LI>the files are concatenated. 
+</OL>
+A system identifier is interpreted as a list of filenames separated by semi-colons.
+If no system identifier is supplied, then the entity manager will attempt
+to generate a filename using the public identifier (if there is one) and
+other information available to it. Notation identifiers are not subject
+to this treatment. This process is controlled by the environment variable
+<I>SGML_PATH. </I>This contains a semicolon-separated list of filename templates.
+A filename template is a filename that may contain substitution fields;
+a substitution field is a<B> % </B>character followed by a single letter
+that indicates the value of the substitution (remember that under DOS, any
+&quot;%&quot; character must be duplicated a second time if it is to represent
+itself in the environment variable). If <I>SGML_PATH</I> uses the <B>%S
+</B>field (the value of which is the system identifier), then the entity
+manager will also use <I>SGML_PATH</I> to generate a filename when a system
+identifier that does not contain any semi-colons is supplied. The value
+of a substitution can either be a string or it can be null . <BR>
+<BR>
+The entity manager transforms the list of filename templates into a list
+of filenames by substituting for each substitution field and discarding
+any template that contained a substitution field whose value was null. It
+then uses the first resulting filename that exists and is readable. Substitution
+values are transformed before being used for substitution: firstly, any
+names that were subject to upper case substitution are folded to lower case;
+secondly, the characters <B>+,./:=? </B>and space characters are deleted.
+<BR>
+<BR>
+The value of the<B> %S </B>field is not transformed. The values of substitution
+fields are as follows: 
+<UL>
+  <LI><B>%%</B>: A single % . 
+  <LI><B>%D: </B>The entity's data content notation. This substitution will
+succeed only for external data entities. 
+  <LI><B>%N</B>: The entity, notation or document type name. 
+  <LI><B>%P</B>: The public identifier if there was a public identifier,
+otherwise null. 
+  <LI><B>%S: </B>The system identifier if there was a system identifier,
+otherwise null. 
+  <LI><B>%X: </B>(This is provided mainly for compatibility with ARCSGML.)
+</UL>
+A three-letter string chosen as follows: 
+<PRE>
+                           |            | With public identifier
+                           |            +-------------+-----------
+                           | No public  |   Device    |  Device
+                           | identifier | independent | dependent
+---------------------------+------------+-------------+-----------
+Data or subdocument entity | nsd        | pns         | vns
+General SGML text entity   | gml        | pge         | vge
+Parameter entity           | spe        | ppe         | vpe
+Document type definition   | dtd        | pdt         | vdt
+Link process definition    | lpd        | plp         | vlp
+</PRE>
+The device dependent version is selected if the public text class allows
+a public text display version but no public text display version was specified.
+<UL>
+  <LI><B>%Y: </B>The type of thing for which the filename is being generated:
+</UL>
+<PRE>
+              SGML subdocument entity    sgml
+              Data entity                data
+              General text entity        text
+              Parameter entity           parm
+              Document type definition   dtd
+              Link process definition    lpd
+</PRE>
+The value of the following substitution fields will be null unless a valid
+formal public identifier was supplied. 
+<UL>
+  <LI><B>%A: </B>Null if the text identifier in the formal public identifier
+contains an unavailable text indicator, otherwise the empty string. 
+  <LI><B>%C: </B>The public text class, mapped to lower case. 
+  <LI><B>%E: </B>The public text designating sequence (escape sequence)
+if the public text class is CHARSET, otherwise null. 
+  <LI><B>%I: </B>The empty string if the owner identifier in the formal
+public identifier is an ISO owner identifier, otherwise null. 
+  <LI><B>%L: </B>The public text language, mapped to lower case, unless
+the public text class is CHARSET , in which case null. 
+  <LI><B>%O: </B>The owner identifier (with the <B>+// </B>or <B>-// </B>prefix
+stripped.) 
+  <LI><B>%R: </B>The empty string if the owner identifier in the formal
+public identifier is a registered owner identifier, otherwise null. 
+  <LI><B>%T: </B>The public text description. 
+  <LI><B>%U: </B>The empty string if the owner identifier in the formal
+public identifier is an unregistered owner identifier, otherwise null. 
+  <LI><B>%V: </B>The public text display version. This substitution will
+be null if the public text class does not allow a display version or if
+no version was specified. If an empty version was specified, a value of
+<B>default </B>will be used. 
+</UL>
+<H5>An example of SGML_PATH</H5>
+Here is an example of a <I>set</I> command for SGML_PATH: 
+<PRE>
+set sgml_path=c:\sgml\%%S;c:\sgml\%%N.%%X
+</PRE>
+Suppose that the following text began a document: 
+<PRE>
+&lt;!DOCTYPE TEI.2 PUBLIC &quot;-//TEI//DTD Tei Lite 1.0//EN&quot; &quot;teilite.dtd&quot; &gt;
+</PRE>
+The first portion of SGML_PATH is &quot;<TT>c:\sgml\%%S</TT>&quot;. This
+causes <I>sgml2tdb</I> to take the system identifier &quot; <TT>teilite.dtd</TT>&quot;
+and append &quot;<TT>c:\sgml\</TT>&quot; to the front of it. If the resulting
+file &quot;<TT>c:\sgml\teilite.dtd </TT>&quot; exists it will be used as
+the source for the DTD. If the file does not exist <I>sgml2tdb</I> goes
+on to the second portion of SGML_PATH: &quot;<TT>c:\sgml\%%N.%%X</TT>&quot;.
+The document type name is &quot;<TT>TEI.2</TT>&quot;, and the extension
+(given that there is a public identifier specified) is &quot; <TT>vdt</TT>&quot;
+resulting in the (illegal for DOS) filename of &quot;<TT>c:\sgml\tei.2.vdt</TT>&quot;.
+<H2><A NAME="anchor22506245"></A>File Types</H2>
+As a part of the process of translating SGML documents into TACT TDBs, it
+is natural that files types and concepts from both the SGML and TACT worlds
+are needed. They are described briefly in this section: 
+<H4>The Document Entity File(s)</H4>
+The main object of <I>sgml2tdb</I> is to process what in SGML terminology
+is called the Document Entity and to create from it, and based on the information
+in other files, a TDB file. Usually, the document entity file is explicitly
+named on the command line that starts <I>sgml2tdb</I>. Although it will
+be usually the case that the entire text to be processed will be contained
+in a single file, this is not necessary. If the text of a single Document
+Entity is split across several files, simply name them in the correct order
+on the <I>sgml2tdb</I> command line. <BR>
+<BR>
+The names of other SGML and <I>sgml2tdb</I> files that are needed are implied
+either from this file name, or from information that is in the document
+entity file: 
+<UL>
+  <LI>The TDB will be located in the same directory and will have the same
+name (except with the extension .TDB) as the first file in the document
+entity. 
+  <LI>The DTD will often be explicitly given at the beginning of the document
+entity. <I>sgml2tdb</I>'s <B>entity manager</B> will take this material
+that identifies the DTD that is needed and will try to locate a file that
+contains it. See the discussion of the <B><A HREF="#anchor22476622">entity
+manager</A></B> elsewhere. 
+  <LI>The epm and alp files tell <I>sgml2tdb</I> how to deal with word collection,
+text formatting, and collection of TACT ids for the TDB. The rules that
+specify how they are located are given below in the section that speaks
+about these files. 
+</UL>
+<H4>The SGML Declaration File</H4>
+The SGML declaration file contains information about the SGML document that
+permits <I>sgmls</I> (within <I>sgml2tdb</I>) to properly process it. A
+typical example of this file is shipped with <I>sgml2tdb</I> (created by
+Michael Sperberg-McQueen and Lou Burnard) and sets SGML parser parameters
+that permit the processing of TEI texts. You can find this file under the
+name &quot;<TT>TEISGML.DEC </TT>&quot; in the <I>sgml</I> subdirectory with
+other sgml files. <BR>
+<BR>
+If an SGML declaration file is needed it normally is read before the document
+entity. One way is to specify this is to explicitly code the declaration
+file in the file list on the command line, before naming the files that
+contain the document you wish to process: 
+<PRE>
+sgml2tdb sgml\teisgml.dec sample\crito.sgm
+</PRE>
+Here, the SGML declaration file &quot;teisgml.dec&quot; is explicitly given
+to <I>sgml2tdb</I> before the file &quot;crito.sgm&quot; that contains the
+document entity. <BR>
+<BR>
+[the following is a direct quote from the documentation for <I>sgmls </I>]
+The SGML declaration may be omitted, the following declaration will be implied:
+<PRE>
+&lt;!SGML &quot;ISO 8879:1986&quot;
+                                     CHARSET
+       BASESET  &quot;ISO 646-1983//CHARSET
+                 International Reference Version (IRV)//ESC 2/5 4/0&quot;
+       DESCSET    0  9 UNUSED
+                  9  2  9
+                 11  2 UNUSED
+                 13  1 13
+                 14 18 UNUSED
+                 32 95 32
+                127  1 UNUSED
+       CAPACITY PUBLIC  &quot;ISO 8879:1986//CAPACITY Reference//EN&quot;
+       SCOPE    DOCUMENT
+       SYNTAX   PUBLIC  &quot;ISO 8879:1986//SYNTAX Reference//EN&quot;
+                                    FEATURES
+       MINIMIZE DATATAG NO OMITTAG  YES          RANK     NO  SHORTTAG YES
+       LINK     SIMPLE  NO IMPLICIT NO           EXPLICIT NO
+       OTHER    CONCUR  NO SUBDOC   YES 99999999 FORMAL   YES
+                                  APPINFO NONE&gt;
+</PRE>
+with the exception that characters 128 through 254 will be assigned to DATACHAR.
+When exporting documents that use characters in this range, an accurate
+description of the upper half of the document character set should be added
+to this declaration. For ISO Latin-1, an appropriate description would be:
+<BR>
+<BR>
+<TT>BASESET &quot;ISO Registration Number 100//CHARSET<BR>
+ECMA-94 Right Part of Latin Alphabet Nr. 1//ESC 2/13 4/1&quot; <BR>
+DESCSET 128 32 UNUSED<BR>
+160 95 32<BR>
+255 1 UNUSED</TT> 
+<H4>The dtd file</H4>
+The <I>dtd</I> or <I>document type definition</I> file is a standard SGML
+file. It tells an SGML parser like <I>sgmls</I> what elements (and therefore
+what tags) are permitted within SGML documents, and in what context. The
+dtd file is key to any SGML application. <I>Conformance</I> of an SGML document
+simply means that the tags (and the elements they represent) are present
+in the document in a way permitted by the document's type -- as defined
+in the dtd file. <BR>
+<BR>
+Normally, the dtd that needs to be used to process an SGML document is identified
+right at the beginning of an SGML document. Suppose one was given an SGML
+document which began with the line: 
+<PRE>
+&lt;!DOCTYPE TEI.2 PUBLIC &quot;-//TEI//DTD Tei Lite 1.0//EN&quot; &quot;teilite.dtd&quot; &gt;
+</PRE>
+This information would identify the dtd to be used. In particular the &quot;public
+identifier&quot; of &quot;<TT>-//TEI//DTD Tei Lite 1.0//EN</TT>&quot; provides
+a machine-independant way of identifing a particular dtd file. In addition,
+a &quot;system identifier&quot; of &quot;<TT>teilite.dtd</TT>&quot; provides
+an identifier for a dtd file in terms of the system's (DOS's for <I>sgml2tdb</I>)
+file naming scheme. <BR>
+<BR>
+<I>sgml2tdb</I> uses the same mechanism (called the <A HREF="#anchor22476622">Entity
+Manager</A>) used in <I>sgmls</I> to take a specification like that shown
+above and translate it into reference to a particular directory and file
+name. 
+<H4>Entity Files</H4>
+Any SGML document may make reference to entities that reside in the computer
+system external to the document itself -- usually system files. Here is
+an example from the TEIlite DTD. 
+<PRE>
+&lt;!ENTITY % ISOlat1 PUBLIC &quot;ISO 8879-1986//ENTITIES Added Latin 1//EN&quot;&gt;
+%ISOlat1; 
+</PRE>
+The first line defines the entity, and the second invokes it. Here, only
+a public identifier is given to identify the file that is wished. The <I>sgml2tdb</I>
+<A HREF="#anchor22476622">entity manager</A> will rely on the setting of
+SGML_PATH to locate the given file. <BR>
+<BR>
+A small set of standard Entity files, configured for use within <I>sgml2tdb</I>,
+are provided in the <I>sgmls</I> subdirectory. 
+<H4>The Element Program File</H4>
+The element program file (normally with extension &quot;epm&quot;) is a
+file type that is unique to <I>sgml2tdb</I>. It contains several pieces
+of information, including the &quot;<A HREF="epl.htm">element programs</A>&quot;
+that tell <I>sgml2tdb</I> how the SGML markup should affect the formatting
+of the text, the setting of TACT reference IDs and, and how words are to
+be collected from the text. The collection of element programs are grouped
+together in the file and, collectively, are called the file's &quot;element
+program component&quot;. The other components are: 
+<UL>
+  <LI><I>The Reference Template</I>: the starting template that indicates
+what TACT ids are to be used to provide a reference citation in the UseBase
+displays. 
+  <LI><I>The Title</I>: the text that is to be stored in the TDB as the
+&quot;title&quot;. (in future versions of <I>sgml2tdb</I> it is to be expected
+that the TDB title will be assignable from the document text itself. 
+</UL>
+The components can occur in any order in the file. <I>sgml2tdb </I>file
+components begin with the name of the component enclosed in square brackets
+(the name is not case sensitive), and then following lines contain the material
+that belongs in that component. The names for the three components of the
+Element Program File are: <BR>
+<BR>
+<TT>[ELEMPROCS]</TT>: the element procedures component <BR>
+<BR>
+<TT>[REFTEMPLATE]</TT>: the reference template component <BR>
+<BR>
+<TT>[TITLE]</TT>: the TDB title component. <BR>
+<BR>
+The Element Procedures Component usually consists of many lines of text
+-- the format of which is defined by the element programming language. The
+Reference Template Component and TDB Title Component should each consist
+of only one line. 
+<H5>Locating the Element Program File</H5>
+<I>sgml2tdb</I> needs the Element Program file immediately after it has
+processed the SGML document prolog (usually containing the DTD). It looks
+in two places for the element program file. First, it takes the name of
+the SGML document file it is currently processing and replaces the file
+extension with the element program file extension &quot;epm&quot;. If this
+file exists, it will use it. If this file does not exist, it next takes
+the name of the file that contained the document type definition that it
+has just finished processing and replaces it's extension with &quot;epm&quot;.
+If this file exists it will use it. If neither of these two files can be
+found, <I>sgml2tdb</I> will stop after producing an error message. <BR>
+<BR>
+As an example, suppose that the SGML document file was &quot; <TT>C:\TEXTS\ALICE.SGM</TT>&quot;
+and that it contained a reference to the DTD file &quot;<TT>C:\SGML\TEILITE.DTD</TT>&quot;.
+<I>sgml2tdb </I>will first try to read &quot;<TT>C:\TEXTS\ALICE.EPM</TT>&quot;.
+If this fails, it will try to read &quot;<TT>C:\SGML\TEILITE.EPM </TT>&quot;.
+An implication of this is that <I>sgml2tdb</I> will first try to read an
+epm file that is associated with the SGML document. If that fails, it will
+try to read an epm file that is associated with the document's DTD. 
+
+<A NAME="alpfile"<H4>The Alphabet Information File</H4></A>
+The alphabet information file (normally with extension &quot;alp&quot;)
+is a file type that is unique to <I>sgml2tdb </I>although it is similar
+to a portion of <I>makebase</I>'s &quot;mks&quot; file. The Alphabetic Information
+file specifies what symbols will be recognized in the words in your text.
+There are four types of characters that may appear within words: 
+<UL>
+  <LI>letters: one or more consecutive symbols: a symbol used in words that
+controls word ordering. 
+  <LI>diacritics retained: symbols that do not affect word ordering but
+can appear within words. 
+  <LI>diacritics nonretained: symbols, similar to retained diacritics, that
+do not affect word ordering but will not be retained as a part of the word.
+  <LI>word separators: symbol that do not occur within words. 
+</UL>
+Here is an example of a typical alp file: 
+<PRE>
+[Alpha]
+  a b c d e f g h i j k l m n o p q r s t u v w x y z
+  0 1 2 3 4 5 6 7 8 9
+[DiacRet]
+  - \Acute\ \Grave\ \Circumflex\ \Cedilla\ \Umlaut\ \Tilde\ &quot;'&quot;
+[WordSepSeq]
+  --
+</PRE>
+Each type of symbol is identified by listing it in the appropriate file
+component. There are the three component names shown in the example: <TT>[Alpha]</TT>,
+<TT>[DiacRet]</TT> and <TT>[WordSepSeq] </TT>. The nonretained diacritic
+component name is <TT>[DIACNON]. </TT><BR>
+<BR>
+Typing Symbols <BR>
+<BR>
+The rules for entering symbols are similar to those used in <I>Makebase.
+</I>If you are familiar with them, you are also familiar with the essentials
+here. In any component in the alp file, the data may be spread across as
+many lines as you like. The new lines are treated as if they were blanks.
+<BR>
+<BR>
+To enter symbols for the letters or diacritic components, simply type in
+the symbols and separate them from other symbols on the same line with spaces.
+Thus, the line 
+<PRE>
+a b c d e f g h i j k l m n o p q r s t u v w x y z
+</PRE>
+contains 26 one-character symbols. A symbol may have more than one character.
+Thus, the line 
+<PRE>
+a b c ch d e f g h i j k l ll m n &ntilde; o p q r rr s t u v w x y z
+</PRE>
+contains 30 symbols, four of them having two characters: <I>ch </I>, <I>ll</I>,
+<I>rr</I> and <I>&ntilde;</I> (the last of which consists of the internal
+character &quot;tilde'', followed by the letter &quot;n''). This alphabet
+would be suitable for use with Spanish text. <BR>
+<BR>
+There are two other ways to specify characters in a symbol. 
+<OL>
+  <LI>In the first, the characters may be named, using the names from the
+<I>TACT</I> internal character set. For example, the sequence &quot;Acute
+a'' would represent the sequence made up of two characters from the internal
+character set called <I>Acute </I>and <I>a</I>. If you use this convention,
+surround any character names to be included <I>in a single symbol </I>by
+backslashes (&quot;\''): <B>\Acute a\</B>. Simple examples of this can be
+seen above, under &quot;Diacritics Retained''. There, various accents are
+provided as possible retained diacritics by giving their <I>TACT</I> internal
+character-set names and surrounding each one with a pair of backslashes.
+  <LI>In the second, any single string may be surrounded by either single
+or double quotation marks. This permits you to specify sequences that contain
+special characters such as the space, or the character &quot;\''. The special
+characters are: 
+</OL>
+<UL>
+  <LI>the space: &quot; &quot; 
+  <LI>backslash: \ 
+  <LI>open parenthesis: ( 
+  <LI>close parenthesis: ) 
+  <LI>quote/apostrophe: ' 
+  <LI>double quote: &quot; 
+</UL>
+There is an example in the sample alp file shown above: the apostrophe is
+a retained diacritic in the dialog box and, because it is a special symbol,
+is there surrounded by double quotation marks. <BR>
+<BR>
+Four more points need to be made about the alphabetic characters dialog
+box: 
+<UL>
+  <LI>The ordering of the letters in the alphabet controls the sorting order
+of words. 
+  <LI>Parentheses are used in the alphabet specification to give variants
+of the same letter, for sorting purposes. For example, if \s were the symbol
+for long-s, it would be entered &quot;. . . r (s \s ) t . . .''. For this
+reason, the opening and closing parentheses are also &quot;special'' characters
+that if meant to be interpreted as a part of a letter, must be surrounded
+by single or double quotation marks. 
+  <LI>All TACT programs, including <I>sgml2tdb, MakeBase</I> and <I>UseBase</I>,
+recognize the correspondence of upper- and lower-case letters in the Roman
+and Greek alphabets. Hence, there is no need to mention explicitly both
+upper- and lower-case forms. However, the case used in the alphabet command
+will control the case <I>UseBase </I>and other TACT programs use when they
+display headwords. 
+  <LI>Why are the digits given among the letters? Both <I>UseBase </I>and
+<I>sgml2tdb</I> use the character set you have specified here for purposes
+other than just for words in your text. Text in TACT id references and labels
+is encoded using this character set for sorting purposes. In addition, group
+names in <I>UseBase </I>must be constructed from these characters. Hence,
+by including digits in the alphabet, you allow <I>sgml2tdb</I> to differentiate
+text reference material that contains digits, and you allow yourself to
+put digits in the names of <I>UseBase</I> groups. 
+</UL>
+Any<I> </I>character not otherwise defined as a symbol is automatically
+treated by <I>sgml2tdb </I>as a word separator. Why, then, do we need to
+specify that a certain symbol is a word separator? Consider this example:
+a text uses &quot;--&quot; to represent a dash, and it is not separated
+from the words that surround it by a space (e.g., <I>name--that</I>). If
+you define the hyphen character as a retained diacritic, then <I>sgml2tdb
+</I>will not understand that <I>name--that</I> includes two words, and not
+one. It must must be told that &quot;--'' is not two single hyphens in a
+row, but instead is a separate symbol in its own right, and separates different
+words. Similarly, this option can also be used to distinguish between a
+single period that marks the end of a sentence, and three periods that are
+an ellipsis. 
+<H5>Locating the Alphabet Information File</H5>
+<I>sgml2tdb</I> needs the Alphabet Information file immediately after it
+has processed the SGML document prolog (usually containing the DTD), and
+it uses essentially the same mechanism to locate it. Like the element program
+file, it looks in two places. First, it takes the name of the SGML document
+file it is currently processing and replaces the file extension with the
+alphabet information file extension &quot;alp&quot;. If this file exists,
+it will use it. If this file does not exist, it next takes the name of the
+file that contained the document type definition that it has just finished
+processing and replaces it's extension with &quot;alp&quot;. If this file
+exists it will use it. If neither of these two files can be found, <I>sgml2tdb</I>
+will stop after producing an error message. <BR>
+<BR>
+As an example, suppose that the SGML document file was &quot; <TT>C:\TEXTS\ALICE.SGM</TT>&quot;
+and that it contained a reference to the DTD file &quot;<TT>C:\SGML\TEILITE.DTD</TT>&quot;.
+<I>sgml2tdb </I>will first try to read &quot;<TT>C:\TEXTS\ALICE.ALP</TT>&quot;.
+If this fails, it will try to read &quot;<TT>C:\SGML\TEILITE.ALP </TT>&quot;.
+An implication of this is that <I>sgml2tdb</I> will first try to read an
+alp file that is associated with the SGML document. If that fails, it will
+try to read an alp file that is associated with the document's DTD. 
+<H4>XDT Files</H4>
+XDT files specify how the text of the SGML document is to be translated
+into the TACT internal character set. The file's format is exactly the same
+as XDT files used throughout the rest of the TACT system, and the reader
+is referred to other TACT documentation for information about how they work.
+<BR>
+<BR>
+Unless told to do otherwise, <I>sgml2tdb</I> will use a file with the name
+&quot;<TT>sgml2tdb.xdt</TT>&quot;. However, the &quot;-x&quot; option can
+be specified on the DOS command line that invokes <I>sgml2tdb</I> to specify
+a different XDT name. <BR>
+<BR>
+In the same way as for XDT files used by other TACT programs, <I>sgml2tdb</I>
+will first look in the current directory for the given file name, and then
+will check the list of directories given in the <A NAME="anchor22564419"></A>TACTPATH
+environment variable. 
+<H4>TACTJB.RES File</H4>
+Several resources that <I>sgml2tdb</I> needs to do its work are stored in
+the file TACTJB.RES. This file is not to be changed by you. <I>sgml2tdb</I>
+will locate this file by first looking in the current directory, and then
+checking the list of directories given in the TACTPATH environment variable.<HR>
+<P><CENTER>[<A HREF="main.htm">sgml2tdb home</A> | <A HREF="epl.htm">The
+Element Program Language</A>]</CENTER>
+</BODY>
+</HTML>

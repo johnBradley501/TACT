@@ -1,0 +1,52 @@
+DEFINITION MODULE ScrollMessages;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+
+FROM GlobalDefs IMPORT StrAny;
+FROM PositionManagement IMPORT PositionItem;
+FROM ListData IMPORT DataItemPntr;
+
+(*
+EXPORT QUALIFIED
+   (* const*) SizeOfLineInfoHeader,
+   (* type *) ScrollInstruction, ReturnInstruction, LineInformation,
+              LineInfoPntr, ScrollInstructionPacket, ScrollKey;
+*)
+
+CONST
+   SizeOfLineInfoHeader = 7; (* size of most items in LineInformation RECORD *)
+
+TYPE
+   ScrollKey = (UpKey, DownKey, InitKey, TermKey, CloseDownKey,
+                PgUpKey, PgDnKey, HomeKey, EndKey, RightKey, LeftKey, REndKey,
+                LEndKey, AltPgUpKey, AltPgDnKey);
+   ScrollInstruction = (Up, Down, Initialize, Top, Terminate, CloseDown);
+   ReturnInstruction = (ReturnLine, NoReturnLine);
+   LineInfoPntr = POINTER TO LineInformation;
+   LineInformation = RECORD
+       Size:      CARDINAL;
+       CASE : BOOLEAN OF
+         TRUE:
+            From:      PositionItem;
+            LineGot:   BOOLEAN;
+            Text:      StrAny |
+         FALSE:
+            FromDP:    DataItemPntr (* LineGot and Text used here also jb *)
+         END
+   END;
+   ScrollInstructionPacket = RECORD
+       Scroll:    ScrollInstruction;
+       Return:    ReturnInstruction;
+   END;
+END ScrollMessages.

@@ -1,0 +1,828 @@
+             >>>> Common Resources <<<<<
+
+Copyright 1990 John Bradley, University of Toronto
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License. 
+
+
+In this file we have the resources that are shared by all
+programs in the TACT system.
+
+================================================
+The following MSG resource contains two pieces of information.
+The part "1.2" is the version number of the TACT system.  DO NOT
+CHANGE this!!!  All TACT programs check this number to ensure
+that they are seeing the correct RES file.  If the number is
+different from this, the program assumes that wrong RES file was
+found and will not run!!
+
+The rest of the text is the date of the version.  Please say
+"June 1990" in whatever language you are working in, and include
+the "/(" and ")" exactly as shown.
+================================================
+(*RES OLD MSG 203
+1.2/(June 1990)
+*)
+
+================================================
+The following DTA resource gives TACT the name of the 12 months. 
+These names are used principally to display the creation dates of
+files from within TACT programs.
+================================================
+(*RES OLD DTA 0
+January February March April May June July August September
+October November December
+*)
+================================================
+The following item establishes the order of the date display. 
+"%0" is where the Month name is to go (from DTA 0), "%1" is the
+day number within the month, and "%3" is the year.  You can
+change the order, or change some other aspect of the formatting
+(notice the "," in the original form of this item) to reflect
+national preferences.
+================================================
+(*RES OLD MSG 26
+%0 %1, %3
+*)
+
+================================================
+The following series of messages are used when a TACT program
+detects an error when opening a file.  Most correspond to
+messages reported by DOS.  The first should never occur, but
+indicates a failure within Modula-II to open a file that is not a
+DOS responsibilitly.
+================================================
+(*RES OLD MSG 0
+M2 FileIO Internal Error
+*)
+
+(*RES OLD MSG 1
+File not found
+*)
+
+(*RES OLD MSG 2
+File Already Exists
+*)
+
+(*RES OLD MSG 3
+Path Not Found
+*)
+
+(*RES OLD MSG 4
+Too Many Files
+*)
+
+(*RES OLD MSG 5
+Device Full
+*)
+
+(*RES OLD MSG 6
+Directory Full
+*)
+
+(*RES OLD MSG 7
+File Access Denied
+*)
+
+(*RES OLD MSG 8
+Device Access Denied
+*)
+
+(*RES OLD MSG 9
+Invalid File Handle
+*)
+
+(*RES OLD MSG 10
+Insufficient Memory for IO
+*)
+
+(*RES OLD MSG 11
+No Such Device
+*)
+
+(*RES OLD MSG 12
+Device Not Ready
+*)
+
+(*RES OLD MSG 13
+End of Medium
+*)
+
+(*RES OLD MSG 14
+Data Error
+*)
+
+(*RES OLD MSG 15
+Device Failure
+*)
+
+(*RES OLD MSG 16
+Failure during File Opening
+*)
+
+(*RES OLD MSG 17
+Failure during File Creation
+*)
+
+(*RES OLD MSG 18
+Failure during writing to file
+*)
+
+(*RES OLD MSG 19
+Failure during File Closing
+*)
+
+(*RES OLD MSG 20
+Failure during reading from file
+*)
+
+(*RES OLD MSG 21
+Insufficient Data
+*)
+
+(*RES OLD MSG 22
+Error in Translation
+*)
+
+(*RES OLD MSG 23
+Unknown IO Error
+*)
+================================================
+When one of the above messages is needed some TACT programs
+precede the display with (in English) the label "DOS Reports:". 
+The following resource provides this text.
+================================================
+
+(*RES OLD MSG 91
+DOS reports:
+*)
+
+================================================
+Another general way to report that a DOS file is not found. "%0"
+will contain the name of the file the TACT program is looking
+for.
+================================================
+(*RES OLD MSG 24
+File %0 not found.
+*)
+
+================================================
+Yet another way to report DOS file IO error messages!  "%0" will
+contain the file name, "%1" will be the message (usually,
+provided via one of the resources listed above)
+================================================
+(*RES OLD MSG 25
+File %0: %1
+*)
+
+================================================
+The following messages appear when there are problems parsing
+translation specification lines in XLATTABL.DAT or *.XDT.  Since
+translation may not yet be in place, try to avoid using accented
+characters within these messages!! (perhaps impossible, talk to
+the TACT programmers if this is really a problem)
+
+The following message appears if one XLATTABL.DAT or *.XDT line
+contains more than one mode character.  The offending character
+is substituted for "%0".
+================================================
+(*RES OLD MSG 224
+A second mode character "%0" was given
+*)
+
+================================================
+The following message appears if one XLATTABL.DAT or *.XDT line
+contains more than one direction character (">" or "<").  The
+offending character is substituted for "%0".
+================================================
+(*RES OLD MSG 210
+A second direction character "%0" was given
+*)
+
+================================================
+The following message appears if a translation field on one
+XLATTABL.DAT or *.XDT line seems to be missing the closing
+delimiter.  The character the program is looking for is
+substituted for "%0".
+================================================
+(*RES OLD MSG 27
+Missing Delimiter "%0"
+*)
+
+================================================
+The following message appears if a translation field on one
+XLATTABL.DAT or *.XDT line results in too many characters.  The
+translation field name is substituted for "%0".
+================================================
+(*RES OLD MSG 28
+Actual Length of %0 is too large.
+*)
+
+================================================
+The following message appears if a character name in a particular
+external character set translation field in a XLATTABL.DAT or
+*.XDT line is not legal.  The offending name is in %0, the name
+of the translation field containing it is in %1.
+================================================
+(*RES OLD MSG 29
+Character Name "%0" is illegal -- too long in %1 Spec
+*)
+
+================================================
+The following message appears if a translation field for the
+INTERNAL character set on one XLATTABL.DAT or *.XDT line results
+in too many characters.
+================================================
+(*RES OLD MSG 30
+Too Many Characters for Internal
+*)
+
+================================================
+The following message appears if a character name in the interal
+character set translation field in a XLATTABL.DAT or *.XDT line
+is not legal.  The offending name is in %0.
+================================================
+(*RES OLD MSG 31
+Internal Character Name "%0" is not recognized.
+*)
+
+================================================
+The following message appears if a translation field ends
+unexectedly in a XLATTABL.DAT or *.XDT line.  The last name the
+program found is shown in %0.  The translation field name that
+seems to be incorrect appears in %0.
+================================================
+(*RES OLD MSG 32
+Unexpected end of string after "%0" for Device %1
+*)
+
+================================================
+This message appears when the TACT program finds an illegal name
+following "ALT", "SHIFT" or "CTRL" in an external translation
+field in XLATTABL.DAT or *.XDT.  One of "ALT"... will appear in
+%0, the offending name in %1, and the translation field name in
+%2.
+================================================
+(*RES OLD MSG 33
+Character Name "%0" %1 is not recognized for Device %2
+*)
+
+================================================
+The NULL character "00" is not permitted in any external field
+definition within XLATTABL.DAT or *.XDT.
+================================================
+(*RES OLD MSG 34
+Code 00 is not allowed: %0
+*)
+
+================================================
+This message is used for a name in an external translation field
+that is illegal (and not associated with ALT, CTRL or SHIFT). 
+The offending name is in %0, the name of the translation field in
+%1.
+================================================
+(*RES OLD MSG 35
+Character Name "%0" is not recognized for Device %1
+*)
+
+================================================
+This message appears when the external translation field results
+in too many characters.  The offending field name is shown in %0.
+================================================
+(*RES OLD MSG 36
+Sequence too long for Device %0
+*)
+
+================================================
+The following names are used by the TACT program when either
+showing parts a translation field (in msg 33 -- above -- for
+example) or when processing XLATTABL.DAT and *.XDT.  Notice that
+the names are given in a "DTA" type resource -- not "MSG".
+
+The first is the name of the interanl character set "INTERNAL" in
+English; the second is the name of the keyboard Shift key:
+"SHIFT" in English.  The third is the "ALT" key, and the fourth
+the "CTRL" key.  If these last three names are changed
+XLATTABL.DAT and *.XDT files will have to be changed as well to
+reflect the new naming conventions.
+================================================
+(*RES OLD DTA 2
+INTERNAL SHIFT ALT CTRL
+*)
+
+================================================
+This message occurs if the user tries to code a mode character in
+from of the INTERNAL translation field in XLATTABL.DAT or *.XDT
+lines.  %0 is the character the TACT program thinks is a mode
+character.
+================================================
+(*RES OLD MSG 225
+Mode Character "%0" is not allowed in front of INTERNAL string
+*)
+
+================================================
+This message appears when "~" is coded instead of a required
+translation field (for example the Internal field) in
+XLATTABL.DAT or *.XDT lines.
+================================================
+(*RES OLD MSG 211
+Unspecified character indicator "~" is not allowed instead of an
+INTERNAL string
+*)
+
+================================================
+This message occurs if the user tries to code a direction
+character ("<" or ">") in front of the INTERNAL translation field
+in XLATTABL.DAT or *.XDT lines, where it is not permitted.  %0 is
+the character the TACT program thinks is a mode character.
+================================================
+(*RES OLD MSG 212
+Direction Character "%0" is not allowed in front of INTERNAL
+string
+*)
+
+================================================
+This message occurs if the user tries to code an "actual length"
+value immediately after the INTERNAL translation field in
+XLATTABL.DAT or *.XDT lines, where it is not permitted.
+================================================
+(*RES OLD MSG 37
+Actual Length Field not permitted with INTERNAL String
+*)
+
+================================================
+This message occurs if the user tries to code an "actual length"
+value for another translation field where it is not permitted in
+a particular XLATTABL.DAT or *.XDT lines, where it is not
+permitted.  "%0" contains the field name.
+================================================
+(*RES OLD MSG 38
+Actual Length Field not permitted for %0
+*)
+
+================================================
+This message appears when a translation line on XLATTABL.DAT or
+*.XDT seems to contain extra text left over after all translation
+information has been extracted from the line.
+================================================
+(*RES OLD MSG 39
+Extra Text found on xlation file line
+*)
+
+================================================
+This message occurs when a second line within XLATTABL.DAT or
+*.XDT gives conflicting translation specifications from an
+earlier line.
+================================================
+(*RES OLD MSG 40
+Conflicting Character Specs
+*)
+
+================================================
+This message occurs when a second "MODE" line was found for a
+particular mode, and it conflicts with the first.  The mode name
+(a digit) appears in %0.
+================================================
+(*RES OLD MSG 222
+Mode definition conflict for mode "%0".
+*)
+
+================================================
+This message appears when an incorrectly constructed MODE line
+appears in XLATTABL.DAT or *.XDT.
+================================================
+(*RES OLD MSG 221
+Incorrectly formed "MODE" command found
+*)
+
+================================================
+Another message for the situation when "~" is found within
+XLATTABL.DAT or *.XDT where it should not appear.
+================================================
+(*RES OLD MSG 213
+The "no-translation" character "~" is not permitted here
+*)
+
+================================================
+This line is used to put together any of the translation error
+messages found while processing a.XDT file  discussed above for
+actual presentation to the user.  The translation specification
+file name being processed is in %0.  The offending line number is
+in %1, and the text of the error message (one of the above) is
+put in %2.
+================================================
+(*RES OLD MSG 41
+File %0 (%1) %2
+*)
+
+================================================
+This message appears when the user gives, as a part of the file
+name, and following a "@", the name of a translation file which
+cannot be legal (for example contains improper characters), or
+when the appropriately named .XDT file was not found.  The only
+legal name is the 8 character file name.  The name causing the
+program appears in %0.
+================================================
+(*RES OLD MSG 42
+"%0" cannot be a Translation Table name
+*)
+
+================================================
+This message occurs when a second "MODE" line was found for a
+particular mode.  The mode name (a digit) appears in %0.
+================================================
+(*RES OLD MSG 223
+Second mode definition for mode "%0".
+*)
+
+================================================
+This message appears when XLATTABL.DAT or *.XDT contain a
+reference to a particular translation mode for which no MODE line
+was given.
+================================================
+(*RES OLD MSG 226
+No transition sequence was given for mode "%0"
+*)
+
+================================================
+This message appears when we run out of machine memory when
+creating the internal form of a translation table from a *.XDT
+file.
+================================================
+(*RES OLD MSG 43
+Insufficient Memory to handle Xlate table
+*)
+
+================================================
+This wrapping form is similar to message 41 (above), but is used
+when a line number is inappropriate.  %0 is the name of the *.XDT
+file that is causing the problem.  %1 is one of the above
+messages.
+================================================
+(*RES OLD MSG 44
+File %0: %1
+*)
+
+================================================
+This message appears when the user gives, as a part of the file
+name, something that the program cannot recognize as a file name. 
+The name causing the program appears in %0.
+================================================
+(*RES OLD MSG 45
+"%0" cannot be a file name.
+*)
+
+================================================
+This message appears when XLATTABL.DAT contains translation lines
+that conflict with each other.
+================================================
+(*RES OLD MSG 46
+Conflicting Internal Sequences given
+*)
+
+================================================
+This message appears when XLATTABL.DAT contains two screen
+sequences that correspond to the same internal sequence.
+================================================
+(*RES OLD MSG 47
+Conflicting Screen Sequences given
+*)
+
+================================================
+This message occurs when a mode change sequence (on the MODE
+line) in XLATTABL.DAT conflicts with a translation line.
+================================================
+(*RES OLD MSG 227
+Mode Change "%0" to "%1" conflicts with display sequence.
+*)
+
+
+================================================
+This message appears if a direction code ">" or "<" is given for
+the keyboard specification within a XLATTABL.DAT translation
+line.
+================================================
+(*RES OLD MSG 228
+Direction Marker is "%0" not allowed for keyboard specification
+*)
+
+================================================
+This message appears if a mode number is used for the screen that
+is larger than that provided by the screen the user's got.  It is
+associated with a particular line in XLATTABL.DAT
+================================================
+(*RES OLD MSG 229
+Mode "%0" is not allowed for your screen.
+*)
+
+================================================
+This message is used to handle errors found when processing
+XLATTABL.DAT.  %0 is the line number that caused the problem in
+XLATTABL.DAT; %1 is one of the possible error messages.
+================================================
+(*RES OLD MSG 48
+Building Translate Tables: %0 %1
+*)
+
+================================================
+This DTA item provdes names for fields, and other objects of
+interest to XLATTABL.DAT, FILE.XDT and PRINTER.XDT.
+
+The names in order in the English form are:
+
+KEYBOARD: the name of the keyboard field in an XLATTABL.DAT line.
+
+SCREEN: the name of the screen field in an XLATTABL.DAT line (and
+also, the name of the SCREEN translation.
+
+FILE: the name of the FILE translation
+
+PRINTER: the name of the PRINTER translation
+
+INTERNAL: the name of a special translation which is really no
+translation at all -- allows characters in the internal character
+set to be written to the outside world as they are.
+
+MODE: something different -- what word is supposed to appear as
+the first word in a MODE line within XLATTABL.DAT or *.XDT.
+================================================
+(*RES OLD DTA 3
+KEYBOARD SCREEN FILE PRINTER INTERNAL MODE
+*)
+
+================================================
+This message occurs when a second MODE line for the same mode is
+found for the keyboard in XLATTABL.DAT. The mode digit is
+inserted at %0.
+================================================
+(*RES OLD MSG 230
+Second mode definition for KEYBOARD mode "%0".
+*)
+
+================================================
+This message occurs when a Mode is used within the keyboard
+specification within XLATTABL.DAT, but not MODE line is given for
+it.  The offending mode digit is inserted in at %0.
+================================================
+(*RES OLD MSG 231
+No transition sequence was given for KEYBOARD mode "%0"
+*)
+
+================================================
+Here again, this message appears when we run out of memory while
+processing XLATTABL.DAT.
+================================================
+(*RES OLD MSG 49
+Insufficient Memory to handle Xlate tables.
+*)
+
+================================================
+Yet another formatting display (similar to MSG 44 above) for
+handling errors occuring while reading a *.XDT file.  The file
+name is %0, the message for the error is in %2.
+================================================
+(*RES OLD MSG 50
+File %0: %2
+*)
+File: HELPBASE.MOD
+
+================================================
+The following material is used in connection with displaying the
+HELPs.
+
+It is the text to appear at the bottom right corner of a help
+window.
+================================================
+(*RES OLD MSG 209
+Help Window
+*)
+
+================================================
+The following messages are used in connection with TACT program
+printing, or writing displays, helps, or selection window
+contents to a file.
+
+This message appears if an error was reported by DOS while
+writing to a file, or printing. %0 is the text reporting the
+actual error (usually the text of one of messages 1 - 23 --
+above).
+================================================
+(*RES OLD MSG 241
+An IO Error occurred: %0
+*)
+
+================================================
+This is the contents of the dialog box that appears when the
+program user asks to save a display to disk.  The file name to
+use is given in %0, the name of the translation is %1.  %2 and %3
+are switches to allow the user to ask the program to append to
+the given file,or replace it entirely.
+
+Items %4 and %5 are required, and are used by the program to
+report on progress of the writing operation.
+================================================
+(*RES OLD MNU 27
+                           Writing To Disk:
+
+       FileName:    %0______________________________________
+       Translation: %1______________
+       Append to end of file: %|2  Over write file: %|3
+
+  %4______________________________________________________________________
+  %5______________________________________________________________________
+*)
+================================================
+This is the contents of the dialog box that appears when the
+program user asks to print a display.  The printer name (COMn or
+LPTn) to use is given in %0, the name of the translation is %1. 
+The number of lines to put on a pages is %2.
+
+Items %3 and %4 are required, and are used by the program to
+report on progress of the writing operation.
+================================================
+(*RES OLD MNU 28
+                               Printing
+
+                  Printer:     %0_______
+                  Translation: %1______________
+                  Number of lines per page: %2_
+
+  %3______________________________________________________________________
+  %4______________________________________________________________________
+*)
+
+================================================
+The choice when the user pushes ESC to interrupt writing to a
+file.  The file name is %0.  If the first key is typed, writing
+stops, if the second is typed, writing resumes.  In the English
+messages, the first choice is "S" for Stop, and "C" for Continue.
+================================================
+(*RES OLD CHE 12
+=S C
+To stop writing to file %0 type "S", to continue type "C"
+*)
+
+================================================
+Same as CHE 12 for the printer
+================================================
+(*RES OLD CHE 13
+=S C
+To stop printing on printer %0 type "S", to continue type "C"
+*)
+
+================================================
+Used when user asks for a printer name other than the legal forms
+of LPTn and COMn in a print request.
+================================================
+(*RES OLD MSG 247
+"%0" is not supported as a printer type in TACT
+*)
+
+================================================
+The following series of messages a produced when DOS reports that
+a parallel printer is not available.  Unfortunately, in practice,
+the correct message is often not generated because the printer
+doesn't follow the standards it is supposed to in reporting
+problems.
+================================================
+(*RES OLD MSG 258
+Printer error for "%0" -- Device not connected.
+*)
+
+(*RES OLD MSG 259
+Printer error for "%0" -- Device switched off.
+*)
+
+(*RES OLD MSG 260
+Printer error for "%0" -- Out of Paper.
+*)
+
+(*RES OLD MSG 261
+Printer error for "%0" -- Device offline.
+*)
+
+(*RES OLD MSG 262
+Printer error for "%0" -- Device out of order.
+*)
+
+================================================
+This message is produced when an illegal file name is given in a
+request to write output to a file.  The file name the TACT
+program was given is shown in %0.
+================================================
+(*RES OLD MSG 243
+"%0" is not a legal file name.
+*)
+
+================================================
+This message appears when a file is going to be overwritten, but
+already exists.  File name is %0.  The first letter (P in
+English, for "Proceed") allows the contents to be replace, the
+second letter (C for Cancel) cancels the file writing request.
+================================================
+(*RES OLD CHE 14
+= P C
+File %0 already exists, type "P" to proceed, type "C" to cancel.
+*)
+
+================================================
+This message appears during printing.  It is put on line %3 in
+Printing MNU 28 (above).  The printer name is in %0.
+================================================
+(*RES OLD MSG 244
+Printing on printer %0 is under way.
+*)
+
+================================================
+Similar message for writing to a file.  File name in %0.
+================================================
+(*RES OLD MSG 245
+Writing to file %0 is under way.
+*)
+
+================================================
+This is the second line that appears during printing or writing. 
+Tells user how to interrupt printing or writing (by pushing the
+ESC key).
+================================================
+(*RES OLD MSG 246
+To interrupt, type any key.
+*)
+
+================================================
+The following messages are generated by a TACT program while a
+user is filling in a dialog box, if an illegal value is given.
+
+This message is given when the user gives a number out of range
+that must be a Modula-II CARDINAL Type (0 to 65535).  %0 is the
+number that was actually given.
+================================================
+(*RES OLD MSG 51
+"%0" must be a positive number or zero less than 65535.
+*)
+
+================================================
+This message is given when the user gives a number out of range
+that must be a Modula-II INTEGER Type (-32768 to 32767).  %0 is
+the number that was actually given.
+================================================
+(*RES OLD MSG 52
+"%0" must be an integer number between -32768 and 32767.
+*)
+
+================================================
+This message is given when the user gives a number out of range
+that must be a Modula-II LONGINT Type (-2147483648 to
+2147483648).  %0 is the number that was actually given.
+================================================
+(*RES OLD MSG 53
+"%0" must be an integer number between -2147483648 and
+2147483648.
+*)
+
+================================================
+The following objects are a grab-bag of short bits of text
+related to the handling of windows in all TACT programs.
+
+The first four (In English 'Error', 'Warning', 'Information' and
+'Prompt' indicate different types of messages.  The next line is
+the text that appears at the bottom of the message box, in
+English: ' Press any key to continue '.  The next is the
+alternate line for the end if the message is signalling the
+abrupt ending of the program, in English: 'Program terminated.'
+
+The next item is the text to appear when we run out of memory
+while trying to make a new window; in English: 'Not enough memory
+available to create new window.'
+
+Finally, the text that appears while a TACT program starts up, in
+English: 'Program initialising, please wait ... '
+================================================
+(*RES OLD DTA 1
+'Error'
+'Warning'
+'Information'
+'Prompt'
+' Press any key to continue '
+'Program terminated.'
+'Not enough memory available to create new window.'
+'Program initialising, please wait ... '
+*)
+
+================================================
+The names of the different types of screens supported by TACT
+(used in environment variable TACTSCR) please restrict your
+choice here to non-diacritical characters.
+================================================
+(*RES OLD DTA 23
+BW80 CO80 MONOCHROME LCD
+*)

@@ -1,0 +1,61 @@
+R 65,T 5
+The Menu resource is used to define the look of the various TACTprogram's dialog boxes.
+
+@Section(An Example)
+The following is a typical MNU resource:
+
+@begin(example,size = 9 pt, leftIndent +0.0 inch)
+(*RES OLD MNU 13
+
+                 LETTERS, DIACRITICS, and CONTINUATION Character
+
+Alphabet
+ %0_________________________________________________________________________
+ %1_________________________________________________________________________
+ %2_________________________________________________________________________
+ %3_________________________________________________________________________
+Diacritics Retained
+ %4_________________________________________________________________________
+ %5_________________________________________________________________________
+Diacritics NonRetained
+ %6_________________________________________________________________________
+ %7_________________________________________________________________________
+Continuation Sequence:  %8_____
+
+  To edit or add material, move to line using UP or DOWN arrowKeys & type.
+        When finished, push the ENTER/RETURN key.
+
+*)
+@end(example)
+
+@Section(MNU resource concepts)
+The Menu resource is different from the Message resource inseveral ways:
+@begin(itemize)
+Line endings @i{do} matter -- each line of the definitioncorresponds to one line in the corresponding display the userwill see on the screen.
+
+All spaces also matter -- including leading spaces -- and arepreserved in the resulting MNU resource.
+
+Fields (where variable data will be displayed) always begin withthe character "%", and are followed by a number.  They aresimilar to the substitution points we saw in MSG and CHEresources.  However, there are differences as well.  First, thelength of the field is indicated by immediately following thiswith a sequence of underscores.  The total length (from thebeginning "%" to the last underscore will be the length of thefield.  If the field is very short (and they should be when thefield is used as part of a dialog box switch), and the "%" plusnumber is already longer than you want the field to be, put a "|"just past the end: "@t{%|6}" defines a field of one character inlength.
+@end(itemize)
+
+As in message resources, Field numbers start at zero and must beconsecutive -- don't skip numbers.
+
+The meaning of each field number is fixed by the TACT programthat uses the MNU resource, and you cannot change it.  However,you can change the order in which any field is presented on thescreen by simply re-ordering the field numbers in the display --although we don't recommend that you do change the order.
+
+Notice, as well, that the size of the window in which the MNUresource will be shown by the TACT program is not controlled bythe number of lines (or the line width) in the resource itself. Instead, this window size is fixed in the TACT program that usesthe MNU resource, and you have no control over it.  If your newresource definition has fewer lines the program will insert blanklines at the end when using the MNU resource.  If you have morelines the TACT program may abort without an error message, orwith an obscure one.  Essentially, you must ensure that your newlayout fits in the same space (depth and length) that the old oneused it is to work correctly.  Furthermore, you must ensure thatall fields are present in your new layout.  Failure to do eitherof these things will ensure disaster!
+
+@Subsection(Switches in MNU resources)
+Some positions on the screen are used for TACT's switches.  Forexample:
+@begin(example,size = 9 pt, leftIndent +0.0 inch)
+(*RES OLD MNU 6
+      Names: %0__________________________________________________________
+      Ref ID: %1_____________       Numeric:  Yes: %|2 No: %|3
+      Number of characters to keep: %4__
+*)
+@end(example)
+
+The positions labelled "%0", "%1"  and "%4"are used as fieldswhere the user can type text.  Positions 2 and 3 (appearing as"%|2" amd "%|3" to indicate that they are only 1 character long)are positions for the 2 values of a switches.  Clearly by readingthe text in the resource, you can see that "%|2" is the place forthe "Yes" option, and "%|3" is for the "No".  Here again, thetext "Yes" and "No" are not used by the TACT program to indicatewhich is the yes and no switch value -- only the number indicatesthat.  If you wanted to reverse the order for some reason (not,generally, a good idea), you must reverse the positions of "2"and "3" as well:
+
+@begin(example)
+Non: %|3 Oui: %|2
+@end(example)

@@ -1,0 +1,45 @@
+DEFINITION MODULE HRecPntrTranslation;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM TDBBase IMPORT HRecPntr;
+
+TYPE
+    XRecInfo = RECORD
+       Size:    CARDINAL;
+       IOffset: CARDINAL;
+       NewLoc:  ARRAY[0..255] OF HRecPntr
+    END;
+    XRecInfoPntr = POINTER TO XRecInfo;
+
+    ToRecDataType = RECORD
+       Size:    CARDINAL;
+       RecData: ARRAY[0..2000] OF XRecInfoPntr;
+    END;
+    ToRecPntrType = POINTER TO ToRecDataType;
+
+PROCEDURE BeginXlateGroup(No:  CARDINAL;
+                          ID:  INTEGER;
+                          IOff:CARDINAL);
+PROCEDURE AddTranslationItem(No:   CARDINAL; New: HRecPntr);
+PROCEDURE AddTransWithNewRecord(No:  CARDINAL; New: HRecPntr);
+PROCEDURE EndAllXlateGroups(No: CARDINAL);
+
+PROCEDURE SetupToRecPntr(No:     CARDINAL;
+                     VAR ID:     INTEGER;
+                     VAR Rslt:   ToRecPntrType): BOOLEAN;
+PROCEDURE DisposeToRecPnts(VAR Data: ToRecPntrType);
+
+PROCEDURE CleanUpXFiles;
+END HRecPntrTranslation.

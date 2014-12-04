@@ -1,0 +1,99 @@
+DEFINITION MODULE Windows ;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM TWB     IMPORT WinType, PaletteDef;
+FROM SYSTEM IMPORT ADDRESS ;
+
+(*
+EXPORT QUALIFIED
+  (* Vars *)  DialogAttrib, ErrorAttrib, InActiveAttrib, ActiveAttrib,
+              ActionBarAttrib, ErrorWindow, TerminationProc, MoveRange,
+              (* only used by ErrorBase *)
+              ErrorText, WarningText, InfoText, PromptText, PressText,
+              ResizeMoveKeyRead,
+  (* Const *) RegularAttr, BoldAttr, SpecialAttr,
+  (* Procs *) InitWindows, CreateNewWindow, GetRidOfWindow,
+              ReSizeWindow, MoveWindow, ScrollUp, ScrollDown,
+              NonWMMessage ;
+*)
+
+CONST
+   RegularAttr = 0 ;
+   BoldAttr    = 1 ;
+   SpecialAttr = 2 ;
+
+VAR
+   DialogAttrib   :  PaletteDef ;   (* for Command window *)
+   ErrorAttrib    :  PaletteDef ;   (* for Messages, Warnings and Errors Window *)
+   InActiveAttrib :  PaletteDef ;   (* for any and all inactive "work" Windows *)
+   ActiveAttrib   :  PaletteDef ;   (* for active "work" Window *)
+   ActionBarAttrib:  PaletteDef ;   (* for TACT's action bar *)
+
+   ErrorWindow    :  WinType ;
+   ErrorText:    ARRAY[0..19] OF CHAR;
+   WarningText:  ARRAY[0..19] OF CHAR;
+   InfoText:     ARRAY[0..19] OF CHAR;
+   PromptText:   ARRAY[0..19] OF CHAR;
+   PressText:    ARRAY[0..40] OF CHAR;
+   MoveRange:    RECORD
+                   XTop, YTop, XBot, YBot: CARDINAL;
+                 END;
+
+   (* Procedure TerminationProc is a variable that contains a
+      pointer to a procedure to be called when the user pushes the F3
+      key.  It *MUST* be initialized to point to an appropriate
+      procedure before the first call to GetScreenField *)
+
+   TerminationProc: PROC;
+   ResizeMoveKeyRead : PROCEDURE( VAR CHAR, VAR BOOLEAN ) ;
+
+PROCEDURE InitWindows();
+
+PROCEDURE EndWindows();
+
+PROCEDURE CreateNewWindow( VAR WindowRec    : WinType;
+                               XPos, YPos   : CARDINAL;  (* position on monitor    *)
+                               NRows, NCols : CARDINAL;  (* window size            *)
+                               ScreenLen    : CARDINAL;  (* max # of columns [upto 255] *)
+                               DefaultAttrib : PaletteDef;
+                               Border       : BOOLEAN ) ;
+
+PROCEDURE GetRidOfWindow(  VAR WindowRec  : WinType ) ;
+
+PROCEDURE NonWMMessage( Text : ARRAY OF CHAR ) ;
+
+(* After a call to ScrollUp or ScrollDown, you will need to call OpenWindow *)
+(* to refresh the physical screen.                                          *)
+
+PROCEDURE ScrollUp(   WindowRec  : WinType;
+                      Amount     : CARDINAL ) ;
+
+PROCEDURE ScrollDown( WindowRec  : WinType;
+                      Amount     : CARDINAL ) ;
+
+PROCEDURE ReSizeWindow( VAR WindowRec : WinType;
+                        VAR FunctKey  : BOOLEAN;
+                        VAR TermCh    : CHAR ) ;
+
+PROCEDURE MoveWindow(   VAR WindowRec : WinType;
+                        VAR FunctKey  : BOOLEAN;
+                        VAR TermCh    : CHAR ) ;
+
+(* This procedure is similar to TWB's: however, it tries to protect the attribute
+information that controls the font selection. *)
+
+PROCEDURE ChangeColorOnScreen(pc:  CARDINAL;
+                              X,Y: CARDINAL;Len: CARDINAL);
+END Windows .

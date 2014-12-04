@@ -1,0 +1,72 @@
+/&/ > /& a m p ;/1
+/</ > /& l t ;/1
+/>/ > /& g t ;/1
+/Acute A/ /C1/
+/Acute E/ /C9/
+/Acute I/ /CD/
+/Acute O/ /D3/
+/Acute U/ /DA/
+/Acute Y/ /DD/
+/Acute a/ /E1/
+/Acute e/ /E9/
+/Acute i/ /ED/
+/Acute o/ /F3/
+/Acute u/ /FA/
+/Acute y/ /FD/
+/Cedilla C/ /C7/
+/Cedilla c/ /E7/
+/Circumflex A/ /C2/
+/Circumflex E/ /CA/
+/Circumflex I/ /CE/
+/Circumflex O/ /D4/
+/Circumflex U/ /DB/
+/Circumflex a/ /E2/
+/Circumflex e/ /EA/
+/Circumflex i/ /EE/
+/Circumflex o/ /F4/
+/Circumflex u/ /FB/
+/Digraph A E/ /C6/
+/Digraph O E/ /8C/
+/Digraph S S/ /DF/
+/Digraph a e/ /E6/
+/Dot a/ /E5/
+/Dot A/ /C5/
+/Enhancedoff/ $< / B >$
+/Enhancedon/ /< B >/
+/Grave A/ /C0/
+/Grave E/ /C8/
+/Grave I/ /CC/
+/Grave O/ /D2/
+/Grave U/ /D9/
+/Grave a/ /E0/
+/Grave e/ /E8/
+/Grave i/ /EC/
+/Grave o/ /F2/
+/Grave u/ /F9/
+/InvExclam/ /A1/
+/InvQuestion/ /BF/
+/Special1 &/ > /&/
+/Special1 </ > /</
+/Special1 >/ > />/
+/Special1 o/ /F8/
+/Special1 O/ /D8/
+/Splitline/ /A0/
+/Tilde A/ /C3/
+/Tilde N/ /D1/
+/Tilde O/ /D5/
+/Tilde a/ /E3/
+/Tilde n/ /F1/
+/Tilde o/ /F5/
+/Umlaut A/ /C4/
+/Umlaut E/ /CB/
+/Umlaut I/ /CF/
+/Umlaut O/ /D6/
+/Umlaut U/ /DC/
+/Umlaut a/ /E4/
+/Umlaut e/ /EB/
+/Umlaut i/ /EF/
+/Umlaut o/ /F6/
+/Umlaut u/ /FC/
+/Umlaut y/ /FF/
+/Guillopen/ /AB/
+/Guillclose/ /BB/

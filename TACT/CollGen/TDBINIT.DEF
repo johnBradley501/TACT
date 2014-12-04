@@ -1,0 +1,80 @@
+DEFINITION MODULE TDBInit;
+
+(* copyright (c) 1987-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM GlobalDefs IMPORT FileNameType, StrAny ;
+FROM FIO IMPORT File ;
+FROM HyperDataModel IMPORT MaxDBTitleLength, IDType, HyperData, TDBTypeData,
+ (* type  *) HRecPntr, DBaseTitleType, TDBHeaderType, HOccurData ;
+
+(*
+EXPORT QUALIFIED
+    (* vars  *) TDBFileID, CORFileID, UsingCorpusFile, HROffset,
+		BeginCorpusType, EndCorpusTypeRec,
+                BeginType, BeginToken, EndTypeRec, EndTypeIdx,
+                EndTokenRec, EndTokenIdx, NoTypes, LastAlphChar,
+    (* procs *) InitializeFromDB, OpenTDB, CheckHeader;
+*)
+
+TYPE
+    FileNamePntr = POINTER TO FileNameType ;
+VAR
+    UsingCorpusFile : BOOLEAN;		(* corpus releated variables *)
+    CORFileID	: File;
+    HROffset	: CARDINAL;
+    NumbFiles   : CARDINAL ;
+    TDBDir	: FileNameType ;
+    BeginCorpusType	: CARDINAL ;
+    EndCorpusTypeRec	: CARDINAL ;
+    TDBFileNames: POINTER TO ARRAY[1..255] OF FileNamePntr ;
+
+    MaxRefID    : CARDINAL ; (* m.s. *)
+
+    TDBFileID	: File;			(* TDB releated variables *)
+    BeginType	: CARDINAL ;
+    EndTypeRec	: CARDINAL ;
+    EndTypeIdx	: CARDINAL ;
+    NoTypes     : CARDINAL ;
+    BeginToken	: CARDINAL ;
+    EndTokenRec : CARDINAL ;
+    EndTokenIdx : CARDINAL ;
+    BeginLog    : CARDINAL ; (* m.s. *)
+    EndLog      : CARDINAL ; (* m.s. *)
+    LastAlphChar: CHAR;
+
+
+VAR
+
+  NoInFiles:   CARDINAL;
+  OutFile:     File;
+  OutFileName: FileNameType ;
+  OutFileRec:  HyperData;
+  OutPos:      HRecPntr;
+  OutHeader:   TDBHeaderType ;
+  OutStartRef: StrAny;
+
+  NoRefIDs:    CARDINAL;
+  FileNID:     INTEGER;
+  RefArray:    ARRAY[0..256] OF BOOLEAN ;
+
+
+PROCEDURE CheckHeader( FileName: ARRAY OF CHAR ) : BOOLEAN ;
+
+PROCEDURE InitializeFromDB( FileName: ARRAY OF CHAR ) : BOOLEAN ;
+
+PROCEDURE OpenTDB( FileName: ARRAY OF CHAR ) : BOOLEAN ;
+
+PROCEDURE MergeRefList( ) : BOOLEAN ; (* m.s. - called from startup  until true *)
+
+END TDBInit.

@@ -1,0 +1,127 @@
+R 65,T 5
+This document describes a resource management system that we haveconstructed for the use of the TACT system.  The resourcemanagement system is used to manage all@foot(or almost all) thetext that the TACT system user will see displayed by the system. This list includes:
+@begin(itemize)
+All error, warning and informational messages created by the TACTsystem.
+
+All choice messages; where the user sees a message and can typein a single letter to make a choice.
+
+All panels and menus that the user sees.
+
+Most (but not all) default values (such as the default alphabetwithin MAKBAS) that the user sees.
+
+All help messages.
+@end(itemize)
+
+In addition, certain other types of tabular material is stored inthe resource system.
+
+@Section(The parts of the system)
+@begin(figure)
+@EpsFig(ResParts)
+@Caption(The Resource System)
+@figtag(ResEnv)
+@end(figure)
+The system consists of several parts (shown in figure@ref(ResEnv)):
+@begin(itemize)
+TACT, MAKBAS, MERGEBAS and COLLGEN make use of a single resourcefile called TACT.RES that contains all this information.  Theyare, collectively, represented by the box "TACT programs" at theright end of the figure.  The TACT.RES file is shown in themiddle of the figure, and the arrow shows that material flowsfrom TACT.RES into the programs.
+
+Material is put into the resource file using the program RESMAN.(RESMAN stands for Resource Manager).  In the figure you can seeRESMAN at the centre/bottom of the figure.  Notice the arrowpoints from RESMAN into TACT.RES.
+
+RESMAN gets information of what the resources are supposed to beby reading ASCII files -- including the Modula-II source filesthat describe the TACT system.  Resource information isconstructed in such a way that it appears to a Modula-II compilerto be comments.  Although RESMAN can read and work with resourceinformation in source files, it can read any other ASCII file. Indeed, accompanying this document are various files (withextensions .RSI) that contain, between them, the text forvirtually all the messages the TACT system can create.  In thefigure the RSI files are shown at the left side, notice that anarrow runs from the RSI file to RESMAN -- showing that RESMANgets it's instructions from the RSI files.
+
+If necessary, RESREAD can be used to create RSI files fromTACT.RES.  We have already done this for you -- that's why we areable to give you the collection of .RSI files we can.  However,from time to time you may want to use RESREAD to extract selectedresources from TACT.RES.  You can see RESREAD represented at thetop of the figure, and the arrows showing the flow of data fromTACT.RES into a .RSI file.
+@end(itemize)
+
+Actually, the TACT/MAKBAS programmer, when creating the Modula-IIcode that makes up the TACT sytem, put in resource information inhis Modula-II source files.  RESMAN processed them (using somedifferent facilities RESMAN has then those discussed in detailhere).
+
+You need not work with the Modula-II source files at all.  Wehave extracted the resources for you, using RESREAD, and havesaved them in the collection of RSI files you have.  We've alsoadded some instructions within the RSI files -- more detail abouthow RSI files are organized is given in the next chapter.   Youcan modify the resources within the *.RSI files and, using RESMANin essentially the same way the programmer did, replace theresources in TACT.RES with those of your own form.
+
+@Section(Resource identification)
+Each resource that is stored in the resource file is given aunique ID that allows the program to refer to it.  The resourceID has two parts:
+@begin(itemize)
+First, all resources have associated with them a particular type. The type indicates how the resource is to be stored in thedatabase, and indicates normally how it is going to be used. There are 6 types -- we'll discuss them more in a moment.
+
+In addition to a resource type there is a resource number.  Foreach of the 6 types, all resource numbers start at zero and(normally at least) run consecutively from there until allresources of that type have been accounted for.
+@end(itemize)
+
+The resource types are:
+@begin(description)
+Message@\Message resources are simple strings of characters whichact as templates for messages, or string constants.  Currently,they are the place where the text for all error, warning andinformational messages are stored.  To RESMAN, they are known as'MSG' resources.
+
+Data Array@\These resources are collections of data that arestored as a single object.  They are used for various purposeswithin the program -- for example, the fixed values for the namesof the standard character set characters and their associatedcode points are stored as a single Data Array resource.  Thevarious initial values for the alphabet panel in MAKBAS arestored as a single Data Array resource.  They need not consistonly of text, but the runs in the *.RSI files you will seecontain only text.  To RESMAN, they are known as 'DTA' resources.
+
+Menu@\These resources contain the templates for the various menusand panels that TACT programs can display.  To RESMAN, they areknown as 'MNU' resources.
+
+Help@\These resources will contain the text for the various Helpdisplays that TACT (and MAKBAS) will be able to display.  ToRESMAN, they are known as 'HLP' resources.
+
+Choice@\Choice resources are similar to Message resources, inthat they contain templates for messages to be displayed to theuser.  However, they also contain a list of characters that areto be recognized as valid responses.  To RESMAN, they are knownas 'CHE' resources.
+
+Number Array@\Number Array resources are used solely by TACT toassist in the parsing of some of the complex commands.  They donot contain text, and are not provided within the *.RSI filesyou've been given.  To RESMAN, they are known as 'NAR' resources.
+@end(description)
+
+Hence, the 46th message resource would have the ID "MSG 45"(remember that resource numbering starts with zero, and is,hence, zero based).
+
+Note that the TACT program chooses a menu, or a message by meansof specifying: (a), the resource type (one of the 6 typesmentioned above), and (b) mentioning the number associated withthe type.  TACT cannot, and does not look at the text in the menuor message at all.  It is your job to ensure that the new messageor menu you assigned to a particular resource conveys more orless the same message that the old one did.  Furthermore, exceptfor HLP type files, it is impossible for you to add new messages(or menus, etc.) that say new things -- this is because thenumbers that lauch any particular resource are already coded inthe program and cannot be changed by you.  If you feel that abasically new message is needed please talk to the TACTprogrammers.
+
+@Section(A Simple Example)
+To get the general idea, let's look at a simple example.
+
+This is the text for one of the resources within LIST.RSI.
+@begin(example)
+(*RES OLD MSG 75
+Too Many Characters in Internal Name
+*)
+@end(example)
+
+The example contains three parts:
+@begin(itemize)
+The first line -- containing "@t{(*RES OLD MSG 75}" -- tellsRESMAN that this the beginning of the text defining a resource oftype "MSG" (message), number 75.
+
+The second line contains the contents of the resource.  MSGresources are simply lines of text (as we'll see below) -- notall are this simple.  If necessary the contents of a resource canbe spread over several lines.
+
+The final line contains the marker that says "this is the end ofthe text defining the resource.  It always appears as "*)".
+@end(itemize)
+
+Suppose you want to update this resource message (which is used,by the way, whenever any TACT program is given an Internalcharacter set name that is too long).  To do this you have to dotwo things:
+
+BEGIN NUMBERED
+Clearly, you'll have to change the text of the message.
+
+You'll have to change the first line to indicate that this is aresource that needs to be updated by RESMAN.
+END NUMBERED
+
+The result would be something like this:
+@begin(example)
+(*RES UPD MSG 75
+<your new message text>
+*)
+@end(example)
+
+We haven't shown shown any actual message here -- but we haveshown exactly how to change the first line.  Note that thecharacters "OLD" have been changed to "UPD".
+
+After you've changed one or more resources you can run RESMAN,giving it the name of the .RSI file you want it to take itsinstructions from, and the name of the resource file (usuallyTACT.RES) that you want to change.
+
+RESMAN will actually do more than just replace the old resourcewith any new one.  In addition to updating the Resource file, italso updates the "input" .RSI file!  It's full operation is asfollows:
+@begin(enumerate)
+First it makes a complete copy of the given resource file andgives it a temporary name.  This copy is the version of theresource file RESMAN will modify.
+
+It also opens another file for writing.  This will be the newversion of the .RSI file.
+
+Then it begins to read the input *.RSI file and will act on theinstructions it is given in the comments that it finds directedat it.  The other text (not instructions to RESMAN) is simplycopied to a new output file.  The RESMAN instructions are changed(in ways we'll see shortly) and also written to the new RSIsource file.
+
+If RESMAN found no errors it will terminate by renaming all thefiles.  The old resource file will be renamed, changing the fileextension to "RBK" (for Resource BacKup).  The new file will begiven the name of the resource file.  The old inputted RSI sourcefile with the RESMAN instructions has its file extension changedto "BAK".  The new modified source file is given the same name aswhat the old inputted file had.  If necessary, older files withextensions "RBK" and "BAK" are deleted.
+@end(enumerate)
+
+Hence, after RESMAN has run the resources have been added to theresource file.  In addition, the source file will have beenchanged to the following (or something similar):
+@begin(example)
+(*RES OLD MSG 75
+<your new message text>
+*)
+@end(example)
+
+As well as updating MSG resource # 75, RESMAN will have made achange to the input source file:  the "@t{(*RES UPD MSG 75}" lineis changed to "@t{(*RES OLD MSG 75}" to reflect the fact thatthis resource has now been updated in the resource file and is nolonger new.
+
+What happens if we run the same RSI file through RESMAN againwithout making further changes to a resource? Nothing willhappen. The changes that RESMAN has automatically made to theResource Manager instructions will ensure that they are ignoredthe next time RESMAN sees them, and that the same resourcemessage will not be added again.
+
+@Section(What's coming up)
+
+Most of the remainder of this document will discuss how tointerpret resource instructions for RESMAN in the RSI files andthen will discuss how to use the resource utility modules tomodify TACT system resources.

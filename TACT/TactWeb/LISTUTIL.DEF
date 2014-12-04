@@ -1,0 +1,53 @@
+DEFINITION MODULE ListUtils;
+(* copyright (c) 1989-96 John Bradley, Lidio Presutti, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+FROM TACTListModule IMPORT TACTList;
+FROM VirtMem IMPORT VirtAddr;
+
+TYPE PosOrderData;
+
+PROCEDURE MakePosList(ListIn:  TACTList;
+                  VAR ListOut: TACTList);
+
+PROCEDURE MakeWordList(ListIn:  TACTList;
+                   VAR ListOut: TACTList);
+
+(* Thess procedures are used to get access to occurrences of Tokens for a
+   particular list.
+
+   To use this module, first call StartTokenList, giving it the list you
+   want to work with, a status variable name "PosOrder", and a DataItemPntr
+   you want it to use to refer to the various token records.
+
+   Then, you call NextPosOrder multiple times.  Each time it will return
+   a pointer to the next occurrence token data information via DataVA,
+   and a real pointer to the token data info via Data.
+   Note that NextPosOrder tries to manage memory allocation and *assumes*
+   that the variable it is passed thru DataVA is the *same* one for
+   each call, and the same one passed via StartPosOrder.  Note that when
+   you are finished with DataVA, the *only* safe way to release it is
+   by either calling "FinishPosOrder" or "NextPosOrder"!!!
+
+   When you are finished reading tokens (even if finished before all the
+   tokens have been presented to you) call FinishPosOrder to release all the
+   storage tied up by this procedure.   ... j.b. *)
+
+PROCEDURE StartPosOrder(ListIn:   TACTList;
+                    VAR PosOrder: PosOrderData);
+
+PROCEDURE NextPosOrder(VAR PosOrder: PosOrderData;
+                       VAR DataVA:   VirtAddr (* DataItem VA *)): BOOLEAN;
+
+PROCEDURE FinishPosOrder(VAR PosOrder: PosOrderData);
+END ListUtils.

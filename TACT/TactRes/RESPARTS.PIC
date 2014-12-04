@@ -1,0 +1,32 @@
+Box Dimen 6.5 in, 4 in
+  [
+    pgm:      box dimen 25%,25%
+                  at (80%,50%)
+              < text size 10 pt 'TACT' 'Programs' >
+
+   resfile:   box dimen 25%,15%
+                  at (50%,50%)
+                  < text size 10 pt 'TACT.RES File'>
+
+              arrow {resfile.cr pgm.cl}
+
+   resman:    box dimen 20%,20%
+                  at (50%,75%)
+                  < text size 10 pt 'RESMAN' 'Program'>
+
+              arrow {resman.ct resfile.cb}
+
+   resread:    box dimen 20%,20%
+                  at (50%, 25%)
+                  < text size 10 pt 'RESREAD' 'Program'>
+
+              arrow {resfile.ct resread.cb}
+
+   pgmfiles:  box dimen 25%,15%
+                  at (20%,50%)
+                  < text size 10 pt '*.RSI Files' >
+
+              arrow {resread.cl corh pgmfiles.ct}
+              arrow {pgmfiles.cb corv resman.cl}
+
+]

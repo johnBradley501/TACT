@@ -1,0 +1,71 @@
+DEFINITION MODULE ResManUtils;
+
+(* copyright (c) 1987-96 John Bradley, University of Toronto *)
+
+(* Licensed under the Apache License, Version 2.0 (the "License");             *)
+(* you may not use this file except in compliance with the License.            *)
+(* You may obtain a copy of the License at                                     *)
+(* http://www.apache.org/licenses/LICENSE-2.0                                  *)
+(*                                                                             *)
+(* Unless required by applicable law or agreed to in writing, software         *)
+(* distributed under the License is distributed on an "AS IS" BASIS,           *)
+(* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    *)
+(* See the License for the specific language governing permissions and         *)
+(* limitations under the License.                                              *)
+
+(* JPI Version   ... j.b. *)
+
+FROM Utils IMPORT BResultType;
+FROM FIO IMPORT File;
+
+(*
+EXPORT QUALIFIED
+  (* type *) ResOpType,
+  (* var *)  InCmdFileName, InResFileName, TmpResFileName,
+             TmpCmdFileName, InCmdFile, OutCmdFile,
+             ResOptNames, ErrorFound,
+  (* proc *) CopyFile, DisposeOfFiles, UpdateFiles,
+             InputErrorMessage, ResErrorMessage, ReportError,
+             ReadCmdLine, NextResLine, FindResType,
+             IOErrorMessage;
+*)
+
+TYPE
+   ResOpType = (ResComment, ResOld, ResNew, ResUpdate, ResDelete,
+                ResInsertNumber);
+
+VAR
+    InCmdFileName:    ARRAY[0..80] OF CHAR;
+    InResFileName:    ARRAY[0..80] OF CHAR;
+    TmpResFileName:   ARRAY[0..80] OF CHAR;
+    TmpCmdFileName:   ARRAY[0..80] OF CHAR;
+    InCmdFile:        File;
+    OutCmdFile:       File;
+    ResOptNames:      ARRAY[MIN(ResOpType)..MAX(ResOpType)] OF
+                           ARRAY[0..2] OF CHAR;
+    ErrorFound:       BOOLEAN;
+
+PROCEDURE CopyFile(InFileName:  ARRAY OF CHAR;
+                   OutFileName: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE DisposeOfFiles;
+
+PROCEDURE UpdateFiles;
+
+PROCEDURE InputErrorMessage(TypeText:    ARRAY OF CHAR;
+                            Result:      BResultType);
+
+PROCEDURE ResErrorMessage(TypeText:    ARRAY OF CHAR);
+
+PROCEDURE ReportError(TypeText: ARRAY OF CHAR);
+
+PROCEDURE ReadCmdLine(VAR RLine: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE NextResLine(VAR Line: ARRAY OF CHAR): BOOLEAN;
+
+PROCEDURE FindResType(Parm: ARRAY OF CHAR;
+                  VAR Res:  ResOpType): BOOLEAN;
+
+PROCEDURE IOErrorMessage(Code:     BResultType;
+                     VAR Message:  ARRAY OF CHAR);
+END ResManUtils.
